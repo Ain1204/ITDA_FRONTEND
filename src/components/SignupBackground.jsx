@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SignupPageImage from '../../assets/images/SignupPage.png';
+import SignupPageImage from '../assets/images/SignupPage.png';
 
 const BackgroundContainer = styled.div`
   position: fixed;
