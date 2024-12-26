@@ -191,9 +191,10 @@ const AutoLoginContainer = styled.div`
 `;
 
 const StyledCheckbox = styled.input`
-    width: 14px;
-    height: 14px;
-    cursor: pointer;
+	width: 14px;
+	height: 14px;
+	cursor: pointer;
+	transform: translateY(-1px);
 `;
 
 const AutoLoginLabel = styled.label`
@@ -204,6 +205,7 @@ const AutoLoginLabel = styled.label`
     font-weight: 400;
     line-height: 168%;
     letter-spacing: -0.35px;
+	cursor: pointer;
 `;
 
 const HelpButton = styled.button`
