@@ -93,7 +93,7 @@ const EmailContainer = styled.div`
 	display: flex;
 	width: 400px;
 	flex-direction: column;
-	gap: 4px;
+	gap: 8px;
 	padding-bottom: 20px;
 `;
 
@@ -101,7 +101,7 @@ const PwContainer = styled.div`
 	display: flex;
 	width: 400px;
 	flex-direction: column;
-	gap: 4px;
+	gap: 8px;
 	padding-bottom: 20px;
 `;
 
@@ -117,29 +117,33 @@ const InputLabel = styled.label`
 `;
 
 const StyledInput = styled.input`
-	display: flex;
+    display: flex;
+    width: 400px;
+    height: 48px;
+    padding: 12px 16px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 12px;
+    background: var(--Colors-GrayScale-G200, #F3F5F8);
+    box-shadow: 0px 0px 8px 0px rgba(26, 26, 35, 0.12) inset;
+    border: none;
+    font-family: "SUIT Variable";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+    letter-spacing: -0.4px;
 
-	height: 48px;
-	padding: 12px 16px;
-	align-items: center;
-	gap: 8px;
-	align-self: stretch;
-	border-radius: 12px;
-	background: var(--Colors-GrayScale-G200, #F3F5F8);
-	box-shadow: 0px 0px 8px 0px rgba(26, 26, 35, 0.12) inset;
-	border: none;
-	
-
-	&::placeholder {
-		flex: 1 0 0;
-		color: var(--Colors-GrayScale-G400, #949BAD);
-		font-family: "SUIT Variable";
-		font-size: 16px;
-		font-style: normal;
-		font-weight: 500;
-		line-height: 150%;
-		letter-spacing: -0.4px;
-	}
+    &::placeholder {
+        color: var(--Colors-GrayScale-G400, #949BAD);
+        font-family: "SUIT Variable";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 150%;
+        letter-spacing: -0.4px;
+        vertical-align: middle;
+    }
 `;
 
 const PasswordGuide = styled.p`
@@ -151,7 +155,6 @@ const PasswordGuide = styled.p`
 	font-weight: 500;
 	line-height: 132%;
 	letter-spacing: -0.3px;
-	margin-top: 4px;
 `;
 
 const LoginButton = styled.button`
@@ -188,9 +191,10 @@ const AutoLoginContainer = styled.div`
 `;
 
 const StyledCheckbox = styled.input`
-    width: 14px;
-    height: 14px;
-    cursor: pointer;
+	width: 14px;
+	height: 14px;
+	cursor: pointer;
+	transform: translateY(-1px);
 `;
 
 const AutoLoginLabel = styled.label`
@@ -201,6 +205,7 @@ const AutoLoginLabel = styled.label`
     font-weight: 400;
     line-height: 168%;
     letter-spacing: -0.35px;
+	cursor: pointer;
 `;
 
 const HelpButton = styled.button`
@@ -232,16 +237,17 @@ const DividerLine = styled.div`
 	width: 143px;
 	height: 1px;
 	background-color: var(--Colors-GrayScale-G300, #DDE1E7);
+	transform: translateY(-1px);
 `;
 
 const SnsButtonContainer = styled.div`
 	display: flex;
+	width: 400px;
 	flex-direction: row;
 	gap: 24px;
 	justify-content: center;
 	align-items: center;
 	padding-bottom: 52px;
-	width: 400px;
 `;
 
 const SnsLoginText = styled.span`
