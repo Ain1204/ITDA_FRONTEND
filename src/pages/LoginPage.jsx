@@ -7,6 +7,7 @@ import KakaoIcon from '../assets/loginIcon/kakao.svg';
 import GoogleIcon from '../assets/loginIcon/google.svg';
 import AppleIcon from '../assets/loginIcon/apple.svg';
 import FacebookIcon from '../assets/loginIcon/facebook.svg';
+import LoginBlueButton from '../components/LoginBlueButton';
 
 const PageContainer = styled.div`
 	display: flex;
@@ -155,31 +156,6 @@ const PasswordGuide = styled.p`
 	font-weight: 500;
 	line-height: 132%;
 	letter-spacing: -0.3px;
-`;
-
-const LoginButton = styled.button`
-	display: flex;
-	width: 400px;
-	height: 48px;
-	padding: 12px 16px;
-	align-items: center;
-	gap: 8px;
-	justify-content: center;
-	border-radius: 12px;
-	background: var(--Colors-Primary-B400, #3D85FF);
-	box-shadow: 0px 0px 8px 0px rgba(26, 26, 35, 0.32);
-	border: none;
-	cursor: pointer;
-
-	/* 버튼 텍스트 스타일 */
-	color: var(--Colors-GrayScale-White, #FCFCFF);
-	text-align: center;
-	font-family: "SUIT Variable";
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: 150%;
-	letter-spacing: -0.4px;
 `;
 
 const AutoLoginContainer = styled.div`
@@ -335,9 +311,9 @@ const LoginPage = () => {
 						<HelpButton type="button">문제가 있나요?</HelpButton>
 					</AutoLoginContainer>
 
-					<LoginButton type="submit">
+					<LoginBlueButton type="submit" style={{'justify-content': 'center'}}>
 						로그인
-					</LoginButton>
+					</LoginBlueButton>
 
 					<SnsLoginDivider>
 						<DividerLine />
