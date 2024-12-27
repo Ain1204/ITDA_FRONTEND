@@ -1,6 +1,54 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import SignupBackground from '../components/SignupBackground';
+import SignupLongButton from '../components/SignupLongButton';
+import SignupNextButton from '../components/SignupNextButton';
+
+const PageContainer = styled.div`
+	display: flex;
+	min-height: 100vh;
+`;
+
+const SignupSection = styled.div`
+	position: relative;
+	width: 47.92%;
+	margin-left: 52.08%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const SignupContainer = styled.div`
+	flex-direction: column;
+	align-items: center;
+	width: 400px;
+`;
+
+const Title = styled.h1`{
+	alignSelf: 'stretch',
+	color: '#1A1A23',
+	fontFamily: '"SUIT Variable"',
+	fontSize: '32px',
+	fontStyle: 'normal',
+	fontWeight: 700,
+	lineHeight: '150%',
+	letterSpacing: '-0.8px'
+}`;
+
+const Subtitle = styled.h4`
+	display: flex;
+	align-self: stretch;
+	color: #4F5462;
+	text-align: center;
+	font-family: "SUIT Variable";
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 140%;
+	letter-spacing: -0.5px;
+	margin-bottom: 60px;
+`;
 
 const SignupPage = () => {
 	const navigate = useNavigate();
@@ -43,6 +91,23 @@ const SignupPage = () => {
 		}
 	};
 
+	const getSubtitleText = () => {
+		switch (step) {
+			case 1:
+				return "계정 유형을 선택해 주세요.";
+			case 2:
+				return "이용약관에 동의해 주세요.";
+			case 3:
+				return "회원 정보를 입력해 주세요.";
+			case 4:
+				return "인증번호를 입력해 주세요";
+			case 5:
+				return "서비스에 이용할 정보를 입력해주세요.";
+			default:
+				return "";
+		}
+	};
+
 	const startTimer = () => {
 		setRemainingTime(300);
 		const newTimer = setInterval(() => {
@@ -64,36 +129,33 @@ const SignupPage = () => {
 	};
 
 	return (
-		<div style={{ display: 'flex', minHeight: '100vh' }}>
+		<PageContainer>
 			<SignupBackground />
-			<div style={{ 
-				flex: 1, 
-				marginLeft: '52.08%',
-			}}>
-				<div>
-					<h2>{getHeaderText()}</h2>
+			<SignupSection>
+				<SignupContainer>
+					<Title>{getHeaderText()}</Title>
 					
 					{step === 1 && (
 						<div>
-							<h3>계정 유형을 선택해 주세요.</h3>
+							<Subtitle>{getSubtitleText()}</Subtitle>
 							<div>
-								<button
+								<SignupLongButton
 									onClick={() => handleAccountTypeSelect('business')}
 								>
-									기업 계정
-								</button>
-								<button
+									기업
+								</SignupLongButton>
+								<SignupLongButton
 									onClick={() => handleAccountTypeSelect('university')}
 								>
-									대학/단체 계정
-								</button>
+									대학생 단체
+								</SignupLongButton>
 							</div>
 						</div>
 					)}
 
 					{step === 2 && (
 						<div>
-							<h3>이용약관에 동의해 주세요.</h3>
+							<Subtitle>{getSubtitleText()}</Subtitle>
 							<div>
 								<div>
 									<input type="checkbox" id="terms" />
@@ -112,17 +174,17 @@ const SignupPage = () => {
 									<label htmlFor="privacy">E-mail 광고성 정보 수신 동의 (선택)</label>
 								</div>
 							</div>
-							<button 
-								onClick={() => setStep(3)}
+							<SignupNextButton 
+								onClick={() => setStep(3)} 
 							>
 								다음으로
-							</button>
+							</SignupNextButton>
 						</div>
 					)}
 
 					{step === 3 && (
 						<div>
-							<h3>회원 정보를 입력해 주세요.</h3>
+							<Subtitle>{getSubtitleText()}</Subtitle>
 							<div>
 								<div>
 									<label htmlFor="name">이름</label>
@@ -161,7 +223,7 @@ const SignupPage = () => {
 
 					{step === 4 && (
 						<div>
-							<h3>인증번호를 입력해 주세요</h3>
+							<Subtitle>{getSubtitleText()}</Subtitle>
 							<div>
 								<div>
 									<label htmlFor="verificationCode">인증번호</label>
@@ -208,7 +270,7 @@ const SignupPage = () => {
 
 					{step === 5 && (
 						<div>
-							<h3>서비스에 이용할 정보를 입력해주세요.</h3>
+							<Subtitle>{getSubtitleText()}</Subtitle>
 							<div>
 								<div>
 									<button onClick={() => {
@@ -532,7 +594,7 @@ const SignupPage = () => {
 
 					{step === 6 && (
 						<div>
-							<h3>이제 비즈모와 함께 제휴라이프를 즐길 수 있어요.</h3>
+							<Subtitle>{getSubtitleText()}</Subtitle>
 							<div>
 								<button onClick={() => navigate('/')}>
 									메인 페이지로 이동
@@ -540,9 +602,9 @@ const SignupPage = () => {
 							</div>
 						</div>
 					)}
-				</div>
-			</div>
-		</div>
+				</SignupContainer>
+			</SignupSection>
+		</PageContainer>
 	);
 };
 
