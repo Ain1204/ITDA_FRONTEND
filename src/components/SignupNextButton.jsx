@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import ArrowIcon from '../assets/loginIcon/signButtonArrow_white.svg';
+import WhiteArrowIcon from '../assets/loginIcon/signButtonArrow_white.svg';
+import GrayArrowIcon from '../assets/loginIcon/signButtonArrow_gray.svg';
 
 const StyledButton = styled.button`
 	display: flex;
@@ -9,29 +10,33 @@ const StyledButton = styled.button`
 	align-items: center;
 	gap: 8px;
 	border-radius: 12px;
-	background: var(--Colors-Primary-B400, #3D85FF);
+	background: ${props => props.disabled 
+		? 'var(--Colors-GrayScale-G300, #E5EAF2)' 
+		: 'var(--Colors-Primary-B400, #3D85FF)'};
 	box-shadow: 0px 0px 8px 0px rgba(26, 26, 35, 0.32);
 	border: none;
-	cursor: pointer;
+	cursor: ${props => props.disabled ? 'default' : 'pointer'};
 	justify-content: space-between;
 `;
 
 const ButtonText = styled.span`
-	color: var(--Colors-GrayScale-White, #FCFCFF);
+	color: ${props => props.disabled 
+		? 'var(--Colors-GrayScale-G400, #949BAD)' 
+		: 'var(--Colors-GrayScale-White, #FCFCFF)'};
 	text-align: center;
 	font-family: "SUIT Variable";
 	font-size: 16px;
 	font-style: normal;
-	font-weight: 500;
+	font-weight: 600;
 	line-height: 150%;
 	letter-spacing: -0.4px;
 `;
 
-const SignupNextButton = ({ children, onClick, ...props }) => {
+const SignupNextButton = ({ children, onClick, disabled, ...props }) => {
 	return (
-		<StyledButton onClick={onClick} {...props}>
-			<ButtonText>{children}</ButtonText>
-			<img src={ArrowIcon} alt="회원가입 버튼화살표" />
+		<StyledButton onClick={onClick} disabled={disabled} {...props}>
+			<ButtonText disabled={disabled}>{children}</ButtonText>
+			<img src={disabled ? GrayArrowIcon : WhiteArrowIcon} alt="회원가입 버튼화살표" />
 		</StyledButton>
 	);
 };
