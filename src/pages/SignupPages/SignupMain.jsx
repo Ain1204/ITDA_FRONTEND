@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import SignupBackground from '../components/SignupBackground';
+import SignupBackground from '../../components/SignupBackground';
 import SignupPage1 from './SignupPage1';
 import SignupPage2 from './SignupPage2';
 import SignupPage3 from './SignupPage3';
@@ -24,21 +24,22 @@ const SignupSection = styled.div`
 `;
 
 const SignupContainer = styled.div`
+	display: flex;
 	flex-direction: column;
 	align-items: center;
 	width: 400px;
 `;
 
-const Title = styled.h1`{
-	alignSelf: 'stretch',
-	color: '#1A1A23',
-	fontFamily: '"SUIT Variable"',
-	fontSize: '32px',
-	fontStyle: 'normal',
-	fontWeight: 700,
-	lineHeight: '150%',
-	letterSpacing: '-0.8px'
-}`;
+const Title = styled.h1`
+	align-self: stretch;
+	color: #1A1A23;
+	font-family: "SUIT Variable";
+	font-size: 32px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 150%;
+	letter-spacing: -0.8px;
+`;
 
 const SignupPage = () => {
 	const navigate = useNavigate();

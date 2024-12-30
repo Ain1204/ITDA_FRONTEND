@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SignupNextButton from '../components/SignupNextButton';
+import SignupNextButton from '../../components/SignupNextButton';
 
 const Subtitle = styled.h4`
 	display: flex;
@@ -12,7 +12,14 @@ const Subtitle = styled.h4`
 	font-weight: 600;
 	line-height: 140%;
 	letter-spacing: -0.5px;
-	margin-bottom: 60px;
+	margin-bottom: 10px;
+`;
+
+const Divider = styled.div`
+	width: 400px;
+	height: 1px;
+	background: var(--Colors-GrayScale-G300, #E5EAF2);
+	margin: 16px 0;
 `;
 
 const SignupPage2 = ({ setStep }) => {
@@ -24,6 +31,7 @@ const SignupPage2 = ({ setStep }) => {
 					<input type="checkbox" id="terms" />
 					<label htmlFor="terms">약관 전체 동의</label>
 				</div>
+				<Divider />
 				<div>
 					<input type="checkbox" id="terms" />
 					<label htmlFor="terms">서비스 이용약관 동의 (필수)</label>
@@ -38,7 +46,7 @@ const SignupPage2 = ({ setStep }) => {
 				</div>
 			</div>
 			<SignupNextButton onClick={() => setStep(3)}>
-				다음으로
+				다음
 			</SignupNextButton>
 		</div>
 	);

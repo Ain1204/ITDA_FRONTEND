@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SignupLongButton from '../components/SignupLongButton';
+import SignupLongButton from '../../components/SignupLongButton';
 
 const Subtitle = styled.h4`
 	display: flex;
