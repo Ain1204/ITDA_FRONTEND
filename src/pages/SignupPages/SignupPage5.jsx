@@ -113,7 +113,6 @@ const SignupPage5 = ({ setStep }) => {
 	return (
 		<div>
 			{console.log("렌더링 시작")}
-			<Subtitle>서비스에 이용할 정보를 입력해주세요.</Subtitle>
 			<div>
 				{/* 기업 메일 / 사업자 등록 번호 선택 */}
 				<ButtonContainer> 
