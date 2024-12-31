@@ -1,23 +1,10 @@
 import styled from 'styled-components';
 
-const PhoneVerificationForm = styled.div`
-	display: flex;
-	align-self: stretch;
-	color: #4F5462;
-	text-align: center;
-	font-family: "SUIT Variable";
-	font-size: 20px;
-	font-style: normal;
-	font-weight: 600;
-	line-height: 140%;
-	letter-spacing: -0.5px;
-	margin-bottom: 60px;
-`;
 
 const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => {
 	return (
 		<div>
-			<PhoneVerificationForm>
+
 				<div>
 					<label htmlFor="verificationCode">인증번호</label>
 					<input 
@@ -47,7 +34,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 				<div>
 					<span>남은 시간: 3:00</span>
 				</div>
-			</PhoneVerificationForm>
+
 			<button 
 				onClick={() => verificationStatus && setStep(5)}
 				disabled={!verificationStatus}
