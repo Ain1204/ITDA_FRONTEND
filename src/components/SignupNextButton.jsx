@@ -17,6 +17,7 @@ const StyledButton = styled.button`
 	border: none;
 	cursor: ${props => props.disabled ? 'default' : 'pointer'};
 	justify-content: space-between;
+	margin-top: 60px;
 `;
 
 const ButtonText = styled.span`

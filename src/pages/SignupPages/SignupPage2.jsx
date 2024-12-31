@@ -59,10 +59,6 @@ const StyledBlueArrow = styled.img`
 	}
 `;
 
-const StyledSignupNextButton = styled(SignupNextButton)`
-	margin-top: 60px;
-`;
-
 // 이용약관 동의 페이지
 const SignupPage2 = ({ setStep }) => {
 	const [checkboxes, setCheckboxes] = useState({
@@ -140,12 +136,12 @@ const SignupPage2 = ({ setStep }) => {
 			</CheckboxContainer>
 			
 			{/* 다음 버튼 */}
-			<StyledSignupNextButton 
+			<SignupNextButton 
 				onClick={() => setStep(3)} 
 				disabled={!isRequiredChecked()}
 			>
 				다음으로
-			</StyledSignupNextButton>
+			</SignupNextButton>
 		</div>
 	);
 };
