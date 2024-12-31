@@ -1,20 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-const ProfileSettingForm = styled.div`
-	display: flex;
-	align-self: stretch;
-	color: #4F5462;
-	text-align: center;
-	font-family: "SUIT Variable";
-	font-size: 20px;
-	font-style: normal;
-	font-weight: 600;
-	line-height: 140%;
-	letter-spacing: -0.5px;
-	margin-bottom: 60px;
-`;
-
 const SignupPage5 = ({ setStep }) => {
 	const [showEmailInput, setShowEmailInput] = useState(false);
 	const [showBusinessInput, setShowBusinessInput] = useState(false);
@@ -51,8 +37,6 @@ const SignupPage5 = ({ setStep }) => {
 
 	return (
 		<div>
-			<ProfileSettingForm>
-				<div>
 					<div>
 						<button onClick={() => {
 							setShowEmailInput(true);
@@ -316,8 +300,7 @@ const SignupPage5 = ({ setStep }) => {
 						</div>
 					)}
 				</div>
-			</ProfileSettingForm>
-		</div>
+
 	);
 };
 
