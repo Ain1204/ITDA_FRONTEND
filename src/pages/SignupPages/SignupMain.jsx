@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import SignupBackground from '../../components/SignupBackground';
 import SignupPage1 from './SignupPage1';
@@ -91,8 +91,31 @@ const SIGNUP_STEPS = {
 
 const SignupPage = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const [step, setStep] = useState(1);
 	const [verificationStatus, setVerificationStatus] = useState(false);
+
+	useEffect(() => {
+		window.history.pushState({ step }, '', location.pathname);
+
+		const handlePopState = (event) => {
+			if (event.state?.step) {
+				setStep(step > 1 ? step - 1 : 1);
+			} else {
+				if (window.confirm('회원가입을 취소하시겠습니까?')) {
+					navigate('/login');
+				} else {
+					window.history.pushState({ step }, '', location.pathname);
+				}
+			}
+		};
+
+		window.addEventListener('popstate', handlePopState);
+
+		return () => {
+			window.removeEventListener('popstate', handlePopState);
+		};
+	}, [step, navigate, location.pathname]);
 
 	const currentStep = SIGNUP_STEPS[step] || SIGNUP_STEPS[1];
 	const componentProps = {
