@@ -142,6 +142,7 @@ const StyledInput = styled.input`
         line-height: 150%;
         letter-spacing: -0.4px;
         vertical-align: middle;
+		transform: translateY(1px);
     }
 `;
 
