@@ -41,46 +41,63 @@ const Title = styled.h1`
 	letter-spacing: -0.8px;
 `;
 
+const Subtitle = styled.p`
+	display: flex;
+	align-self: stretch;
+	color: #4F5462;
+	text-align: center;
+	font-family: "SUIT Variable";
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 140%;
+	letter-spacing: -0.5px;
+	margin-bottom: 60px;
+`;
+
+const SIGNUP_STEPS = {
+	1: {
+		header: "반가워요!",
+		subtitle: "계정 유형을 선택해 주세요.",
+		component: (props) => <SignupPage1 {...props} />
+	},
+	2: {
+		header: "반가워요!",
+		subtitle: "이용 약관에 동의해 주세요.",
+		component: (props) => <SignupPage2 {...props} />
+	},
+	3: {
+		header: "당신에 대해 알려주세요!",
+		subtitle: "회원 정보를 입력해주세요.",
+		component: (props) => <SignupPage3 {...props} />
+	},
+	4: {
+		header: "휴대폰으로 인증할게요.",
+		subtitle: "문자로 받은 6자리 인증 코드를 입력해 주세요.",
+		component: (props) => <SignupPage4 {...props} />
+	},
+	5: {
+		header: "거의 다 왔어요!",
+		subtitle: "서비스에서 이용할 정보를 입력해주세요.",
+		component: (props) => <SignupPage5 {...props} />
+	},
+	6: {
+		header: "회원가입을 완료했어요!",
+		subtitle: "이제 비즈모와 함께 제휴라이프를 즐길 수 있어요.",
+		component: (props) => <SignupPage6 {...props} />
+	}
+};
+
 const SignupPage = () => {
 	const navigate = useNavigate();
 	const [step, setStep] = useState(1);
 	const [verificationStatus, setVerificationStatus] = useState(false);
 
-	const getHeaderText = () => {
-		switch (step) {
-			case 1:
-			case 2:
-				return "반가워요!";
-			case 3:
-				return "당신에 대해 알려주세요!";
-			case 4:
-				return "휴대폰으로 인증할게요.";
-			case 5:
-				return "거의 다 왔어요!";
-			case 6:
-				return "회원가입을 완료했어요!";
-			default:
-				return "";
-		}
-	};
-
-	const renderStep = () => {
-		switch (step) {
-			case 1:
-				return <SignupPage1 setStep={setStep} />;
-			case 2:
-				return <SignupPage2 setStep={setStep} />;
-			case 3:
-				return <SignupPage3 setStep={setStep} />;
-			case 4:
-				return <SignupPage4 setStep={setStep} verificationStatus={verificationStatus} setVerificationStatus={setVerificationStatus} />;
-			case 5:
-				return <SignupPage5 setStep={setStep} />;
-			case 6:
-				return <SignupPage6 navigate={navigate} />;
-			default:
-				return null;
-		}
+	const currentStep = SIGNUP_STEPS[step] || SIGNUP_STEPS[1];
+	const componentProps = {
+		setStep,
+		...(step === 4 && { verificationStatus, setVerificationStatus }),
+		...(step === 6 && { navigate })
 	};
 
 	return (
@@ -88,8 +105,9 @@ const SignupPage = () => {
 			<SignupBackground />
 			<SignupSection>
 				<SignupContainer>
-					<Title>{getHeaderText()}</Title>
-					{renderStep()}
+					<Title>{currentStep.header}</Title>
+					<Subtitle>{currentStep.subtitle}</Subtitle>
+					{currentStep.component(componentProps)}
 				</SignupContainer>
 			</SignupSection>
 		</PageContainer>
