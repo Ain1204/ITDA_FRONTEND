@@ -1,24 +1,10 @@
 import styled from 'styled-components';
 
-const Subtitle = styled.h4`
-	// display: flex;
-	// align-self: stretch;
-	color: #4F5462;
-	text-align: center;
-	font-family: "SUIT Variable";
-	font-size: 20px;
-	font-style: normal;
-	font-weight: 600;
-	line-height: 140%;
-	letter-spacing: -0.5px;
-	margin-bottom: 60px;
-`;
 
 const SignupPage3 = ({ setStep }) => {
 	return (
 		<div>
-			<Subtitle>회원 정보를 입력해 주세요.</Subtitle>
-			<div>
+			<form>
 				<div>
 					<label htmlFor="name">이름</label>
 					<input type="text" id="name" placeholder="이름을 입력하세요" />
@@ -47,7 +33,7 @@ const SignupPage3 = ({ setStep }) => {
 					<label htmlFor="phone">휴대폰 번호</label>
 					<input type="tel" id="phone" placeholder="'-' 없이 입력하세요" maxLength="11" />
 				</div>
-			</div>
+			</form>
 			<button onClick={() => setStep(4)}>
 				인증하기
 			</button>

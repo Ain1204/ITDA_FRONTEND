@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Subtitle = styled.h4`
+const PhoneVerificationForm = styled.div`
 	display: flex;
 	align-self: stretch;
 	color: #4F5462;
@@ -17,8 +17,7 @@ const Subtitle = styled.h4`
 const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => {
 	return (
 		<div>
-			<Subtitle>인증번호를 입력해 주세요</Subtitle>
-			<div>
+			<PhoneVerificationForm>
 				<div>
 					<label htmlFor="verificationCode">인증번호</label>
 					<input 
@@ -48,7 +47,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 				<div>
 					<span>남은 시간: 3:00</span>
 				</div>
-			</div>
+			</PhoneVerificationForm>
 			<button 
 				onClick={() => verificationStatus && setStep(5)}
 				disabled={!verificationStatus}

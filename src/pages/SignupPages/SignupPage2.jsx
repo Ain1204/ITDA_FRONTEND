@@ -4,20 +4,6 @@ import BlueArrow from '../../assets/loginIcon/signButtonArrow_blue.svg';
 import { useState } from 'react';
 
 
-const Subtitle = styled.h4`
-	display: flex;
-	font-family: "SUIT Variable";
-	font-style: normal;
-	letter-spacing: -0.3px;
-	color: #4F5462;
-	text-align: center;
-	font-size: 20px;
-	font-weight: 600;
-	line-height: 140%;
-	letter-spacing: -0.5px;
-	margin-bottom: 60px;
-	align-self: stretch;
-`;
 
 const Divider = styled.div`
 	width: 400px;
@@ -119,7 +105,6 @@ const SignupPage2 = ({ setStep }) => {
 
 	return (
 		<div>
-			<Subtitle>이용약관에 동의해 주세요.</Subtitle>
 
 			{/* 약관 전체 동의 */}
 			<CheckboxLabelGroup>

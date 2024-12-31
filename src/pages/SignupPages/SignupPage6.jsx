@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Subtitle = styled.h4`
+const CompletionMessage = styled.div`
 	display: flex;
 	align-self: stretch;
 	color: #4F5462;
@@ -17,7 +17,9 @@ const Subtitle = styled.h4`
 const SignupPage6 = ({ navigate }) => {
 	return (
 		<div>
-			<Subtitle>회원가입을 완료했어요!</Subtitle>
+			<CompletionMessage>
+				{/* ... completion content ... */}
+			</CompletionMessage>
 			<div>
 				<button onClick={() => navigate('/')}>
 					메인 페이지로 이동
