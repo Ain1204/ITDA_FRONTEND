@@ -3,6 +3,9 @@ import SignupNextButton from '../../components/SignupNextButton';
 import ssnDash from '../../assets/loginIcon/ssn_dash.svg';
 import { useState } from 'react';
 
+// 파일 상단에 상수 추가
+const ENABLE_VERIFICATION = false; // 나중에 true로 변경하면 인증 기능 활성화
+
 const InputLabel = styled.label`
 	align-self: stretch;
 	color: var(--Colors-GrayScale-G500, #4F5462);
@@ -94,9 +97,6 @@ const SelectAgency = styled.select`
 	}
 `;
 
-const StyledSignupNextButton = styled(SignupNextButton)`
-	margin-top: 52px;
-`;
 
 
 const SignupPage3 = ({ setStep }) => {
@@ -128,12 +128,14 @@ const SignupPage3 = ({ setStep }) => {
 		setPhoneNumber(formattedValue);
 	};
 
-	const isFormValid = 
-		name.length > 0 && 
-		ssn1.length === 6 && 
-		ssn2.length === 7 && 
-		phoneNumber.length === 13 &&
-		agency !== '';
+	// 폼 유효성 검사 조건 수정
+	const isFormValid = ENABLE_VERIFICATION 
+		? (name.length > 0 && 
+		   ssn1.length === 6 && 
+		   ssn2.length === 7 && 
+		   phoneNumber.length === 13 &&
+		   agency !== '')
+		: true;  // 인증 비활성화 시 항상 true
 
 	return (
 		<div>
@@ -202,12 +204,12 @@ const SignupPage3 = ({ setStep }) => {
 				</div>
 			</form>
 
-			<StyledSignupNextButton 
+			<SignupNextButton 
 				onClick={() => setStep(4)} 
 				disabled={!isFormValid}
 			>
 				인증하기
-			</StyledSignupNextButton>
+			</SignupNextButton>
 		</div>
 	);
 };
