@@ -30,6 +30,7 @@ const ButtonText = styled.span`
 	font-weight: 600;
 	line-height: 150%;
 	letter-spacing: -0.4px;
+	transform: translateY(1px);
 `;
 
 const SignupNextButton = ({ children, onClick, disabled, ...props }) => {

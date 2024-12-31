@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const Subtitle = styled.h4`
-	display: flex;
-	align-self: stretch;
+	// display: flex;
+	// align-self: stretch;
 	color: #4F5462;
 	text-align: center;
 	font-family: "SUIT Variable";
