@@ -21,10 +21,11 @@ const SignupSection = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
+	align-items: center;
 `;
 
 const SignupContainer = styled.div`
-	display: flex;
 	flex-direction: column;
 	align-items: center;
 	width: 400px;

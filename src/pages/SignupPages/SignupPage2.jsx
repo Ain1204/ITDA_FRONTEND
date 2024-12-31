@@ -3,8 +3,6 @@ import SignupNextButton from '../../components/SignupNextButton';
 import BlueArrow from '../../assets/loginIcon/signButtonArrow_blue.svg';
 import { useState } from 'react';
 
-
-
 const Divider = styled.div`
 	width: 400px;
 	height: 1px;
