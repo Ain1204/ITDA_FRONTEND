@@ -88,8 +88,6 @@ const TabButton = styled.button`
 	}
 `;
 
-
-
 const EmailContainer = styled.div`
 	display: flex;
 	width: 400px;
@@ -144,6 +142,7 @@ const StyledInput = styled.input`
         line-height: 150%;
         letter-spacing: -0.4px;
         vertical-align: middle;
+		transform: translateY(1px);
     }
 `;
 
@@ -162,7 +161,7 @@ const AutoLoginContainer = styled.div`
 	display: flex;
 	width: 400px;
 	align-items: center;
-	gap: 10px;
+	gap: 8px;
 	padding-bottom: 32px;
 `;
 
