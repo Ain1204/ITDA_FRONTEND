@@ -18,8 +18,13 @@ import {
 } from './SignupPage5Main';
 import PasswordEyeIcon from '../../assets/loginIcon/passwordEye.svg';
 
+// 기업 회원가입 페이지
 const SignupPage5_enterprise = ({ setStep }) => {
+
+	// 타이머 관련 상태 및 함수
 	const { remainingTime, timer, startTimer, formatTime } = useTimer();
+
+	// 이메일 인증 관련 상태 및 함수
 	const {
 		emailVerified,
 		setEmailVerified,
@@ -37,6 +42,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 		setUserIdVerificationFailed
 	} = useAuthState();
 
+	// 비밀번호 관련 상태 및 함수
 	const {
 		password,
 		setPassword,
@@ -56,6 +62,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 
 	return (
 		<InputSection>
+			{/* 기업 메일 입력 */}
 			<Label>기업 메일</Label>
 			<InputContainer>
 				<SignupInput
@@ -84,6 +91,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 				</SignupVerifyButton>
 			</InputContainer>
 
+			{/* 이메일 인증 코드 입력 */}
 			{showEmailVerification && !emailVerified && (
 				<>
 					<InputContainer>
@@ -125,6 +133,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 				</>
 			)}
 
+			{/* 아이디 입력 */}
 			{emailVerified && (
 				<>
 					<Label>아이디</Label>
@@ -163,6 +172,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 								: "기업 명을 입력해주세요"}
 					</GuideText>
 
+					{/* 비밀번호 입력 */}
 					{showPasswordInput && (
 						<>
 							<Label>비밀번호</Label>
@@ -215,6 +225,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 									: "패스워드 확인을 위해 다시 한번 입력해주세요."}
 							</GuideText>
 
+							{/* 회원가입 버튼 */}
 							{emailVerified && 
 								userIdVerified && 
 								password && 
