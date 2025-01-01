@@ -55,7 +55,7 @@ export const Label = styled.label`
     font-weight: 500;
     line-height: 168%;
     letter-spacing: -0.35px;
-    margin: 20px 0 8px 0;
+    margin-top : 20px;
 `;
 
 // 입력 컨테이너
@@ -63,6 +63,7 @@ export const InputContainer = styled.div`
     display: flex;
     gap: 8px;
     width: 100%;
+    margin-top: 8px;
 `;
 
 // 입력 필드
