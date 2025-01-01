@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import ArrowIcon from '../assets/loginIcon/signButtonArrow_gray.svg';
 
+// 회원가입 버튼
 const StyledButton = styled.button`
     display: flex;
     width: 400px;
@@ -16,6 +17,7 @@ const StyledButton = styled.button`
     cursor: pointer;
 `;
 
+// 회원가입 버튼 텍스트
 const ButtonText = styled.span`
 	display: flex;
     flex: 1 0 0;

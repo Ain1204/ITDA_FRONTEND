@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import WhiteArrowIcon from '../assets/loginIcon/signButtonArrow_white.svg';
 import GrayArrowIcon from '../assets/loginIcon/signButtonArrow_gray.svg';
 
+// 화살표 다음 버튼
 const StyledButton = styled.button`
 	display: flex;
 	width: 400px;
@@ -20,6 +21,7 @@ const StyledButton = styled.button`
 	margin-top: 60px;
 `;
 
+// 화살표 다음 버튼 텍스트
 const ButtonText = styled.span`
 	color: ${props => props.disabled 
 		? 'var(--Colors-GrayScale-G400, #949BAD)' 

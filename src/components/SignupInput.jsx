@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { R500, M500, S500 } from '../styles/Typography';
 
+// 입력 컨테이너
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -8,17 +9,20 @@ const InputWrapper = styled.div`
   margin-bottom: ${props => props.$marginBottom || '1.25rem'};
 `;
 
+// 라벨
 const Label = styled(R500)`
   color: ${({ theme }) => theme.colors.G500};
   letter-spacing: -0.35px;
 `;
 
+// 입력 컨테이너
 const InputContainer = styled.div`
   display: flex;
   gap: 0.5rem;
   align-items: center;
 `;
 
+// 입력 필드
 const StyledInput = styled.input`
   display: flex;
   height: 3rem;
@@ -40,6 +44,7 @@ const StyledInput = styled.input`
   letter-spacing: -0.025rem;
 `;
 
+// 메시지
 const Message = styled(S500)`
   color: ${({ status, theme }) => {
     switch (status) {
@@ -54,6 +59,7 @@ const Message = styled(S500)`
   margin-top: 0.25rem;
 `;
 
+// 추가 메시지
 const AdditionalMessage = styled(S500)`
   color: ${({ theme }) => theme.colors.B500};
   ${S500};
