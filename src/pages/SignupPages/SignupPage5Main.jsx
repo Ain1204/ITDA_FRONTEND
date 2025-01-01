@@ -4,7 +4,36 @@ import BlueButton from '../../components/BlueButton';
 import SignupPage5_enterprise from './SignupPage5_enterprise';
 import SignupPage5_business from './SignupPage5_business';
 
+// 버튼 컨테이너
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+`;
+
+// 타입 버튼
+const TypeButton = styled.button`
+    display: flex;
+    height: 48px;
+    padding: 16px 12px;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 0;
+    border-radius: 12px;
+    border: 2px solid ${({ active }) => active ? 'var(--Colors-Primary-B400, #3D85FF)' : 'transparent'};
+    background: ${({ active }) => active ? 'var(--Colors-Primary-B400, #3D85FF)' : 'var(--Colors-GrayScale-White, #FCFCFF)'};
+    box-shadow: 0px 0px 4px 0px rgba(26, 26, 35, 0.32);
+    color: ${({ active }) => active ? 'var(--Colors-GrayScale-White, #FCFCFF)' : 'var(--Colors-GrayScale-G400, #949BAD)'};
+    cursor: pointer;
+    font-family: "SUIT Variable";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 150%;
+    letter-spacing: -0.4px;
+`;
+
 // 공통 스타일 컴포넌트들
+// 라벨
 export const Label = styled.label`
     display: block;
     align-self: stretch;
@@ -17,6 +46,7 @@ export const Label = styled.label`
     margin: 20px 0 8px 0;
 `;
 
+// 입력 컨테이너
 export const InputContainer = styled.div`
     display: flex;
     gap: 8px;
@@ -24,6 +54,7 @@ export const InputContainer = styled.div`
     margin-bottom: 12px;
 `;
 
+// 입력 필드
 export const SignupInput = styled.input`
     display: flex;
     width: 400px;
@@ -45,6 +76,7 @@ export const SignupInput = styled.input`
     letter-spacing: -0.4px;
 `;
 
+// 인증 버튼
 export const SignupVerifyButton = styled.button`
     display: flex;
     width: 92px;
@@ -95,38 +127,38 @@ export const SignupVerifyButton = styled.button`
     }}
 `;
 
-export const InputSection = styled.div`
-    margin-top: 2rem;
+// 재전송 컨테이너
+export const ResendContainer = styled.div`
+    display: flex;
+    margin-top: 8px;
 `;
 
-export const InputWrapper = styled.div`
-    position: relative;
-    width: 100%;
+// 재전송 텍스트
+export const ResendText = styled.span`
+    font-family: "SUIT Variable";
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 132%;
+    letter-spacing: -0.3px;
+    color: var(--Colors-Primary-B500, #0051FF);
 `;
 
-export const PasswordToggleButton = styled.button`
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
+// 재전송 버튼
+export const ResendButton = styled.button`
     background: none;
     border: none;
+    font-family: "SUIT Variable";
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 132%;
+    letter-spacing: -0.3px;
+    color: var(--Colors-Primary-B500, #0051FF);
     cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    img {
-        width: 12px;
-        height: 8px;
-    }
+    text-decoration-line: underline;
+    padding: 0 4px;
 `;
 
-export const SignupButton = styled(BlueButton)`
-    margin-top: 32px;
-`;
-
+// 가이드 텍스트
 export const GuideText = styled.p`
     margin-top: 8px;
     font-family: "SUIT Variable";
@@ -150,34 +182,33 @@ export const GuideText = styled.p`
     }}
 `;
 
-// Main 컴포넌트의 스타일
-const TypeButton = styled.button`
-    display: flex;
-    height: 48px;
-    padding: 16px 12px;
-    justify-content: center;
-    align-items: center;
-    flex: 1 0 0;
-    border-radius: 12px;
-    border: 2px solid ${({ active }) => active ? 'var(--Colors-Primary-B400, #3D85FF)' : 'transparent'};
-    background: ${({ active }) => active ? 'var(--Colors-Primary-B400, #3D85FF)' : 'var(--Colors-GrayScale-White, #FCFCFF)'};
-    box-shadow: 0px 0px 4px 0px rgba(26, 26, 35, 0.32);
-    color: ${({ active }) => active ? 'var(--Colors-GrayScale-White, #FCFCFF)' : 'var(--Colors-GrayScale-G400, #949BAD)'};
+// 비밀번호 토글 버튼
+export const PasswordToggleButton = styled.button`
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
     cursor: pointer;
-    font-family: "SUIT Variable";
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 150%;
-    letter-spacing: -0.4px;
-`;
-
-const ButtonContainer = styled.div`
+    padding: 4px;
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 16px;
+    
+    img {
+        width: 12px;
+        height: 8px;
+    }
 `;
 
-// 공통 유효성 검사 함수들
+// 회원가입 버튼
+export const SignupButton = styled(BlueButton)`
+    margin-top: 32px;
+`;
+
+
+// 유효성 검사 함수들
 export const validators = {
     validateUserId: (id) => {
         const regex = /^[A-Za-z0-9]{4,20}$/;
@@ -293,42 +324,13 @@ export const useTimer = () => {
     };
 };
 
-// 재전송 관련 스타일 컴포넌트 추가
-export const ResendContainer = styled.div`
-    display: flex;
-    margin-top: 8px;
-`;
-
-export const ResendText = styled.span`
-    font-family: "SUIT Variable";
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 132%;
-    letter-spacing: -0.3px;
-    color: var(--Colors-Primary-B500, #0051FF);
-`;
-
-export const ResendButton = styled.button`
-    background: none;
-    border: none;
-    font-family: "SUIT Variable";
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 132%;
-    letter-spacing: -0.3px;
-    color: var(--Colors-Primary-B500, #0051FF);
-    cursor: pointer;
-    text-decoration-line: underline;
-    padding: 0 4px;
-`;
-
-// Main 컴포넌트
 const SignupPage5Main = ({ setStep }) => {
     const [showEmailInput, setShowEmailInput] = useState(false);
     const [showBusinessInput, setShowBusinessInput] = useState(false);
 
     return (
         <div>
+            {/* 타입 버튼 */}
             <ButtonContainer>
                 <TypeButton 
                     active={showEmailInput}
@@ -350,6 +352,7 @@ const SignupPage5Main = ({ setStep }) => {
                 </TypeButton>
             </ButtonContainer>
 
+            {/* 타입에 따라 컴포넌트 렌더링 */}
             {showEmailInput && <SignupPage5_enterprise setStep={setStep} />}
             {showBusinessInput && <SignupPage5_business setStep={setStep} />}
         </div>

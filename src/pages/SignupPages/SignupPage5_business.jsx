@@ -19,8 +19,13 @@ import {
 } from './SignupPage5Main';
 import PasswordEyeIcon from '../../assets/loginIcon/passwordEye.svg';
 
+// 비즈니스 회원가입 페이지
 const SignupPage5_business = ({ setStep }) => {
+
+    // 타이머 관련 상태 및 함수
     const { remainingTime, timer, startTimer, formatTime } = useTimer();
+
+    // 이메일 인증 관련 상태 및 함수
     const {
         emailVerified,
         setEmailVerified,
@@ -38,6 +43,7 @@ const SignupPage5_business = ({ setStep }) => {
         setUserIdVerificationFailed
     } = useAuthState();
 
+    // 비밀번호 관련 상태 및 함수
     const {
         password,
         setPassword,
@@ -55,12 +61,14 @@ const SignupPage5_business = ({ setStep }) => {
         setShowPasswordInput
     } = usePasswordState();
 
+    // 사업자등록번호 관련 상태 및 함수
     const [businessNumber, setBusinessNumber] = useState('');
     const [businessVerified, setBusinessVerified] = useState(false);
     const [businessVerificationFailed, setBusinessVerificationFailed] = useState(false);
 
     return (
         <InputSection>
+            {/* 사업자등록번호 입력 */}
             <Label>사업자등록번호</Label>
             <InputContainer>
                 <SignupInput
@@ -90,6 +98,7 @@ const SignupPage5_business = ({ setStep }) => {
                 </SignupVerifyButton>
             </InputContainer>
 
+            {/* 아이디 입력 */}
             {businessVerified && (
                 <>
                     <Label>아이디</Label>
@@ -127,6 +136,7 @@ const SignupPage5_business = ({ setStep }) => {
                                 : "기업 명을 입력해주세요"}
                     </GuideText>
 
+                    {/* 기업 메일 입력 */}
                     {userIdVerified && (
                         <>
                             <Label>기업 메일</Label>
@@ -157,8 +167,10 @@ const SignupPage5_business = ({ setStep }) => {
                                 </SignupVerifyButton>
                             </InputContainer>
 
+                            {/* 인증번호 입력 */}
                             {showEmailVerification && !emailVerified && (
                                 <>
+                                    
                                     <InputContainer>
                                         <SignupInput
                                             type="text"
@@ -199,6 +211,7 @@ const SignupPage5_business = ({ setStep }) => {
                                 </>
                             )}
 
+                            {/* 비밀번호 입력 */}
                             {emailVerified && showPasswordInput && (
                                 <>
                                     <Label>비밀번호</Label>
@@ -251,6 +264,7 @@ const SignupPage5_business = ({ setStep }) => {
                                             : "패스워드 확인을 위해 다시 한번 입력해주세요."}
                                     </GuideText>
 
+                                    {/* 회원가입 버튼 */}
                                     {businessVerified && 
                                         userIdVerified && 
                                         emailVerified &&
