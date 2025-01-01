@@ -36,13 +36,17 @@ const ButtonText = styled.span`
 	transform: translateY(1px);
 `;
 
-const SignupNextButton = ({ children, onClick, disabled, ...props }) => {
+const SignupBlueButton = ({ children, onClick, disabled, ...props }) => {
 	return (
 		<StyledButton onClick={onClick} disabled={disabled} {...props}>
+
 			<ButtonText disabled={disabled}>{children}</ButtonText>
+
+			{/* 상황에 따른 화살표 이미지 */}
 			<img src={disabled ? GrayArrowIcon : WhiteArrowIcon} alt="회원가입 버튼화살표" />
+			
 		</StyledButton>
 	);
 };
 
-export default SignupNextButton;
+export default SignupBlueButton;
