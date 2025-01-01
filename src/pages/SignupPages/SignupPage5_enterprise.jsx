@@ -1,150 +1,58 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import BlueButton from '../../components/BlueButton';
-
-const Label = styled.label`
-	display: block;
-	align-self: stretch;
-	color: var(--Colors-GrayScale-G500, #4F5462);
-	font-family: "SUIT Variable";
-	font-size: 14px;
-	font-weight: 500;
-	line-height: 168%;
-	letter-spacing: -0.35px;
-	margin: 20px 0 8px 0;
-`;
-
-const InputContainer = styled.div`
-	display: flex;
-	gap: 8px;
-	width: 100%;
-	margin-bottom: 12px;
-`;
-
-const SignupInput = styled.input`
-	display: flex;
-	width: 300px;
-	height: 48px;
-	padding: 12px 16px;
-	padding-right: 64px;
-	align-items: center;
-	gap: 8px;
-	flex: 1 0 0;
-	border: none;
-	border-radius: 12px;
-	background: var(--Colors-GrayScale-G200, #F3F5F8);
-	box-shadow: 0px 0px 8px 0px rgba(26, 26, 35, 0.12) inset;
-	color: var(--Colors-GrayScale-G400, #949BAD);
-	font-family: "SUIT Variable";
-	font-size: 16px;
-	font-weight: 500;
-	line-height: 150%;
-	letter-spacing: -0.4px;
-`;
-
-const SignupVerifyButton = styled.button`
-	display: flex;
-	width: 92px;
-	height: 48px;
-	padding: 12px 16px;
-	justify-content: center;
-	align-items: center;
-	border-radius: 12px;
-	border: none;
-	box-shadow: 0px 0px 4px 0px rgba(26, 26, 35, 0.32);
-	text-align: center;
-	font-family: "SUIT Variable";
-	font-size: 16px;
-	font-weight: 600;
-	line-height: 150%;
-	letter-spacing: -0.4px;
-
-	${props => props.$status === 'success' ? `
-		color: var(--Colors-GrayScale-G400, #949BAD);
-		background: var(--Colors-GrayScale-White, #FCFCFF);
-	` : `
-		color: var(--Colors-GrayScale-White, #FCFCFF);
-		background: var(--Colors-Primary-B400, #3D85FF);
-	`}
-`;
-
-const InputSection = styled.div`
-	margin-top: 2rem;
-`;
-
-const InputWrapper = styled.div`
-	position: relative;
-	width: 100%;
-`;
-
-const PasswordToggleButton = styled.button`
-	position: absolute;
-	right: 16px;
-	top: 50%;
-	transform: translateY(-50%);
-	background: none;
-	border: none;
-	cursor: pointer;
-	padding: 4px;
-	color: var(--Colors-GrayScale-G400, #949BAD);
-	font-family: "SUIT Variable";
-	font-size: 14px;
-	font-weight: 500;
-`;
-
-const SignupButton = styled(BlueButton)`
-	margin-top: 32px;
-`;
+import {
+	Label,
+	InputContainer,
+	SignupInput,
+	SignupVerifyButton,
+	InputSection,
+	InputWrapper,
+	PasswordToggleButton,
+	SignupButton,
+	GuideText,
+	ResendContainer,
+	ResendText,
+	ResendButton,
+	useTimer,
+	useAuthState,
+	usePasswordState,
+	validators
+} from './SignupPage5Main';
+import PasswordEyeIcon from '../../assets/loginIcon/passwordEye.svg';
 
 const SignupPage5_enterprise = ({ setStep }) => {
-	// 상태 관리
-	const [emailVerified, setEmailVerified] = useState(false);
-	const [showEmailVerification, setShowEmailVerification] = useState(false);
-	const [verificationFailed, setVerificationFailed] = useState(false);
-	const [remainingTime, setRemainingTime] = useState(300);
-	const [timer, setTimer] = useState(null);
-	const [userId, setUserId] = useState('');
-	const [userIdVerified, setUserIdVerified] = useState(false);
-	const [userIdVerificationFailed, setUserIdVerificationFailed] = useState(false);
-	const [password, setPassword] = useState('');
-	const [passwordConfirm, setPasswordConfirm] = useState('');
-	const [passwordError, setPasswordError] = useState(false);
-	const [passwordConfirmError, setPasswordConfirmError] = useState(false);
-	const [showPassword, setShowPassword] = useState(false);
-	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-	const [showPasswordInput, setShowPasswordInput] = useState(false);
+	const { remainingTime, timer, startTimer, formatTime } = useTimer();
+	const {
+		emailVerified,
+		setEmailVerified,
+		showEmailVerification,
+		setShowEmailVerification,
+		verificationFailed,
+		setVerificationFailed,
+		verificationCode,
+		setVerificationCode,
+		userId,
+		setUserId,
+		userIdVerified,
+		setUserIdVerified,
+		userIdVerificationFailed,
+		setUserIdVerificationFailed
+	} = useAuthState();
 
-	// 타이머 함수
-	const startTimer = () => {
-		setRemainingTime(300);
-		const newTimer = setInterval(() => {
-			setRemainingTime((prevTime) => {
-				if (prevTime <= 1) {
-					clearInterval(newTimer);
-					return 0;
-				}
-				return prevTime - 1;
-			});
-		}, 1000);
-		setTimer(newTimer);
-	};
-
-	const formatTime = (seconds) => {
-		const minutes = Math.floor(seconds / 60);
-		const remainingSeconds = seconds % 60;
-		return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-	};
-
-	// 유효성 검사 함수들
-	const validateUserId = (id) => {
-		const regex = /^[A-Za-z0-9]{4,20}$/;
-		return regex.test(id);
-	};
-
-	const validatePassword = (password) => {
-		const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-		return regex.test(password);
-	};
+	const {
+		password,
+		setPassword,
+		passwordConfirm,
+		setPasswordConfirm,
+		passwordError,
+		setPasswordError,
+		passwordConfirmError,
+		setPasswordConfirmError,
+		showPassword,
+		setShowPassword,
+		showPasswordConfirm,
+		setShowPasswordConfirm,
+		showPasswordInput,
+		setShowPasswordInput
+	} = usePasswordState();
 
 	return (
 		<InputSection>
@@ -159,7 +67,13 @@ const SignupPage5_enterprise = ({ setStep }) => {
 						setShowEmailVerification(true);
 						startTimer();
 					}}
-					$status={emailVerified ? 'success' : 'default'}
+					$status={emailVerified 
+						? 'success' 
+						: showEmailVerification 
+							? 'timer' 
+							: 'default'
+					}
+					isExpired={remainingTime === 0}
 				>
 					{emailVerified 
 						? '인증 완료' 
@@ -171,29 +85,44 @@ const SignupPage5_enterprise = ({ setStep }) => {
 			</InputContainer>
 
 			{showEmailVerification && !emailVerified && (
-				<InputContainer>
-					<SignupInput
-						type="text"
-						maxLength="6"
-						placeholder="인증번호 6자리 입력"
-					/>
-					<SignupVerifyButton
-						onClick={() => {
-							const code = "1234"; // 임시 코드
-							if (code === "1234") {
-								setEmailVerified(true);
+				<>
+					<InputContainer>
+						<SignupInput
+							type="text"
+							maxLength="6"
+							placeholder="인증번호 6자리 입력"
+							value={verificationCode}
+							onChange={(e) => setVerificationCode(e.target.value)}
+						/>
+						<SignupVerifyButton
+							onClick={() => {
+								if (verificationCode === "1234") {
+									setEmailVerified(true);
+									setVerificationFailed(false);
+									setShowEmailVerification(false);
+									clearInterval(timer);
+								} else {
+									setVerificationFailed(true);
+								}
+							}}
+							$status={verificationFailed ? 'error' : 'default'}
+						>
+							인증하기
+						</SignupVerifyButton>
+					</InputContainer>
+					<ResendContainer>
+						<ResendText>문제가 있나요? </ResendText>
+						<ResendButton 
+							onClick={() => {
+								startTimer();
+								setVerificationCode('');
 								setVerificationFailed(false);
-								setShowEmailVerification(false);
-								clearInterval(timer);
-							} else {
-								setVerificationFailed(true);
-							}
-						}}
-						$status={verificationFailed ? 'error' : 'default'}
-					>
-						{verificationFailed ? '인증실패' : '인증하기'}
-					</SignupVerifyButton>
-				</InputContainer>
+							}}
+						>
+							다시 보내기
+						</ResendButton>
+					</ResendContainer>
+				</>
 			)}
 
 			{emailVerified && (
@@ -212,7 +141,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 						/>
 						<SignupVerifyButton
 							onClick={() => {
-								if (validateUserId(userId)) {
+								if (validators.validateUserId(userId)) {
 									setShowPasswordInput(true);
 									setUserIdVerificationFailed(false);
 									setUserIdVerified(true);
@@ -226,6 +155,13 @@ const SignupPage5_enterprise = ({ setStep }) => {
 							{userIdVerified ? '확인 완료' : '중복확인'}
 						</SignupVerifyButton>
 					</InputContainer>
+					<GuideText $status={userIdVerified ? 'success' : userIdVerificationFailed ? 'error' : 'default'}>
+						{userIdVerificationFailed 
+							? "사용할 수 없는 아이디에요" 
+							: userIdVerified
+								? "사용할 수 있는 아이디에요"
+								: "기업 명을 입력해주세요"}
+					</GuideText>
 
 					{showPasswordInput && (
 						<>
@@ -238,17 +174,20 @@ const SignupPage5_enterprise = ({ setStep }) => {
 										value={password}
 										onChange={(e) => {
 											setPassword(e.target.value);
-											setPasswordError(!validatePassword(e.target.value));
+											setPasswordError(!validators.validatePassword(e.target.value));
 										}}
 									/>
 									<PasswordToggleButton
 										type="button"
 										onClick={() => setShowPassword(!showPassword)}
 									>
-										{showPassword ? '숨기기' : '보기'}
+										<img src={PasswordEyeIcon} alt={showPassword ? '숨기기' : '보기'} />
 									</PasswordToggleButton>
 								</InputWrapper>
 							</InputContainer>
+							<GuideText $status={passwordError ? 'error' : 'default'}>
+								영문 대소문자, 숫자, 특수문자 포함 최소 8글자 이상을 입력해주세요.
+							</GuideText>
 
 							<Label>비밀번호 확인</Label>
 							<InputContainer>
@@ -266,10 +205,15 @@ const SignupPage5_enterprise = ({ setStep }) => {
 										type="button"
 										onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
 									>
-										{showPasswordConfirm ? '숨기기' : '보기'}
+										<img src={PasswordEyeIcon} alt={showPasswordConfirm ? '숨기기' : '보기'} />
 									</PasswordToggleButton>
 								</InputWrapper>
 							</InputContainer>
+							<GuideText $status={passwordConfirmError ? 'error' : 'default'}>
+								{passwordConfirmError 
+									? "패스워드가 일치하지 않아요." 
+									: "패스워드 확인을 위해 다시 한번 입력해주세요."}
+							</GuideText>
 
 							{emailVerified && 
 								userIdVerified && 
