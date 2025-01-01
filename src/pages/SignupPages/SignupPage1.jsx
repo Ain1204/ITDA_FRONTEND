@@ -1,4 +1,4 @@
-import CategoryButton from '../../components/SignupWhiteButton';
+import CategoryButton from '../../components/ArrowWhiteButton';
 
 
 const SignupPage1 = ({ setStep }) => {

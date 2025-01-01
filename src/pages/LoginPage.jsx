@@ -7,7 +7,7 @@ import KakaoIcon from '../assets/loginIcon/kakao.svg';
 import GoogleIcon from '../assets/loginIcon/google.svg';
 import AppleIcon from '../assets/loginIcon/apple.svg';
 import FacebookIcon from '../assets/loginIcon/facebook.svg';
-import LoginBlueButton from '../components/LoginBlueButton';
+import LoginBlueButton from '../components/BlueButton';
 
 const PageContainer = styled.div`
 	display: flex;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SignupNextButton from '../../components/SignupBlueButton';
+import NextButton from '../../components/ArrowBlueButton';
 import ssnDash from '../../assets/loginIcon/ssn_dash.svg';
 import { useState } from 'react';
 
@@ -213,12 +213,12 @@ const SignupPage3 = ({ setStep }) => {
 			</form>
 
 			{/* 인증 버튼 */}
-			<SignupNextButton 
+			<NextButton 
 				onClick={() => setStep(4)} 
 				disabled={!isFormValid}
 			>
 				인증하기
-			</SignupNextButton>
+			</NextButton>
 			
 		</div>
 	);
