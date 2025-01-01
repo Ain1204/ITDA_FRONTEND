@@ -6,9 +6,8 @@ import SignupPage1 from './SignupPage1';
 import SignupPage2 from './SignupPage2';
 import SignupPage3 from './SignupPage3';
 import SignupPage4 from './SignupPage4';
-// import SignupPage5 from './SignupPage5';
+import SignupPage5Main from './SignupPage5Main';
 import SignupPage6 from './SignupPage6';
-import SignupPage5 from './SignupPage5Main';
 
 const PageContainer = styled.div`
 	display: flex;
@@ -82,7 +81,7 @@ const SIGNUP_STEPS = {
 	5: {
 		header: "거의 다 왔어요!",
 		subtitle: "서비스에서 이용할 정보를 입력해주세요.",
-		component: (props) => <SignupPage5 {...props} />
+		component: (props) => <SignupPage5Main {...props} />
 	},
 	6: {
 		header: "회원가입을 완료했어요!",

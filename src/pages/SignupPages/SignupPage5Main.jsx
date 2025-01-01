@@ -33,6 +33,18 @@ const TypeButton = styled.button`
 `;
 
 // 공통 스타일 컴포넌트들
+
+// 입력 섹션
+export const InputSection = styled.div`
+    margin-top: 32px;
+`;
+
+// 입력 래퍼
+export const InputWrapper = styled.div`
+    position: relative;
+    width: 100%;
+`;
+
 // 라벨
 export const Label = styled.label`
     display: block;
@@ -51,7 +63,6 @@ export const InputContainer = styled.div`
     display: flex;
     gap: 8px;
     width: 100%;
-    margin-bottom: 12px;
 `;
 
 // 입력 필드
@@ -208,6 +219,7 @@ export const SignupButton = styled(BlueButton)`
 `;
 
 
+
 // 유효성 검사 함수들
 export const validators = {
     validateUserId: (id) => {
@@ -325,12 +337,11 @@ export const useTimer = () => {
 };
 
 const SignupPage5Main = ({ setStep }) => {
-    const [showEmailInput, setShowEmailInput] = useState(false);
+    const [showEmailInput, setShowEmailInput] = useState(true);
     const [showBusinessInput, setShowBusinessInput] = useState(false);
 
     return (
         <div>
-            {/* 타입 버튼 */}
             <ButtonContainer>
                 <TypeButton 
                     active={showEmailInput}
@@ -352,7 +363,6 @@ const SignupPage5Main = ({ setStep }) => {
                 </TypeButton>
             </ButtonContainer>
 
-            {/* 타입에 따라 컴포넌트 렌더링 */}
             {showEmailInput && <SignupPage5_enterprise setStep={setStep} />}
             {showBusinessInput && <SignupPage5_business setStep={setStep} />}
         </div>
