@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SignupInput from '../../components/SignupInput';
 import SignupVerifyButton from '../../components/SignupVerifyButton';
 import SignupTypeButton from '../../components/SignupTypeButton';
-import LoginBlueButton from '../../components/LoginBlueButton';
+import LoginBlueButton from '../../components/BlueButton';
 
 const ButtonContainer = styled.div`
 	display: flex;

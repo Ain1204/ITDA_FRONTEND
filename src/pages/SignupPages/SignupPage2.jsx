@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SignupNextButton from '../../components/SignupBlueButton';
+import SignupNextButton from '../../components/ArrowBlueButton';
 import BlueArrow from '../../assets/loginIcon/signButtonArrow_blue.svg';
 import { useState } from 'react';
 

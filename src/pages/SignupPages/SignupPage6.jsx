@@ -1,4 +1,4 @@
-import StyledButton from '../../components/SignupWhiteButton';
+import StyledButton from '../../components/ArrowWhiteButton';
 
 
 const SignupPage6 = ({ navigate }) => {

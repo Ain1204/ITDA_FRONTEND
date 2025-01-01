@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SignupNextButton from '../../components/SignupBlueButton';
+import NextButton from '../../components/ArrowBlueButton';
 import { useState, useEffect } from 'react';
 
 const InputLabel = styled.label`
@@ -187,7 +187,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 			</div>
 				
 			{/* 인증하기 버튼 */}
-			<SignupNextButton 
+			<NextButton 
 				onClick={() => verificationStatus && setStep(5)}
 				disabled={!verificationStatus}
 				style={{
@@ -196,7 +196,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 				}}
 			>
 				인증하기
-			</SignupNextButton>
+			</NextButton>
 		</div>
 	);
 };
