@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import SignupPageImage from '../assets/images/SignupPage.png';
 
+// 배경 컨테이너
 const BackgroundContainer = styled.div`
   position: fixed;
   left: 0;
@@ -10,6 +11,7 @@ const BackgroundContainer = styled.div`
   overflow: hidden;
 `;
 
+// 이미지 컨테이너
 const ImageContainer = styled.div`
   position: relative;
   width: 100%;

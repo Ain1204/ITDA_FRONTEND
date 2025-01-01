@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { H5 } from '../styles/Typography';
 
+// 회원가입 유형 버튼
 const StyledButton = styled.button`
   display: flex;
   height: 3rem;

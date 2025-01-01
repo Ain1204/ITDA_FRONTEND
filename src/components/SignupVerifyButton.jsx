@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { M500, M600 } from '../styles/Typography';
 
+// 회원가입 인증 버튼
 const StyledButton = styled.button`
   /* Typography 스타일을 CSS로 직접 적용 */
   font-size: 16px;

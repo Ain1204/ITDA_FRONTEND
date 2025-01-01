@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+// 로그인 버튼
 const StyledButton = styled.button`
 	display: flex;
 	width: 400px;
@@ -11,9 +12,12 @@ const StyledButton = styled.button`
 	background: var(--Colors-Primary-B400, #3D85FF);
 	box-shadow: 0px 0px 8px 0px rgba(26, 26, 35, 0.32);
 	border: none;
+	justify-content: space-between;
 	cursor: pointer;
+`;
 
-	/* 버튼 텍스트 스타일 */
+// 로그인 버튼 텍스트
+const ButtonText = styled.span`
 	color: var(--Colors-GrayScale-White, #FCFCFF);
 	text-align: center;
 	font-family: "SUIT Variable";
@@ -22,12 +26,13 @@ const StyledButton = styled.button`
 	font-weight: 600;
 	line-height: 150%;
 	letter-spacing: -0.4px;
+	transform: translateY(1px);
 `;
 
 const LoginBlueButton = ({ children, onClick, ...props }) => {
 	return (
 		<StyledButton onClick={onClick} {...props}>
-			{children}
+			<ButtonText>{children}</ButtonText>
 		</StyledButton>
 	);
 };
