@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SignupNextButton from '../../components/SignupNextButton';
+import SignupNextButton from '../../components/SignupBlueButton';
 import { useState, useEffect } from 'react';
 
 const InputLabel = styled.label`
@@ -110,6 +110,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 	const [timeLeft, setTimeLeft] = useState(300); // 5분 = 300초
 	const [isTimerRunning, setIsTimerRunning] = useState(true);
 
+	// 타이머 실행
 	useEffect(() => {
 		if (!isTimerRunning) return;
 
@@ -127,12 +128,14 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 		return () => clearInterval(timer);
 	}, [isTimerRunning]);
 
+	// 타이머 포맷
 	const formatTime = (seconds) => {
 		const minutes = Math.floor(seconds / 60);
 		const remainingSeconds = seconds % 60;
 		return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 	};
 
+	// 다시 보내기 버튼 클릭 함수
 	const handleResend = () => {
 		setTimeLeft(300);
 		setIsTimerRunning(true);
@@ -141,7 +144,10 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 	return (
 		<div>
 			<div>
+				{/* 인증번호 라벨 */}
 				<InputLabel htmlFor="verificationCode">인증번호</InputLabel>
+
+				{/* 인증번호 입력 컨테이너 */}
 				<InputContainer>
 					<StyledInput 
 						type="text" 
@@ -172,7 +178,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 					}
 				</VerificationMessage>
 				
-				
+				{/* 다시 보내기 버튼 */}
 				<ResendText>문제가 있나요? </ResendText>
 				<ResendButton onClick={handleResend}>
 					다시 보내기.
@@ -180,6 +186,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 				
 			</div>
 				
+			{/* 인증하기 버튼 */}
 			<SignupNextButton 
 				onClick={() => verificationStatus && setStep(5)}
 				disabled={!verificationStatus}

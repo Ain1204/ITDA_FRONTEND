@@ -5,21 +5,6 @@ import SignupVerifyButton from '../../components/SignupVerifyButton';
 import SignupTypeButton from '../../components/SignupTypeButton';
 import LoginBlueButton from '../../components/LoginBlueButton';
 
-
-const Subtitle = styled.h4`
-	display: flex;
-	align-self: stretch;
-	color: #4F5462;
-	text-align: center;
-	font-family: "SUIT Variable";
-	font-size: 20px;
-	font-style: normal;
-	font-weight: 600;
-	line-height: 140%;
-	letter-spacing: -0.5px;
-	margin-bottom: 3.25rem;
-`;
-
 const ButtonContainer = styled.div`
 	display: flex;
 	justify-content: center;
@@ -114,6 +99,13 @@ const SignupPage5 = ({ setStep }) => {
 		<div>
 			{console.log("렌더링 시작")}
 			<div>
+				{/* 임시 테스트용 버튼 추가 */}
+				<ButtonContainer style={{ marginBottom: '1rem' }}>
+					<LoginBlueButton onClick={() => setStep(6)}>
+						다음 단계로 (임시)
+					</LoginBlueButton>
+				</ButtonContainer>
+
 				{/* 기업 메일 / 사업자 등록 번호 선택 */}
 				<ButtonContainer> 
 					<SignupTypeButton 

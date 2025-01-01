@@ -1,8 +1,9 @@
-import styled from 'styled-components';
-import SignupLongButton from '../../components/SignupLongButton';
+import CategoryButton from '../../components/SignupWhiteButton';
 
 
 const SignupPage1 = ({ setStep }) => {
+
+	// 계정 유형 선택 함수
 	const handleAccountTypeSelect = (type) => {
 		setStep(2);
 	};
@@ -10,16 +11,19 @@ const SignupPage1 = ({ setStep }) => {
 	return (
 		<div>
 			<div>
-				<SignupLongButton
+				{/* 기업 버튼 */}
+				<CategoryButton
 					onClick={() => handleAccountTypeSelect('business')}
 				>
 					기업
-				</SignupLongButton>
-				<SignupLongButton
+				</CategoryButton>
+
+				{/* 대학생 단체 버튼 */}
+				<CategoryButton
 					onClick={() => handleAccountTypeSelect('university')}
 				>
 					대학생 단체
-				</SignupLongButton>
+				</CategoryButton>
 			</div>
 		</div>
 	);

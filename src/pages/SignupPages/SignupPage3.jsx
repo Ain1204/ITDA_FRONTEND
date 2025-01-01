@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import SignupNextButton from '../../components/SignupNextButton';
+import SignupNextButton from '../../components/SignupBlueButton';
 import ssnDash from '../../assets/loginIcon/ssn_dash.svg';
 import { useState } from 'react';
 
-// 파일 상단에 상수 추가
-const ENABLE_VERIFICATION = false; // 나중에 true로 변경하면 인증 기능 활성화
+// 인증 기능 활성화 여부
+const ENABLE_VERIFICATION = false; // true면 인증 기능 활성화, false면 인증 기능 비활성화
 
 const InputLabel = styled.label`
 	align-self: stretch;
@@ -106,20 +106,24 @@ const SignupPage3 = ({ setStep }) => {
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [agency, setAgency] = useState('');
 
+	// 이름 변경 함수
 	const handleNameChange = (e) => {
 		setName(e.target.value);
 	};
 
+	// 주민등록번호 앞 6자리 변경 함수
 	const handleSsn1Change = (e) => {
 		const value = e.target.value.replace(/[^\d]/g, '');
 		setSsn1(value);
 	};
 
+	// 주민등록번호 뒤 7자리 변경 함수
 	const handleSsn2Change = (e) => {
 		const value = e.target.value.replace(/[^\d]/g, '');
 		setSsn2(value);
 	};
 
+	// 휴대폰 번호 변경 함수
 	const handlePhoneNumberChange = (e) => {
 		const value = e.target.value;
 		const formattedValue = value
@@ -128,18 +132,19 @@ const SignupPage3 = ({ setStep }) => {
 		setPhoneNumber(formattedValue);
 	};
 
-	// 폼 유효성 검사 조건 수정
+	// 폼 유효성 검사 조건
 	const isFormValid = ENABLE_VERIFICATION 
 		? (name.length > 0 && 
-		   ssn1.length === 6 && 
-		   ssn2.length === 7 && 
-		   phoneNumber.length === 13 &&
-		   agency !== '')
+			ssn1.length === 6 && 
+			ssn2.length === 7 && 
+			phoneNumber.length === 13 &&
+			agency !== '')
 		: true;  // 인증 비활성화 시 항상 true
 
 	return (
 		<div>
 			<form>
+				{/* 이름 입력 컨테이너 */}
 				<div>
 					<InputLabel htmlFor="name">이름</InputLabel>
 					<StyledInput 
@@ -151,6 +156,7 @@ const SignupPage3 = ({ setStep }) => {
 					/>
 				</div>
 				
+				{/* 주민등록번호 입력 컨테이너 */}
 				<div>
 					<InputLabel htmlFor="ssn">주민등록번호</InputLabel>
 					<SSNWrapper>
@@ -174,6 +180,7 @@ const SignupPage3 = ({ setStep }) => {
 					</SSNWrapper>
 				</div>
 
+				{/* 통신사 선택 컨테이너 */}
 				<div>
 					<InputLabel>통신사</InputLabel>
 					<SelectAgency 
@@ -191,6 +198,7 @@ const SignupPage3 = ({ setStep }) => {
 					</SelectAgency>
 				</div>
 
+				{/* 휴대폰 번호 입력 컨테이너 */}
 				<div>
 					<InputLabel htmlFor="phone">휴대폰 번호</InputLabel>
 					<StyledInput 
@@ -204,12 +212,14 @@ const SignupPage3 = ({ setStep }) => {
 				</div>
 			</form>
 
+			{/* 인증 버튼 */}
 			<SignupNextButton 
 				onClick={() => setStep(4)} 
 				disabled={!isFormValid}
 			>
 				인증하기
 			</SignupNextButton>
+			
 		</div>
 	);
 };
