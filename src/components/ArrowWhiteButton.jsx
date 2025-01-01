@@ -13,7 +13,7 @@ import ArrowBlueIcon from '../assets/loginIcon/signButtonArrow_blue.svg';
 //<SignupLongButton isBlue textBlue>다음</SignupLongButton>
 
 
-// 회원가입 버튼
+// 흰색 화살표 버튼  
 const StyledButton = styled.button`
     display: flex;
     width: 400px;
@@ -29,7 +29,7 @@ const StyledButton = styled.button`
     cursor: pointer;
 `;
 
-// 회원가입 버튼 텍스트
+// 흰색 화살표 버튼 텍스트
 const ButtonText = styled.span`
 	display: flex;
     flex: 1 0 0;
@@ -43,7 +43,7 @@ const ButtonText = styled.span`
     transform: translateY(1px);
 `;
 
-const SignupWhiteButton = ({ children, isArrowBlue = false, textBlue = false, ...props }) => {
+const ArrowWhiteButton = ({ children, isArrowBlue = false, textBlue = false, ...props }) => {
 	return <StyledButton {...props}>
 
             {/* 텍스트 색상 선택적으로 사용 */}
@@ -55,4 +55,4 @@ const SignupWhiteButton = ({ children, isArrowBlue = false, textBlue = false, ..
 		</StyledButton>;
 };
 
-export default SignupWhiteButton;
+export default ArrowWhiteButton;
