@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-// 로그인 버튼
+// 파란색 버튼
 const StyledButton = styled.button`
 	display: flex;
 	width: 400px;
@@ -16,7 +16,7 @@ const StyledButton = styled.button`
 	cursor: pointer;
 `;
 
-// 로그인 버튼 텍스트
+// 파란색 버튼 텍스트
 const ButtonText = styled.span`
 	color: var(--Colors-GrayScale-White, #FCFCFF);
 	text-align: center;
@@ -29,7 +29,7 @@ const ButtonText = styled.span`
 	transform: translateY(1px);
 `;
 
-const LoginBlueButton = ({ children, onClick, ...props }) => {
+const BlueButton = ({ children, onClick, ...props }) => {
 	return (
 		<StyledButton onClick={onClick} {...props}>
 			<ButtonText>{children}</ButtonText>
@@ -37,4 +37,4 @@ const LoginBlueButton = ({ children, onClick, ...props }) => {
 	);
 };
 
-export default LoginBlueButton;
+export default BlueButton;
