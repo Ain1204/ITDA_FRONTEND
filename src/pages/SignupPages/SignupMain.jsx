@@ -56,6 +56,7 @@ const Subtitle = styled.p`
 	margin-bottom: 60px;
 `;
 
+// 회원가입 페이지 스텝
 const SIGNUP_STEPS = {
 	1: {
 		header: "반가워요!",
@@ -95,31 +96,43 @@ const SignupPage = () => {
 	const [step, setStep] = useState(1);
 	const [verificationStatus, setVerificationStatus] = useState(false);
 
+	// 회원가입 페이지 스텝 변경
 	useEffect(() => {
-		window.history.pushState({ step }, '', location.pathname);
+		// 초기 스텝 설정
+		window.history.replaceState({ step: 1 }, '', location.pathname);
 
+		// 뒤로 가기 이벤트 핸들러
 		const handlePopState = (event) => {
-			if (event.state?.step) {
-				setStep(step > 1 ? step - 1 : 1);
-			} else {
+			if (step === 1) {
 				if (window.confirm('회원가입을 취소하시겠습니까?')) {
 					navigate('/login');
 				} else {
-					window.history.pushState({ step }, '', location.pathname);
+					window.history.pushState({ step: 1 }, '', location.pathname);
 				}
+			} else {
+				setStep(prev => prev - 1);
 			}
 		};
 
+		// 뒤로 가기 이벤트 리스너
 		window.addEventListener('popstate', handlePopState);
 
+		// 이벤트 리스너 제거
 		return () => {
 			window.removeEventListener('popstate', handlePopState);
 		};
 	}, [step, navigate, location.pathname]);
 
+	// 회원가입 페이지 스텝 변경 함수
+	const handleSetStep = (newStep) => {
+		window.history.pushState({ step: newStep }, '', location.pathname);
+		setStep(newStep);
+	};
+
+	// 현재 스텝 설정
 	const currentStep = SIGNUP_STEPS[step] || SIGNUP_STEPS[1];
 	const componentProps = {
-		setStep,
+		setStep: handleSetStep,
 		...(step === 4 && { verificationStatus, setVerificationStatus }),
 		...(step === 6 && { navigate })
 	};
@@ -128,6 +141,7 @@ const SignupPage = () => {
 		<PageContainer>
 			<SignupBackground />
 			<SignupSection>
+				{/* 회원가입 제목, 부제목 */}
 				<SignupContainer>
 					<Title>{currentStep.header}</Title>
 					<Subtitle>{currentStep.subtitle}</Subtitle>

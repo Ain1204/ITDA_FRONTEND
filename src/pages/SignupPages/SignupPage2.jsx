@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SignupNextButton from '../../components/SignupNextButton';
+import SignupNextButton from '../../components/SignupBlueButton';
 import BlueArrow from '../../assets/loginIcon/signButtonArrow_blue.svg';
 import { useState } from 'react';
 
@@ -59,8 +59,9 @@ const StyledBlueArrow = styled.img`
 	}
 `;
 
-// 이용약관 동의 페이지
 const SignupPage2 = ({ setStep }) => {
+
+	// 체크박스 상태
 	const [checkboxes, setCheckboxes] = useState({
 		all: false,
 		terms: false,
