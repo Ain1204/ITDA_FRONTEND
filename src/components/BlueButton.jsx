@@ -12,7 +12,7 @@ const StyledButton = styled.button`
 	background: var(--Colors-Primary-B400, #3D85FF);
 	box-shadow: 0px 0px 8px 0px rgba(26, 26, 35, 0.32);
 	border: none;
-	justify-content: space-between;
+	justify-content: center;
 	cursor: pointer;
 `;
 
