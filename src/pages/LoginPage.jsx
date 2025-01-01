@@ -310,7 +310,7 @@ const LoginPage = () => {
 						<HelpButton type="button">문제가 있나요?</HelpButton>
 					</AutoLoginContainer>
 
-					<LoginBlueButton type="submit" style={{'justify-content': 'center'}}>
+					<LoginBlueButton type="submit">
 						로그인
 					</LoginBlueButton>
 

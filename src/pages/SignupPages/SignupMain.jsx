@@ -6,8 +6,9 @@ import SignupPage1 from './SignupPage1';
 import SignupPage2 from './SignupPage2';
 import SignupPage3 from './SignupPage3';
 import SignupPage4 from './SignupPage4';
-import SignupPage5 from './SignupPage5';
+// import SignupPage5 from './SignupPage5';
 import SignupPage6 from './SignupPage6';
+import SignupPage5 from './SignupPage5Main';
 
 const PageContainer = styled.div`
 	display: flex;
