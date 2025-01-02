@@ -26,24 +26,24 @@ const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
-  button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-family: 'SUIT', sans-serif;
-  }
+  // button {
+  //   background: none;
+  //   border: none;
+  //   padding: 0;
+  //   cursor: pointer;
+  //   font-family: 'SUIT', sans-serif;
+  // }
 
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
+  // a {
+  //   text-decoration: none;
+  //   color: inherit;
+  // }
 
-  input {
-  border: none;
-  outline: none;
-  font-family: 'SUIT', sans-serif;
-  }
+  // input {
+  // border: none;
+  // outline: none;
+  // font-family: 'SUIT', sans-serif;
+  // }
 
   ul, ol, li {
   list-style: none;
