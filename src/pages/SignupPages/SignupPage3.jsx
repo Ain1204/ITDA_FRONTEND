@@ -51,10 +51,14 @@ const StyledInput = styled.input`
     }
 `;
 
-const SSNWrapper = styled.div`
+export const SSNWrapper = styled.div`
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    
+    img {
+        margin: 0 8px;
+    }
 `;
 
 const SSNStyledInput = styled(StyledInput)`
