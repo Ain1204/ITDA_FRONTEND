@@ -86,7 +86,7 @@ const LoginBtn = styled.button`
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
-  line-height: 150%; /* 1.5rem */
+  line-height: 150%;
   letter-spacing: -0.025rem;
 
   &:hover {
