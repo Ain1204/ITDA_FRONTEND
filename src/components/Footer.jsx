@@ -3,47 +3,72 @@ import styled from "styled-components";
 const FooterContainer = styled.footer`
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* 왼쪽 정렬 */
+  align-items: flex-start;
   width: 100%;
   gap: 1.5rem;
-  padding: 1rem 2rem; /* 좌우 여백 추가 */
-  height: 8rem;
+  padding: 1rem 2rem;
+  height: auto;
+
+  @media (max-width: 768px) {
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+  }
 `;
 
 const FooterLinksWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
 `;
 
 const FooterLinksContainer = styled.div`
   display: flex;
   gap: 2rem;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    gap: 1rem;
+  }
 `;
 
-const FooterButton = styled.button`
+const FooterButton = styled.a`
   background: none;
   border: none;
   font-size: 0.875rem;
   cursor: pointer;
   text-decoration: none;
-
-  &:hover {
-    color: var(--Colors-Primary-B500, #0051ff);
-    text-decoration: underline;
-  }
-
+  display: inline-flex;
+  padding: 0.5rem 1rem;
   color: var(--Colors-GrayScale-G400, #949bad);
   text-align: center;
+
+  &:hover {
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    background: var(--Colors-Secondary-B100, #ebf2ff);
+    color: var(--Colors-Primary-B500, #0051ff);
+  }
 
   /* Header/H5 */
   font-family: "SUIT Variable";
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
-  line-height: 150%; /* 1.5rem */
+  line-height: 150%;
   letter-spacing: -0.025rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+  }
 `;
 
 const FooterText = styled.p`
@@ -58,8 +83,13 @@ const FooterText = styled.p`
   font-size: 0.75rem;
   font-style: normal;
   font-weight: 500;
-  line-height: 132%; /* 0.99rem */
+  line-height: 132%;
   letter-spacing: -0.01875rem;
+
+  @media (max-width: 768px) {
+    text-align: center;
+    font-size: 0.7rem;
+  }
 `;
 
 const Footer = () => {

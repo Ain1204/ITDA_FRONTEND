@@ -1,17 +1,20 @@
 import styled from "styled-components";
 import Banner1 from "../assets/images/Mainimg/Bannerimg/Banner_Image.png";
-import ArrowRightIcon01 from "../assets/images/Mainimg/Bannerimg/arrowright-white.svg";
-import ArrowRightIcon02 from "../assets/images/Mainimg/Bannerimg/arrowright-black.svg";
 import { useState, useEffect } from "react";
-// Carousel Container
+
 const CarouselContainer = styled.div`
-  width: 86rem;
   height: 25rem;
-  margin: 1.5rem auto 0; /* 1.5rem 아래 NavBar로부터 거리 */
+  margin: 1.5rem 2rem 0;
   border-radius: var(--Shapes-Border-Round, 1rem);
   border: 2px solid rgba(18, 19, 24, 0.04);
   overflow: hidden;
   position: relative;
+
+  @media (max-width: 768px) {
+    width: calc(100% - 4rem);
+    height: 80vw;
+    margin: 1.5rem 2rem 0;
+  }
 `;
 
 const CarouselWrapper = styled.div`
@@ -24,21 +27,32 @@ const CarouselWrapper = styled.div`
   width: 100%;
   height: 100%;
 `;
+
 const Slide = styled.div`
-  flex: 0 0 100%; /* 슬라이드 하나가 전체 너비를 차지 */
+  flex: 0 0 100%;
   width: 100%;
   height: 100%;
-  background: ${(props) =>
-    `url(${props.bgImage}) center / cover no-repeat`}; /* 이미지 반복 방지 */
+  background: ${(props) => `url(${props.bgImage}) center / cover no-repeat`};
+
+  @media (max-width: 768px) {
+    background-size: cover;
+  }
 `;
 
 const DotsContainer = styled.div`
   position: absolute;
   bottom: 1rem;
   left: 50%;
+  align-items: center;
+  justify-content: center;
   transform: translateX(-50%);
   display: flex;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    bottom: 0.5rem;
+    gap: 0.5rem;
+  }
 `;
 
 const Dot = styled.div`
@@ -50,11 +64,16 @@ const Dot = styled.div`
       ? "var(--Colors-Primary-B400, #3D85FF)"
       : "rgba(0, 0, 0, 0.3)"};
   cursor: pointer;
-`;
 
+  @media (max-width: 768px) {
+    width: 0.4rem;
+    height: 0.4rem;
+  }
+`;
+/*
 const BtnContainer = styled.div`
-  z-index: 10; /* 배너 위로 표시되도록 설정 */
-  /* Header/H4 */
+  z-index: 10;
+
   font-family: "SUIT Variable";
   font-size: 1.25rem;
   font-style: normal;
@@ -62,12 +81,13 @@ const BtnContainer = styled.div`
   line-height: 140%;
   letter-spacing: -0.03125rem;
 `;
+
 const Btn01 = styled.button`
   position: absolute;
   top: 85%;
-  left: calc(83% - 1.25rem);
-  transform: translate(-50%, -50%); /* 중앙 정렬 */
-  border-radius: var(--Shapes-Border-Soft, 0.75rem);
+  left: calc(80% - 7rem);
+  transform: translate(-50%, -50%); 
+  border-radius: var(--Shapes-Border-Soft, 0.25rem);
   background: var(--Colors-Primary-B400, #3d85ff);
   color: #fff;
   border: none;
@@ -88,13 +108,14 @@ const Btn02 = styled.button`
   gap: 0.625rem;
   position: absolute;
   top: 85%;
-  left: calc(83% + 7rem);
+  left: calc(80% + 2rem);
   transform: translate(-50%, -50%);
   border: none;
-  border-radius: var(--Shapes-Border-Soft, 0.75rem);
+  border-radius: var(--Shapes-Border-Soft, 0.25rem);
   background: var(--Colors-GrayScale-G300, #e5eaf2);
   cursor: pointer;
 `;
+*/
 
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -122,16 +143,6 @@ const Banner = () => {
           />
         ))}
       </DotsContainer>
-      <BtnContainer>
-        <Btn01>
-          무료 체험하기
-          <img src={ArrowRightIcon01} alt="Arrow Right" />
-        </Btn01>
-        <Btn02>
-          더 알아보기
-          <img src={ArrowRightIcon02} alt="Arrow Right" />
-        </Btn02>
-      </BtnContainer>
     </CarouselContainer>
   );
 };
