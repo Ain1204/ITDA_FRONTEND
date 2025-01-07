@@ -14,9 +14,16 @@ const Nav = styled.nav`
   align-items: center;
   position: fixed;
   width: 100%;
+  height: 4rem;
   top: 0;
   z-index: 1000;
-  margin-top: 2rem;
+  background: var(--Colors-GrayScale-White, #fcfcff);
+  border: 1px solid rgba(18, 19, 24, 0.04);
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
+    margin-top: 0;
+  }
 `;
 
 const NavMenu = styled.div`
@@ -54,6 +61,12 @@ const NavMenu_Left_Btns = styled.div`
   font-weight: 600;
   line-height: 150%;
   letter-spacing: -0.025rem;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 `;
 
 const NavMenu_Right_Btns = styled.div`
@@ -62,9 +75,11 @@ const NavMenu_Right_Btns = styled.div`
   gap: 1.5rem;
   justify-content: flex-end;
   flex: 1;
+  white-space: nowrap;
 
   @media (max-width: 768px) {
     flex-direction: column;
+    gap: 1rem;
   }
 `;
 
@@ -78,8 +93,18 @@ const NavItem = styled.a`
   align-items: center;
   gap: 0.5rem;
   color: var(--Colors-GrayScale-G400, #949bad);
+  background: var(--Colors-GrayScale-White, #fcfcff);
+  white-space: nowrap;
+
   &:hover {
-    color: #000000;
+    border-radius: 0.5rem;
+    background: var(--Colors-Secondary-B100, #ebf2ff);
+    color: var(--Colors-Primary-B500, #0051ff);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+    padding: 0.5rem;
   }
 `;
 
@@ -108,6 +133,11 @@ const LoginBtn = styled.button`
     color: var(--Colors-Primary-B400, #3d85ff);
     background: var(--Colors-GrayScale-White, #fcfcff);
   }
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
 `;
 
 const ProfileImage = styled.img`
@@ -115,6 +145,11 @@ const ProfileImage = styled.img`
   height: 1.5rem;
   border-radius: 50%;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 2rem;
+    height: 2rem;
+  }
 `;
 
 const LogoImage = styled.img`
@@ -122,18 +157,30 @@ const LogoImage = styled.img`
   flex-direction: column;
   align-items: center;
   width: 9rem;
+
+  @media (max-width: 768px) {
+    width: 7rem;
+  }
 `;
 
 const NotiImage = styled.img`
   width: 2rem;
   height: 2rem;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ChattingImage = styled.img`
   width: 2rem;
   height: 2rem;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const HamburgerButton = styled.div`

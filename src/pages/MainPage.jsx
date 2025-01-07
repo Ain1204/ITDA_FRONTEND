@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 // Main Page Container
 const PageContainer = styled.div`
   background: var(--Colors-GrayScale-White, #fcfcff);
-  margin-top: 6.5rem;
+  margin-top: 4rem;
   height: 146rem;
 `;
 
@@ -15,7 +15,7 @@ const MainTitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 6.25rem;
+  margin-top: 6rem;
   flex-direction: column;
   margin-bottom: 4.5rem;
 `;
@@ -31,10 +31,14 @@ const TilteText = styled.a`
   font-weight: 800;
   line-height: 150%; /* 3rem */
   letter-spacing: -0.05rem;
+
+  @media (max-width: 768px) {
+    padding: 2rem;
+  }
 `;
 
 const SubText = styled.a`
-  margin-top: 1.25rem;
+  padding: 1.25rem;
   color: var(--Colors-GrayScale-G400, #949bad);
   text-align: center;
 
