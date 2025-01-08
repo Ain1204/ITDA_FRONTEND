@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Line from "../assets/images/Mainimg/line.svg";
 import Search from "../assets/images/Mainimg/Icon_Search.svg";
-import ArrowDown from "../assets/images/Mainimg/arrow_down.svg";
 import Filter from "../assets/images/Mainimg/filter.svg";
 import Reset from "../assets/images/Mainimg/arrow_update.svg";
 import Close from "../assets/images/Mainimg/closed.svg";
+import LineRow from "../assets/images/Mainimg/line-row.svg";
+import Check from "../assets/images/Mainimg/check.svg";
 
 const ITEMS_PER_PAGE = 15;
 
@@ -20,8 +21,8 @@ const SearchBar = () => {
     산업분야: [],
   });
   const [selectedDropdown, setSelectedDropdown] = useState([]);
-  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false); // 정렬 드롭다운 상태
   const [currentPage, setCurrentPage] = useState(1);
+  const [showAll, setShowAll] = useState(false);
 
   const handleCheckboxChange = (filterType, value) => {
     setSelectedFilters((prevFilters) => {
@@ -33,6 +34,17 @@ const SearchBar = () => {
       } else {
         updatedFilters[filterType].push(value);
       }
+      return updatedFilters;
+    });
+  };
+
+  // 선택 항목 삭제 함수
+  const handleRemoveSelected = (filterType, value) => {
+    setSelectedFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters };
+      updatedFilters[filterType] = updatedFilters[filterType].filter(
+        (item) => item !== value
+      );
       return updatedFilters;
     });
   };
@@ -74,7 +86,7 @@ const SearchBar = () => {
   return (
     <PageContainer>
       <ButtonContainer>
-        {["All", "기업", "학생"].map((category, index, array) => (
+        {["All", "대학생 단체", "기업"].map((category, index, array) => (
           <React.Fragment key={category}>
             <Button
               isSelected={selectedCategory === category}
@@ -106,35 +118,54 @@ const SearchBar = () => {
         <FilterButton onClick={() => setIsFilterOpen(!isFilterOpen)}>
           <img src={Filter} alt="Filter icon" /> 필터
         </FilterButton>
+        {/* 선택된 체크박스 항목 */}
+        <SelectedTextContainer>
+          {Object.entries(selectedFilters)
+            .flatMap(([key, values]) => values) // 키값을 제거하고 값만 추출
+            .slice(0, showAll ? undefined : 5)
+            .map((value, index) => (
+              <SelectedText key={index}>
+                {value}
+                <img
+                  src={Close}
+                  alt="Close icon"
+                  onClick={() => {
+                    // 값이 어느 키에 속하는지 찾은 후 제거
+                    const filterKey = Object.keys(selectedFilters).find((key) =>
+                      selectedFilters[key].includes(value)
+                    );
+                    if (filterKey) handleRemoveSelected(filterKey, value);
+                  }}
+                  style={{ cursor: "pointer" }}
+                />
+              </SelectedText>
+            ))}
 
-        <SortDropdownContainer>
-          <SortDropdownButton
-            onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
-          >
-            추천순
-            <img src={ArrowDown} alt="Arrow Down icon" />
-          </SortDropdownButton>
-          {isSortDropdownOpen && (
-            <SortDropdownMenu>
-              {["추천순", "인기순", "최신순"].map((sortOption) => (
-                <SortDropdownItem key={sortOption}>
-                  {sortOption}
-                </SortDropdownItem>
-              ))}
-            </SortDropdownMenu>
+          {Object.entries(selectedFilters).flatMap(([key, values]) => values)
+            .length > 5 && (
+            <SelectedTextOverflow
+              onClick={() => setShowAll(!showAll)}
+              isHidden={showAll}
+            >
+              {showAll ? "접기" : "..."}
+            </SelectedTextOverflow>
           )}
-        </SortDropdownContainer>
-      </FilterSortContainer>
+        </SelectedTextContainer>
 
-      <FilterContainer isOpen={isFilterOpen}>
         {/* 초기화 및 적용 버튼 */}
-        <ApplyResetContainer>
+        <ApplyResetContainer isOpen={isFilterOpen}>
           <ResetButton onClick={resetFilters}>
             <img src={Reset} alt="Reset icon" />
             초기화
           </ResetButton>
-          <ApplyButton onClick={applyFilters}>적용</ApplyButton>
+          <ApplyButton onClick={applyFilters}>
+            <img src={Check} alt="Check icon" />
+            필터 적용하기
+          </ApplyButton>
         </ApplyResetContainer>
+      </FilterSortContainer>
+
+      <FilterContainer isOpen={isFilterOpen}>
         <ButtonContainer>
           {["지역", "대학전공", "산업분야"].map((section) => (
             <Button
@@ -148,7 +179,7 @@ const SearchBar = () => {
             </Button>
           ))}
         </ButtonContainer>
-
+        <FilterSectionImg src={LineRow} alt="LineRow icon" />
         {/* 필터 섹션 */}
         {[
           {
@@ -236,21 +267,7 @@ const SearchBar = () => {
               </FilterSection>
             )
         )}
-
-        {/* 선택된 체크박스 항목 */}
-        <SelectedTextContainer>
-          {Object.entries(selectedFilters)
-            .flatMap(([key, values]) =>
-              values.map((value) => `${key}: ${value}`)
-            )
-            .map((selected, index) => (
-              <SelectedText key={index}>
-                {selected} <img src={Close} alt="Close icon" />
-              </SelectedText>
-            ))}{" "}
-        </SelectedTextContainer>
       </FilterContainer>
-
       <CardContainer>
         <CardListContainer>
           {currentCards.map((card) => (
@@ -290,7 +307,7 @@ const cardData = Array.from({ length: 50 }, (_, i) => ({
   id: i + 1,
   title: `카드 ${i + 1}`,
   content: `내용 ${i + 1}`,
-  category: i % 2 === 0 ? "기업" : "학생", // 짝수는 "기업", 홀수는 "학생"
+  category: i % 2 === 0 ? "대학생 단체" : "기ㅂ", // 짝수는 "기업", 홀수는 "학생"
   image: `/src/assets/images/Mainimg/image1.png`, // 1~12번 이미지를 순환
   hashtags: [
     `#해시태그${i + 1}`,
@@ -320,8 +337,6 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
   color: ${(props) => (props.isSelected ? "#3d85ff" : "#949BAD")};
-  margin-bottom: 1rem;
-
   text-align: center;
 
   /* Body/M600 */
@@ -382,6 +397,7 @@ const FilterSortContainer = styled.div`
   width: 50%;
   margin: 0rem auto;
   white-space: nowrap;
+  margin-bottom: 1.25rem;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -397,16 +413,28 @@ const FilterButton = styled.button`
   color: #000;
   gap: 0.5rem;
   background: var(--Colors-GrayScale-White, #fcfcff);
+  height: 100%;
   border: none;
   white-space: nowrap;
+
+  border-radius: 0.5rem;
 `;
 
 const ApplyResetContainer = styled.div`
-  display: flex;
+  display: ${(props) =>
+    props.isOpen ? "flex" : "none"}; /* 필터가 열렸을 때만 보이게 */
   justify-content: flex-end;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   white-space: nowrap;
+
+  /* Body/R500 */
+  font-family: "SUIT Variable";
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 168%; /* 1.47rem */
+  letter-spacing: -0.02188rem;
 
   @media (max-width: 768px) {
     flex-direction: row;
@@ -443,6 +471,18 @@ const SelectedText = styled.span`
   letter-spacing: -0.01875rem;
 `;
 
+const SelectedTextOverflow = styled.span`
+  background: var(--Colors-GrayScale-G200, #f3f5f8);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--Colors-Primary-B500, #0051ff);
+
+  display: ${(props) => (props.isHidden ? "none" : "flex")};
+  align-items: center;
+  cursor: pointer;
+`;
+
 const ApplyButton = styled.button`
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
@@ -452,13 +492,16 @@ const ApplyButton = styled.button`
   color: var(--Colors-GrayScale-White, #fcfcff);
   border-radius: 0.5rem;
   white-space: nowrap;
-
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   &:hover {
     background: var(--Colors-Primary-B500, #0051ff);
   }
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    flex-direction: row;
   }
 `;
 
@@ -488,11 +531,10 @@ const FilterContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.25rem;
-  width: 50rem;
+  width: 50%;
   margin: 0rem auto;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 0.5rem;
   display: ${(props) => (props.isOpen ? "block" : "none")};
   margin-bottom: 2rem;
 
@@ -515,11 +557,20 @@ const FilterContainer = styled.div`
 const FilterSection = styled.div`
   margin-bottom: 1.5rem;
 `;
+const FilterSectionImg = styled.img`
+  margin: 0.75rem 0;
+  width: 100%;
+  display: block;
+  align-self: stretch;
+`;
 
 const CheckboxGroup = styled.div`
   display: flex;
+  align-items: center;
+  align-content: center;
+  gap: 1rem 2.5rem;
+  align-self: stretch;
   flex-wrap: wrap;
-  gap: 1rem;
 `;
 
 const CheckboxLabel = styled.label`
@@ -530,46 +581,6 @@ const CheckboxLabel = styled.label`
 
 const Checkbox = styled.input`
   cursor: pointer;
-`;
-
-const SortDropdownContainer = styled.div`
-  position: relative;
-`;
-
-const SortDropdownButton = styled.button`
-  white-space: nowrap;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  color: #000;
-  background: var(--Colors-GrayScale-White, #fcfcff);
-  border: none;
-  border-radius: 0.5rem;
-  gap: 0.5em;
-`;
-
-const SortDropdownMenu = styled.div`
-  position: absolute;
-  top: 2.5rem;
-  right: 0;
-  background: var(--Colors-GrayScale-G200, #f3f5f8);
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-`;
-
-const SortDropdownItem = styled.div`
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-size: 0.875rem;
-
-  &:hover {
-    background: var(--Colors-Primary-B400, #3d85ff);
-    color: var(--Colors-GrayScale-White, #fcfcff);
-  }
 `;
 
 /*Card*/

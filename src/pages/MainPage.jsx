@@ -6,9 +6,9 @@ import Footer from "../components/Footer";
 
 // Main Page Container
 const PageContainer = styled.div`
-  background: var(--Colors-GrayScale-White, #fcfcff);
-  margin-top: 4rem;
   height: 146rem;
+  padding-top: 5.5rem;
+  background: var(--Colors-GrayScale-White, #fcfcff);
 `;
 
 const MainTitleContainer = styled.div`
@@ -29,7 +29,7 @@ const TilteText = styled.a`
   font-size: 2rem;
   font-style: normal;
   font-weight: 800;
-  line-height: 150%; /* 3rem */
+  line-height: 150%;
   letter-spacing: -0.05rem;
 
   @media (max-width: 768px) {
