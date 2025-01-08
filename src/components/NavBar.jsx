@@ -55,13 +55,16 @@ const NavMenu_Left_Btns = styled.div`
 
   text-align: center;
 
+  color: var(--Colors-GrayScale-G400, #949bad);
+  text-align: center;
+
+  /* Header/H5 */
   font-family: "SUIT Variable";
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
-  line-height: 150%;
+  line-height: 150%; /* 1.5rem */
   letter-spacing: -0.025rem;
-  white-space: nowrap;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -157,6 +160,7 @@ const LogoImage = styled.img`
   flex-direction: column;
   align-items: center;
   width: 9rem;
+  margin-right: 1.5rem;
 
   @media (max-width: 768px) {
     width: 7rem;
@@ -223,16 +227,16 @@ const NavBar = () => {
       </HamburgerButton>
       <NavMenu isOpen={menuOpen}>
         <NavMenu_Left_Btns>
-          <NavItem href="#home">제휴/프로모션 맺기</NavItem>
+          <NavItem href="#home">협업 시작하기</NavItem>
           <NavItem href="#about">마이페이지</NavItem>
           <NavItem href="#services">서비스 소개</NavItem>
         </NavMenu_Left_Btns>
         <NavMenu_Right_Btns>
-          <a href="/notifications">
-            <NotiImage src={Noti} alt="noti icon" />
-          </a>
           <a href="/chat">
             <ChattingImage src={Chatting} alt="chat icon" />
+          </a>
+          <a href="/notifications">
+            <NotiImage src={Noti} alt="noti icon" />
           </a>
           {isLoggedIn ? (
             <ProfileImage
