@@ -8,6 +8,7 @@ import GlobalStyles from "./GlobalStyles";
 import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import TestColorPage from "./pages/TestColorPage";
+import MyPage from "./pages/MyPage";
 
 function App() {
 	return (
@@ -19,6 +20,7 @@ function App() {
 				<Route path="/signup" element={<SignupPage />} />
 				<Route path="/test-typography" element={<TestTypographyPage />} />
 				<Route path="/test-color" element={<TestColorPage />} />
+				<Route path="/mypage" element={<MyPage />} />
 			</Routes>
 		</ThemeProvider>
 	);
