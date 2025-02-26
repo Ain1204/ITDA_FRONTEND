@@ -5,7 +5,11 @@ const SignupPage1 = ({ setStep }) => {
 
 	// 계정 유형 선택 함수
 	const handleAccountTypeSelect = (type) => {
-		setStep(2);
+		if (type === 'business') {
+			setStep(1.1); // 기업 산업 분야 선택 페이지로 이동
+		} else if (type === 'university') {
+			setStep(1.2); // 대학생 단체 구분과 전공 계열 선택 페이지로 이동
+		}
 	};
 
 	return (
@@ -22,7 +26,7 @@ const SignupPage1 = ({ setStep }) => {
 				<CategoryButton
 					onClick={() => handleAccountTypeSelect('university')}
 				>
-					대학생 단체
+					대학 단체
 				</CategoryButton>
 			</div>
 		</div>
