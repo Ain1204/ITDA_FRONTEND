@@ -19,11 +19,6 @@ const Nav = styled.nav`
   z-index: 1000;
   background: var(--Colors-GrayScale-White, #fcfcff);
   border: 1px solid rgba(18, 19, 24, 0.04);
-
-  @media (max-width: 768px) {
-    padding: 0.5rem 1rem;
-    margin-top: 0;
-  }
 `;
 
 const NavMenu = styled.div`
@@ -31,6 +26,7 @@ const NavMenu = styled.div`
   justify-content: space-between;
   width: 100%;
   align-items: center;
+  white-space: nowrap;
 
   @media (max-width: 768px) {
     display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -39,7 +35,6 @@ const NavMenu = styled.div`
     position: absolute;
     top: 4rem;
     left: 0;
-    width: 100%;
     background: white;
     padding: 1rem 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -52,9 +47,7 @@ const NavMenu_Left_Btns = styled.div`
   justify-content: flex-start;
   flex: 1;
   align-items: center;
-
   text-align: center;
-
   color: var(--Colors-GrayScale-G400, #949bad);
   text-align: center;
 
@@ -121,7 +114,7 @@ const LoginBtn = styled.button`
   background: var(--Colors-Primary-B400, #3d85ff);
   border: none;
   cursor: pointer;
-
+  white-space: nowrap;
   color: var(--Colors-GrayScale-White, #fcfcff);
   text-align: center;
 
