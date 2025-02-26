@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
+import { 
+	signInWithEmailAndPassword, 
+	signInWithPopup,
+	signInWithCustomToken,
+	GoogleAuthProvider, 
+	FacebookAuthProvider,
+	OAuthProvider
+} from "firebase/auth";
+import { auth } from '../firebase-config'; // Firebase 설정 파일에서 가져오기
 import LoginBackground from '../components/LoginBackground';
 import NaverIcon from '../assets/loginIcon/naver.svg';
 import KakaoIcon from '../assets/loginIcon/kakao.svg';
@@ -262,6 +271,112 @@ const SignUpLink = styled(Link)`
 
 const LoginPage = () => {
 	const [loginType, setLoginType] = useState('personal'); // 'personal' 또는 'business'
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [isNaverLoggingIn, setIsNaverLoggingIn] = useState(false);
+	const naverLoginInProgressRef = useRef(false);
+
+	// Firebase 이메일/비밀번호 로그인 함수
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		try {
+			await signInWithEmailAndPassword(auth, email, password);
+			alert("로그인에 성공했습니다!");
+		} catch (error) {
+			alert(error.message);
+		}
+	};
+
+	// 구글 로그인 핸들러
+	const handleGoogleLogin = async () => {
+		try {
+			await signInWithPopup(auth, new GoogleAuthProvider());
+			alert("구글 로그인에 성공했습니다!");
+		} catch (error) {
+			alert("구글 로그인 오류: " + error.message);
+		}
+	};
+
+	// 페이스북 로그인 핸들러
+	const handleFacebookLogin = async () => {
+		try {
+			await signInWithPopup(auth, new FacebookAuthProvider());
+			alert("페이스북 로그인에 성공했습니다!");
+		} catch (error) {
+			alert("페이스북 로그인 오류: " + error.message);
+		}
+	};
+
+	// 카카오 로그인 핸들러 추가
+	const handleKakaoLogin = async () => {
+		// Firebase 콘솔에서 OIDC 제공자로 등록한 Provider ID와 일치해야 합니다.
+		const kakaoProvider = new OAuthProvider("oidc.kakao");
+		try {
+			const result = await signInWithPopup(auth, kakaoProvider);
+			console.log("카카오 로그인 성공:", result.user);
+			alert("카카오 로그인에 성공했습니다!");
+		} catch (error) {
+			console.error("카카오 로그인 오류:", error.message);
+			alert("카카오 로그인 오류: " + error.message);
+		}
+	};
+
+	// 네이버 로그인 핸들러 (프로미스 기반)
+	const handleNaverLogin = async () => {
+		if (naverLoginInProgressRef.current) {
+			return;
+		}
+		naverLoginInProgressRef.current = true;
+		setIsNaverLoggingIn(true);
+
+		// 클라이언트용 정보는 import.meta.env 를 사용 (VITE_ 접두어)
+		const clientId = import.meta.env.VITE_NAVER_CLIENT_ID;
+		const redirectUri = import.meta.env.VITE_NAVER_REDIRECT_URI;
+		const state = Math.random().toString(36).substring(2);
+		const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
+		const expectedOrigin = redirectUri;
+		
+		// 프로미스를 사용하여 메시지를 기다립니다.
+		const customTokenPromise = new Promise((resolve, reject) => {
+			// 타이머 ID 저장
+			const timerId = setTimeout(() => {
+				reject(new Error("커스텀 토큰을 기다리는 동안 타임아웃이 발생했습니다."));
+			}, 30000);
+			
+			const messageHandler = (event) => {
+				console.log("Message received from:", event.origin, "data:", event.data);
+				// 약간의 차이를 허용: expectedOrigin으로 시작하는지 확인
+				if (!event.origin.startsWith(expectedOrigin)) {
+					console.warn("Unexpected message origin:", event.origin);
+					return;
+				}
+				if (event.data && event.data.customToken) {
+					clearTimeout(timerId);
+					resolve(event.data.customToken);
+					window.removeEventListener("message", messageHandler);
+				}
+			};
+			// 이벤트 핸들러를 등록 (once 옵션 없이)
+			window.addEventListener("message", messageHandler);
+		});
+		
+		// 팝업 열기
+		const width = 600, height = 600;
+		const left = window.screen.width / 2 - width / 2;
+		const top = window.screen.height / 2 - height / 2;
+		window.open(naverAuthUrl, "NaverLogin", `width=${width},height=${height},top=${top},left=${left}`);
+		
+		try {
+			const customToken = await customTokenPromise;
+			await signInWithCustomToken(auth, customToken);
+			alert("네이버 로그인에 성공했습니다!");
+		} catch (error) {
+			alert("네이버 로그인 오류: " + error.message);
+		} finally {
+			naverLoginInProgressRef.current = false;
+			setIsNaverLoggingIn(false);
+		}
+	};
 
 	return (
 		<PageContainer>
@@ -271,13 +386,13 @@ const LoginPage = () => {
 					<Title>로그인</Title>
 
 					<TabContainer>
-						<TabButton 
+						<TabButton
 							className={loginType === 'personal' ? 'active' : ''}
 							onClick={() => setLoginType('personal')}
 							>
 							일반 로그인
 						</TabButton>
-						<TabButton 
+						<TabButton
 							className={loginType === 'business' ? 'active' : ''}
 							onClick={() => setLoginType('business')}
 						>
@@ -285,34 +400,39 @@ const LoginPage = () => {
 						</TabButton>
 					</TabContainer>
 
-					<EmailContainer>
-						<InputLabel>이메일 입력</InputLabel>
-						<StyledInput
-							type="email"
-							placeholder={loginType === 'personal' ? "이메일을 입력해주세요" : "사업자 이메일을 입력해주세요"}/>
-					</EmailContainer>
-					<PwContainer>
-						<InputLabel>비밀번호 입력</InputLabel>
-						<StyledInput
-							type="password"
-							placeholder={loginType === 'personal' ? "비밀번호를 입력해주세요" : "사업자 비밀번호를 입력해주세요"}/>
+					<form onSubmit={handleLogin}>
+						<EmailContainer>
+							<InputLabel>이메일 입력</InputLabel>
+							<StyledInput
+								type="email"
+								placeholder={loginType === 'personal' ? "이메일을 입력해주세요" : "사업자 이메일을 입력해주세요"}
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+							/>
+						</EmailContainer>
+						<PwContainer>
+							<InputLabel>비밀번호 입력</InputLabel>
+							<StyledInput
+								type="password"
+								placeholder={loginType === 'personal' ? "비밀번호를 입력해주세요" : "사업자 비밀번호를 입력해주세요"}
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+							/>
 							<PasswordGuide>
 								영문 대소문자, 숫자, 특수문자 포함 최소 8글자 이상을 입력해 주세요.
 							</PasswordGuide>
-					</PwContainer>
+						</PwContainer>
 
-					<AutoLoginContainer>
-						<StyledCheckbox 
-							type="checkbox" 
-							id="auto-login"
-						/>
-						<AutoLoginLabel htmlFor="auto-login">자동 로그인</AutoLoginLabel>
-						<HelpButton type="button">문제가 있나요?</HelpButton>
-					</AutoLoginContainer>
+						<AutoLoginContainer>
+							<StyledCheckbox type="checkbox" id="auto-login" />
+							<AutoLoginLabel htmlFor="auto-login">자동 로그인</AutoLoginLabel>
+							<HelpButton type="button">문제가 있나요?</HelpButton>
+						</AutoLoginContainer>
 
-					<LoginBlueButton type="submit">
-						로그인
-					</LoginBlueButton>
+						<LoginBlueButton type="submit">
+							로그인
+						</LoginBlueButton>
+					</form>
 
 					<SnsLoginDivider>
 						<DividerLine />
@@ -321,19 +441,23 @@ const LoginPage = () => {
 					</SnsLoginDivider>
 
 					<SnsButtonContainer>
-						<SnsButton type="button">
+						<SnsButton type="button" onClick={handleKakaoLogin}>
 							<img src={KakaoIcon} alt="카카오 로그인" />
 						</SnsButton>
-						<SnsButton type="button">
+						<SnsButton
+							type="button"
+							onClick={handleNaverLogin}
+							disabled={isNaverLoggingIn}
+						>
 							<img src={NaverIcon} alt="네이버 로그인" />
 						</SnsButton>
-						<SnsButton type="button">
+						<SnsButton type="button" onClick={handleGoogleLogin}>
 							<img src={GoogleIcon} alt="구글 로그인" />
 						</SnsButton>
 						<SnsButton type="button">
-							<img src={AppleIcon} alt="애플 로그인" />
-						</SnsButton>
-						<SnsButton type="button">
+                            <img src={AppleIcon} alt="애플 로그인" />
+                        </SnsButton>
+						<SnsButton type="button" onClick={handleFacebookLogin}>
 							<img src={FacebookIcon} alt="페이스북 로그인" />
 						</SnsButton>
 					</SnsButtonContainer>
@@ -341,7 +465,7 @@ const LoginPage = () => {
 					<div className="signup-prompt">
 						<SignUpLink to="/signup">처음이신가요? 회원가입</SignUpLink>
 					</div>
-				</LoginContainer>	
+				</LoginContainer>
 			</LoginSection>
 		</PageContainer>
 	);
