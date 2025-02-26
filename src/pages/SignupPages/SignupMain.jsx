@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import SignupBackground from '../../components/SignupBackground';
 import SignupPage1 from './SignupPage1';
 import SignupPage2 from './SignupPage2';
+import SignupPage2_enterprise from './SignupPage2_enterprise';
+import SignupPage2_student from './SignupPage2_student';
 import SignupPage3 from './SignupPage3';
 import SignupPage4 from './SignupPage4';
 import SignupPage5Main from './SignupPage5Main';
@@ -62,6 +64,16 @@ const SIGNUP_STEPS = {
 		header: "반가워요!",
 		subtitle: "계정 유형을 선택해 주세요.",
 		component: (props) => <SignupPage1 {...props} />
+	},
+	1.1: { // 기업 계정용 페이지
+		header: "반가워요!",
+		subtitle: "산업 분야를 선택해 주세요.",
+		component: (props) => <SignupPage2_enterprise {...props} />
+	},
+	1.2: { // 대학생 단체용 페이지
+		header: "반가워요!",
+		subtitle: "단체 구분과 전공 계열을 선택해 주세요.",
+		component: (props) => <SignupPage2_student {...props} />
 	},
 	2: {
 		header: "반가워요!",

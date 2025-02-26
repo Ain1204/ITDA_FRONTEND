@@ -34,6 +34,14 @@ const TypeButton = styled.button`
 
 // 공통 스타일 컴포넌트들
 
+// 애니메이션을 위한 트랜지션 래퍼
+export const TransitionWrapper = styled.div`
+    max-height: ${props => props.show ? '1000px' : '0'};
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: ${props => props.show ? '1' : '0'};
+`;
+
 // 입력 섹션
 export const InputSection = styled.div`
     margin-top: 32px;
@@ -69,12 +77,12 @@ export const InputContainer = styled.div`
 // 입력 필드
 export const SignupInput = styled.input`
     display: flex;
-    width: 400px;
     height: 48px;
     padding: 12px 16px;
-    padding-right: 64px;
     align-items: center;
     gap: 8px;
+    width: 100%;
+    min-width: 0;
     flex: 1 0 0;
     border: none;
     border-radius: 12px;
@@ -86,6 +94,9 @@ export const SignupInput = styled.input`
     font-weight: 500;
     line-height: 150%;
     letter-spacing: -0.4px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 `;
 
 // 인증 버튼
@@ -351,7 +362,7 @@ const SignupPage5Main = ({ setStep }) => {
                         setShowBusinessInput(false);
                     }}
                 >
-                    기업
+                    기업 메일
                 </TypeButton>
                 <TypeButton 
                     active={showBusinessInput}

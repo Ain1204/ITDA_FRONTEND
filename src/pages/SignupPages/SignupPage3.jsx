@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import NextButton from '../../components/ArrowBlueButton';
 import ssnDash from '../../assets/loginIcon/ssn_dash.svg';
+import passwordCircle from '../../assets/loginIcon/passwordCircle.svg';
 import { useState } from 'react';
 
 // 인증 기능 활성화 여부
@@ -66,6 +67,38 @@ const SSNStyledInput = styled(StyledInput)`
 	letter-spacing: 3px;
 `;
 
+const SSNSecondInput = styled(SSNStyledInput)`
+	position: relative;
+	text-align: left;
+	padding-left: 16px;
+	letter-spacing: normal;
+	
+	&::placeholder {
+		visibility: hidden;
+	}
+`;
+
+const CirclesContainer = styled.div`
+	position: absolute;
+	display: flex;
+	align-items: center;
+	left: 30px;
+	top: 58%;
+	transform: translateY(-50%);
+	pointer-events: none;
+	
+	img {
+		width: 8px;
+		height: 8px;
+		margin-right: 8px;
+	}
+`;
+
+const SSNSecondInputWrapper = styled.div`
+	position: relative;
+	width: 184px;
+`;
+
 const SelectAgency = styled.select`
 	display: flex;
 	width: 400px;
@@ -101,8 +134,6 @@ const SelectAgency = styled.select`
 	}
 `;
 
-
-
 const SignupPage3 = ({ setStep }) => {
 	const [name, setName] = useState('');
 	const [ssn1, setSsn1] = useState('');
@@ -121,10 +152,12 @@ const SignupPage3 = ({ setStep }) => {
 		setSsn1(value);
 	};
 
-	// 주민등록번호 뒤 7자리 변경 함수
+	// 주민등록번호 뒤 첫 1자리 변경 함수
 	const handleSsn2Change = (e) => {
 		const value = e.target.value.replace(/[^\d]/g, '');
-		setSsn2(value);
+		if (value.length <= 1) {
+			setSsn2(value);
+		}
 	};
 
 	// 휴대폰 번호 변경 함수
@@ -140,7 +173,7 @@ const SignupPage3 = ({ setStep }) => {
 	const isFormValid = ENABLE_VERIFICATION 
 		? (name.length > 0 && 
 			ssn1.length === 6 && 
-			ssn2.length === 7 && 
+			ssn2.length === 1 && 
 			phoneNumber.length === 13 &&
 			agency !== '')
 		: true;  // 인증 비활성화 시 항상 true
@@ -173,14 +206,25 @@ const SignupPage3 = ({ setStep }) => {
 							onChange={handleSsn1Change}
 						/>
 						<img src={ssnDash} alt="ssn-dash" />
-						<SSNStyledInput 
-							type="password" 
-							id="ssn2" 
-							maxLength="7" 
-							placeholder="뒤 7자리"
-							value={ssn2}
-							onChange={handleSsn2Change}
-						/>
+						<SSNSecondInputWrapper>
+							<SSNSecondInput 
+								type="text"
+								id="ssn2" 
+								maxLength="1" 
+								placeholder=" "
+								value={ssn2}
+								onChange={handleSsn2Change}
+							/>
+							<CirclesContainer>
+								{Array(6).fill().map((_, index) => (
+									<img 
+										key={index} 
+										src={passwordCircle} 
+										alt="password circle" 
+									/>
+								))}
+							</CirclesContainer>
+						</SSNSecondInputWrapper>
 					</SSNWrapper>
 				</div>
 
