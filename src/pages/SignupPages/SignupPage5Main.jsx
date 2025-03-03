@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import BlueButton from '../../components/BlueButton';
 import SignupPage5_enterprise from './SignupPage5_enterprise';
 import SignupPage5_business from './SignupPage5_business';
+import { useSignup } from '../../services/SignupContext';
 
 // 버튼 컨테이너
 const ButtonContainer = styled.div`
@@ -97,6 +98,8 @@ export const SignupInput = styled.input`
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    opacity: ${props => props.disabled ? '0.7' : '1'};
+    cursor: ${props => props.disabled ? 'not-allowed' : 'text'};
 `;
 
 // 인증 버튼
@@ -116,8 +119,9 @@ export const SignupVerifyButton = styled.button`
     font-weight: 600;
     line-height: 150%;
     letter-spacing: -0.4px;
-    cursor: ${props => props.$status === 'timer' ? 'default' : 'pointer'};
-    pointer-events: ${props => props.$status === 'timer' ? 'none' : 'auto'};
+    cursor: ${props => (props.disabled || props.$status === 'timer') ? 'default' : 'pointer'};
+    pointer-events: ${props => (props.disabled || props.$status === 'timer') ? 'none' : 'auto'};
+    opacity: ${props => props.disabled ? '0.7' : '1'};
     
     ${props => {
         switch (props.$status) {
@@ -176,9 +180,10 @@ export const ResendButton = styled.button`
     line-height: 132%;
     letter-spacing: -0.3px;
     color: var(--Colors-Primary-B500, #0051FF);
-    cursor: pointer;
+    cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
     text-decoration-line: underline;
     padding: 0 4px;
+    opacity: ${props => props.disabled ? '0.5' : '1'};
 `;
 
 // 가이드 텍스트
@@ -197,6 +202,10 @@ export const GuideText = styled.p`
                 return css`
                     color: #FF4444;  // 실패 시 빨간색
                 `;
+            case 'success':
+                return css`
+                    color: #01B777;  // 성공 시 초록색
+                `;
             default:
                 return css`
                     color: #666666;  // 기본 회색
@@ -213,11 +222,12 @@ export const PasswordToggleButton = styled.button`
     transform: translateY(-50%);
     background: none;
     border: none;
-    cursor: pointer;
+    cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
     padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: ${props => props.disabled ? '0.5' : '1'};
     
     img {
         width: 12px;
@@ -239,8 +249,18 @@ export const validators = {
         return regex.test(id);
     },
     validatePassword: (password) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return passwordRegex.test(password);
+        // 비밀번호 규칙: 최소 8자, 대소문자, 숫자, 특수문자 포함
+        const lengthRegex = /.{8,}/;                   // 최소 8자
+        const upperRegex = /[A-Z]/;                    // 대문자
+        const lowerRegex = /[a-z]/;                    // 소문자
+        const numberRegex = /[0-9]/;                   // 숫자
+        const specialRegex = /[!@#$%^&*(),.?":{}|<>]/; // 특수문자
+        
+        return lengthRegex.test(password) && 
+               upperRegex.test(password) && 
+               lowerRegex.test(password) && 
+               numberRegex.test(password) && 
+               specialRegex.test(password);
     },
     validateBusinessNumber: (number) => {
         return /^\d{10}$/.test(number);
@@ -256,6 +276,7 @@ export const useAuthState = () => {
     const [userId, setUserId] = useState('');
     const [userIdVerified, setUserIdVerified] = useState(false);
     const [userIdVerificationFailed, setUserIdVerificationFailed] = useState(false);
+    const [emailDuplicateChecked, setEmailDuplicateChecked] = useState(false);
 
     return {
         emailVerified,
@@ -271,7 +292,9 @@ export const useAuthState = () => {
         userIdVerified,
         setUserIdVerified,
         userIdVerificationFailed,
-        setUserIdVerificationFailed
+        setUserIdVerificationFailed,
+        emailDuplicateChecked,
+        setEmailDuplicateChecked
     };
 };
 
@@ -351,25 +374,33 @@ export const useTimer = () => {
 const SignupPage5Main = ({ setStep }) => {
     const [showEmailInput, setShowEmailInput] = useState(true);
     const [showBusinessInput, setShowBusinessInput] = useState(false);
+    const { updateSignupData } = useSignup();
+
+    // 인증 방법 선택 시 컨텍스트 업데이트
+    const handleAuthMethodChange = (method) => {
+        updateSignupData({ authMethod: method });
+        
+        if (method === 'email') {
+            setShowEmailInput(true);
+            setShowBusinessInput(false);
+        } else if (method === 'business') {
+            setShowBusinessInput(true);
+            setShowEmailInput(false);
+        }
+    };
 
     return (
         <div>
             <ButtonContainer>
                 <TypeButton 
                     active={showEmailInput}
-                    onClick={() => {
-                        setShowEmailInput(true);
-                        setShowBusinessInput(false);
-                    }}
+                    onClick={() => handleAuthMethodChange('email')}
                 >
                     기업 메일
                 </TypeButton>
                 <TypeButton 
                     active={showBusinessInput}
-                    onClick={() => {
-                        setShowBusinessInput(true);
-                        setShowEmailInput(false);
-                    }}
+                    onClick={() => handleAuthMethodChange('business')}
                 >
                     사업자등록번호
                 </TypeButton>
