@@ -424,8 +424,8 @@ export const monitorEmailVerification = (userId, email) => {
         }
     });
     
-    // 주기적으로 사용자 정보를 새로고침하는 타이머 설정 (30초마다)
-    const checkInterval = 30000; // 30초
+    // 주기적으로 사용자 정보를 새로고침하는 타이머 설정 (10초마다)
+    const checkInterval = 10000; // 10초
     console.log(`${checkInterval/1000}초마다 이메일 인증 상태를 확인합니다.`);
     
     const verificationTimer = setInterval(async () => {
