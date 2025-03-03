@@ -375,18 +375,32 @@ const SignupPage5Main = ({ setStep }) => {
     const [showEmailInput, setShowEmailInput] = useState(true);
     const [showBusinessInput, setShowBusinessInput] = useState(false);
     const { updateSignupData } = useSignup();
-
-    // 인증 방법 선택 시 컨텍스트 업데이트
-    const handleAuthMethodChange = (method) => {
-        updateSignupData({ authMethod: method });
+    const [authMethod, setAuthMethod] = useState('email');
+    
+    // 비즈니스 페이지에서 발생한 이벤트를 감지하는 이벤트 리스너 추가
+    useEffect(() => {
+        const handleSwitchToEmailAuth = () => {
+            setAuthMethod('email');
+        };
         
-        if (method === 'email') {
-            setShowEmailInput(true);
-            setShowBusinessInput(false);
-        } else if (method === 'business') {
-            setShowBusinessInput(true);
-            setShowEmailInput(false);
+        window.addEventListener('switchToEmailAuth', handleSwitchToEmailAuth);
+        
+        return () => {
+            window.removeEventListener('switchToEmailAuth', handleSwitchToEmailAuth);
+        };
+    }, []);
+    
+    // 인증 방식 변경 핸들러
+    const handleAuthMethodChange = (method) => {
+        if (method === 'business') {
+            alert('사업자등록번호 인증은 현재 준비 중인 서비스입니다.\n기업 메일을 통한 회원가입만 가능합니다.');
+            return;
         }
+        
+        setAuthMethod(method);
+        updateSignupData({ authMethod: method });
+        setShowBusinessInput(method === 'business');
+        setShowEmailInput(method === 'email');
     };
 
     return (
@@ -401,8 +415,9 @@ const SignupPage5Main = ({ setStep }) => {
                 <TypeButton 
                     active={showBusinessInput}
                     onClick={() => handleAuthMethodChange('business')}
+                    style={{ opacity: 0.6, cursor: 'not-allowed' }} // 비활성화된 스타일 추가
                 >
-                    사업자등록번호
+                    사업자등록번호 (준비중)
                 </TypeButton>
             </ButtonContainer>
 
