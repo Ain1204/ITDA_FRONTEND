@@ -45,3 +45,9 @@ naver_oath
 
 # Firebase 캐시 파일 무시
 .firebase/
+
+# Firebase 인덱스 파일 무시
+firestore.indexes.json
+
+# Firebase 규칙 파일 무시
+firestore.rules
