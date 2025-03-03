@@ -9,19 +9,22 @@ import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import TestColorPage from "./pages/TestColorPage";
 import MyPage from "./pages/MyPage";
+import { SignupProvider } from "./services/SignupContext";
 
 function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<GlobalStyles />
-			<Routes>
-				<Route path="/" element={<MainPage />} />
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/signup" element={<SignupPage />} />
-				<Route path="/test-typography" element={<TestTypographyPage />} />
-				<Route path="/test-color" element={<TestColorPage />} />
-				<Route path="/mypage" element={<MyPage />} />
-			</Routes>
+			<SignupProvider>
+				<Routes>
+					<Route path="/" element={<MainPage />} />
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignupPage />} />
+					<Route path="/test-typography" element={<TestTypographyPage />} />
+					<Route path="/test-color" element={<TestColorPage />} />
+					<Route path="/mypage" element={<MyPage />} />
+				</Routes>
+			</SignupProvider>
 		</ThemeProvider>
 	);
 }
