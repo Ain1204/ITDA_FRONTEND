@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import SignupNextButton from '../../components/ArrowBlueButton';
 import BlueArrow from '../../assets/loginIcon/signButtonArrow_blue.svg';
 import { useState } from 'react';
+import { useSignup } from '../../services/SignupContext';
 
 const Divider = styled.div`
 	width: 400px;
@@ -60,6 +61,7 @@ const StyledBlueArrow = styled.img`
 `;
 
 const SignupPage2 = ({ setStep }) => {
+	const { updateSignupData } = useSignup();
 
 	// 체크박스 상태
 	const [checkboxes, setCheckboxes] = useState({
@@ -96,6 +98,20 @@ const SignupPage2 = ({ setStep }) => {
 			
 			return { ...newCheckboxes, all: allChecked };
 		});
+	};
+
+	// 다음 단계로 이동
+	const handleNextClick = () => {
+		// 약관 동의 정보를 컨텍스트에 저장
+		updateSignupData({
+			termsAgreed: {
+				service: checkboxes.terms,
+				privacy: checkboxes.privacy,
+				marketing: checkboxes.advertise
+			}
+		});
+		
+		setStep(3);
 	};
 
 	return (
@@ -138,7 +154,7 @@ const SignupPage2 = ({ setStep }) => {
 			
 			{/* 다음 버튼 */}
 			<SignupNextButton 
-				onClick={() => setStep(3)} 
+				onClick={handleNextClick} 
 				disabled={!isRequiredChecked()}
 			>
 				다음으로

@@ -3,6 +3,7 @@ import NextButton from '../../components/ArrowBlueButton';
 import ssnDash from '../../assets/loginIcon/ssn_dash.svg';
 import passwordCircle from '../../assets/loginIcon/passwordCircle.svg';
 import { useState } from 'react';
+import { useSignup } from '../../services/SignupContext';
 
 // 인증 기능 활성화 여부
 const ENABLE_VERIFICATION = false; // true면 인증 기능 활성화, false면 인증 기능 비활성화
@@ -140,6 +141,7 @@ const SignupPage3 = ({ setStep }) => {
 	const [ssn2, setSsn2] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [agency, setAgency] = useState('');
+	const { updateSignupData } = useSignup();
 
 	// 이름 변경 함수
 	const handleNameChange = (e) => {
@@ -177,6 +179,20 @@ const SignupPage3 = ({ setStep }) => {
 			phoneNumber.length === 13 &&
 			agency !== '')
 		: true;  // 인증 비활성화 시 항상 true
+
+	// 다음 버튼 클릭 핸들러
+	const handleNextClick = () => {
+		// 개인정보를 컨텍스트에 저장
+		updateSignupData({
+			name,
+			birthInfo: ssn1,
+			genderInfo: ssn2,
+			telecomProvider: agency,
+			phoneNumber
+		});
+		
+		setStep(4);
+	};
 
 	return (
 		<div>
@@ -240,9 +256,9 @@ const SignupPage3 = ({ setStep }) => {
 						<option value="skt">SKT</option>
 						<option value="kt">KT</option>
 						<option value="lgu">LG U+</option>
-						<option value="알뜰폰">알뜰폰 SKT</option>
-						<option value="알뜰폰">알뜰폰 KT</option>
-						<option value="알뜰폰">알뜰폰 LG U+</option>
+						<option value="알뜰폰_skt">알뜰폰 SKT</option>
+						<option value="알뜰폰_kt">알뜰폰 KT</option>
+						<option value="알뜰폰_lgu">알뜰폰 LG U+</option>
 					</SelectAgency>
 				</div>
 
@@ -262,7 +278,7 @@ const SignupPage3 = ({ setStep }) => {
 
 			{/* 인증 버튼 */}
 			<NextButton 
-				onClick={() => setStep(4)} 
+				onClick={handleNextClick} 
 				disabled={!isFormValid}
 			>
 				인증하기

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import NextButton from '../../components/ArrowBlueButton';
 import { useState } from 'react';
+import { useSignup } from '../../services/SignupContext';
 
 const InputLabel = styled.label`
 	align-self: stretch;
@@ -53,6 +54,7 @@ const SelectIndustry = styled.select`
 
 const SignupPage2_enterprise = ({ setStep }) => {
 	const [industry, setIndustry] = useState('');
+	const { updateSignupData } = useSignup();
 
 	// 산업 분야 변경 함수
 	const handleIndustryChange = (e) => {
@@ -61,6 +63,8 @@ const SignupPage2_enterprise = ({ setStep }) => {
 
 	// 다음 버튼 클릭 핸들러
 	const handleNextClick = () => {
+		// 선택한 산업 분야를 컨텍스트에 저장
+		updateSignupData({ industry });
 		setStep(2); // 다음 단계인 약관 동의 페이지로 이동
 	};
 
@@ -70,6 +74,7 @@ const SignupPage2_enterprise = ({ setStep }) => {
 				{/* 산업 분야 선택 컨테이너 */}
 				<div>
 					<SelectIndustry 
+						id="industry"
 						value={industry} 
 						onChange={handleIndustryChange}
 						defaultValue=""

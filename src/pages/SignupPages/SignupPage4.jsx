@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import NextButton from '../../components/ArrowBlueButton';
 import { useState, useEffect } from 'react';
+import { useSignup } from '../../services/SignupContext';
 
 const InputLabel = styled.label`
 	align-self: stretch;
@@ -109,6 +110,7 @@ const ResendButton = styled.button`
 const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => {
 	const [timeLeft, setTimeLeft] = useState(300); // 5분 = 300초
 	const [isTimerRunning, setIsTimerRunning] = useState(true);
+	const { updateSignupData } = useSignup();
 
 	// 타이머 실행
 	useEffect(() => {
@@ -141,6 +143,24 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 		setIsTimerRunning(true);
 	};
 
+	// 인증 확인 함수
+	const handleVerification = (code) => {
+		if (code === "123456") {
+			setVerificationStatus(true);
+			// 휴대폰 인증 상태를 컨텍스트에 저장
+			updateSignupData({ phoneVerified: true });
+		} else {
+			setVerificationStatus(false);
+		}
+	};
+
+	// 다음 단계로 이동
+	const handleNextClick = () => {
+		if (verificationStatus) {
+			setStep(5);
+		}
+	};
+
 	return (
 		<div>
 			<div>
@@ -154,13 +174,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 						id="verificationCode" 
 						maxLength="6" 
 						placeholder="인증번호 6자리 입력"
-						onChange={(e) => {
-							if (e.target.value === "123456") {
-								setVerificationStatus(true);
-							} else {
-								setVerificationStatus(false);
-							}
-						}}
+						onChange={(e) => handleVerification(e.target.value)}
 					/>
 					<TimerText isExpired={timeLeft === 0}>{formatTime(timeLeft)}</TimerText>
 				</InputContainer>
@@ -188,7 +202,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 				
 			{/* 인증하기 버튼 */}
 			<NextButton 
-				onClick={() => verificationStatus && setStep(5)}
+				onClick={handleNextClick}
 				disabled={!verificationStatus}
 				style={{
 					color: verificationStatus ? '#007bff' : '#cccccc',
