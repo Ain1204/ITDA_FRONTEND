@@ -51,3 +51,6 @@ firestore.indexes.json
 
 # Firebase 규칙 파일 무시
 firestore.rules
+
+# package-lock.json 파일 무시
+package-lock.json
