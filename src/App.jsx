@@ -9,6 +9,7 @@ import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import TestColorPage from "./pages/TestColorPage";
 import MyPage from "./pages/MyPage";
+import RegisterView from "./pages/RegisterPages/RegisterView";
 
 function App() {
 	return (
@@ -21,6 +22,7 @@ function App() {
 				<Route path="/test-typography" element={<TestTypographyPage />} />
 				<Route path="/test-color" element={<TestColorPage />} />
 				<Route path="/mypage" element={<MyPage />} />
+				<Route path="/register" element={<RegisterView />} />
 			</Routes>
 		</ThemeProvider>
 	);
