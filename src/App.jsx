@@ -22,7 +22,7 @@ function App() {
 				<Route path="/test-typography" element={<TestTypographyPage />} />
 				<Route path="/test-color" element={<TestColorPage />} />
 				<Route path="/mypage" element={<MyPage />} />
-				<Route path="/register" element={<RegisterView />} />
+				<Route path="/registerview/:type" element={<RegisterView />} />
 			</Routes>
 		</ThemeProvider>
 	);
