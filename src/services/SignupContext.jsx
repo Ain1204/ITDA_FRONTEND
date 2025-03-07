@@ -9,6 +9,10 @@ const initialSignupData = {
     // 기업 산업 분야
     industry: '',
     
+    // 대학 단체 정보
+    organization: '',  // 단체 구분
+    major: '',        // 전공 계열
+    
     // 약관 동의
     termsAgreed: {
         service: false,

@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import BlueButton from '../../components/BlueButton';
 import SignupPage5_enterprise from './SignupPage5_enterprise';
 import SignupPage5_business from './SignupPage5_business';
+import SignupPage5_institution from './SignupPage5_institution';
 import { useSignup } from '../../services/SignupContext';
 
 // 버튼 컨테이너
@@ -245,7 +246,8 @@ export const SignupButton = styled(BlueButton)`
 // 유효성 검사 함수들
 export const validators = {
     validateUserId: (id) => {
-        const regex = /^[A-Za-z0-9]{4,20}$/;
+        // 한글, 영문, 숫자, 공백을 허용하고 길이는 2~50자로 제한
+        const regex = /^[가-힣A-Za-z0-9\s]{2,50}$/;
         return regex.test(id);
     },
     validatePassword: (password) => {
@@ -374,8 +376,16 @@ export const useTimer = () => {
 const SignupPage5Main = ({ setStep }) => {
     const [showEmailInput, setShowEmailInput] = useState(true);
     const [showBusinessInput, setShowBusinessInput] = useState(false);
-    const { updateSignupData } = useSignup();
+    const [showInstitutionInput, setShowInstitutionInput] = useState(false);
+    const { signupData, updateSignupData } = useSignup();
     const [authMethod, setAuthMethod] = useState('email');
+    
+    // 계정 유형에 따른 UI 텍스트 변경
+    const isUniversity = signupData.accountType === 'university';
+    const emailButtonText = isUniversity ? '학교 메일' : '기업 메일';
+    const secondOptionText = isUniversity ? '기관 코드' : '사업자등록번호 (준비중)';
+    const secondOptionDisabled = isUniversity ? false : true;
+    const secondOptionMethod = isUniversity ? 'institution' : 'business';
     
     // 비즈니스 페이지에서 발생한 이벤트를 감지하는 이벤트 리스너 추가
     useEffect(() => {
@@ -392,7 +402,7 @@ const SignupPage5Main = ({ setStep }) => {
     
     // 인증 방식 변경 핸들러
     const handleAuthMethodChange = (method) => {
-        if (method === 'business') {
+        if (!isUniversity && method === 'business') {
             alert('사업자등록번호 인증은 현재 준비 중인 서비스입니다.\n기업 메일을 통한 회원가입만 가능합니다.');
             return;
         }
@@ -401,6 +411,7 @@ const SignupPage5Main = ({ setStep }) => {
         updateSignupData({ authMethod: method });
         setShowBusinessInput(method === 'business');
         setShowEmailInput(method === 'email');
+        setShowInstitutionInput(method === 'institution');
     };
 
     return (
@@ -410,19 +421,20 @@ const SignupPage5Main = ({ setStep }) => {
                     active={showEmailInput}
                     onClick={() => handleAuthMethodChange('email')}
                 >
-                    기업 메일
+                    {emailButtonText}
                 </TypeButton>
                 <TypeButton 
-                    active={showBusinessInput}
-                    onClick={() => handleAuthMethodChange('business')}
-                    style={{ opacity: 0.6, cursor: 'not-allowed' }} // 비활성화된 스타일 추가
+                    active={isUniversity ? showInstitutionInput : showBusinessInput}
+                    onClick={() => handleAuthMethodChange(secondOptionMethod)}
+                    style={secondOptionDisabled ? { opacity: 0.6, cursor: 'not-allowed' } : {}} // 비활성화된 스타일 조건부 적용
                 >
-                    사업자등록번호 (준비중)
+                    {secondOptionText}
                 </TypeButton>
             </ButtonContainer>
 
             {showEmailInput && <SignupPage5_enterprise setStep={setStep} />}
             {showBusinessInput && <SignupPage5_business setStep={setStep} />}
+            {showInstitutionInput && <SignupPage5_institution setStep={setStep} />}
         </div>
     );
 };

@@ -260,7 +260,6 @@ export const registerWithEmail = async (userData) => {
             name: userData.name || '',
             phoneNumber: userData.phoneNumber || '',
             telecomProvider: userData.telecomProvider || '',
-            industry: userData.industry || '',
             birthInfo: userData.birthInfo || '',
             genderInfo: userData.genderInfo || '',
             termsAgreed: {
@@ -269,16 +268,37 @@ export const registerWithEmail = async (userData) => {
                 marketing: userData.termsAgreed?.marketing === true
             },
             emailVerified: false, // 초기 상태: 이메일 확인 안됨
-            userType: 'enterprise', // 기업 회원
             createdAt: serverTimestamp(), // 생성 시간
             updatedAt: serverTimestamp() // 업데이트 시간
         };
         
+        // 계정 유형 및 관련 정보 설정
+        // userData 내용 디버깅 로그
+        console.log('회원가입 userData:', JSON.stringify({
+            accountType: userData.accountType,
+            industry: userData.industry,
+            organization: userData.organization,
+            major: userData.major
+        }));
+        
+        // 기본적으로 enterprise로 설정 (명시적으로 university가 아니면 enterprise로)
+        userDataForFirestore.userType = 'enterprise';
+        
+        // university인 경우에만 대학 단체 처리
+        if (userData.accountType === 'university') {
+            userDataForFirestore.userType = 'university';
+            userDataForFirestore.organization = userData.organization || '';
+            userDataForFirestore.major = userData.major || '';
+        }
+        
+        // industry 값은 항상 포함 (기업 계정이 아니어도 필드는 포함, 필요 없으면 빈 문자열)
+        userDataForFirestore.industry = userData.industry || '';
+
         // 4. Firestore에 사용자 데이터 저장
         try {
             const userDocRef = doc(db, "users", userCredential.user.uid);
             await setDoc(userDocRef, userDataForFirestore);
-            console.log("Firestore에 사용자 데이터 저장 성공");
+            console.log("Firestore에 사용자 데이터 저장 성공:", userDataForFirestore);
             
             return {
                 success: true,
