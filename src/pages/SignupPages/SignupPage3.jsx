@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useSignup } from '../../services/SignupContext';
 
 // 인증 기능 활성화 여부
-const ENABLE_VERIFICATION = false; // true면 인증 기능 활성화, false면 인증 기능 비활성화
+const ENABLE_VERIFICATION = true; // true면 인증 기능 활성화, false면 인증 기능 비활성화
 
 const InputLabel = styled.label`
 	align-self: stretch;
