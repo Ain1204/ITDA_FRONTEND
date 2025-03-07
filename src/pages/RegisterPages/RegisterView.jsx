@@ -6,8 +6,8 @@ import Footer from "../../components/Footer";
 import RegisterPlaceholder from "../../components/RegisterPlaceholder";
 import keywordDelete from "../../assets/registerIcon/keywordDelete.svg";
 import registerImage from "../../assets/registerIcon/registerImage.png";
-// import EnterpriseRegisterBottom from "./EnterpriseRegisterBottom";
-// import CouncilRegisterBottom from "./CouncilRegisterBottom";
+import EnterpriseRegisterBottom from "./EnterpriseRegisterBottom";
+import CouncilRegisterBottom from "./CouncilRegisterBottom";
 
 const Title = styled.h2`
 	font-family: "SUIT Variable";
@@ -283,11 +283,11 @@ const RegisterView = () => {
 				</RegisterContentWrapper>
 			</RegisterInputContainer>
 			
-			{/* {registerType === "enterprise" ? (
+			{registerType === "enterprise" ? (
 				<EnterpriseRegisterBottom />
 			) : (
 				<CouncilRegisterBottom />
-			)} */}
+			)}
 			<Footer />
 		</>
 	);
