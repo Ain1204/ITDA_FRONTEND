@@ -318,23 +318,28 @@ const Modal = ({ isOpen, onClose }) => {
   };
   const handleInputKeyDown = (e) => {
     if (e.key === "Enter" && otherText.trim() !== "") {
+      e.preventDefault(); // 엔터 키 기본 동작 방지 (줄바꿈 방지)
+
       setSelectedLabels((prev) => {
         const updatedLabels = { ...prev };
 
+        // 기존에 기타 카테고리가 없으면 초기화
         if (!updatedLabels["기타"]) {
-          updatedLabels["기타"] = []; // 기타 카테고리 초기화
+          updatedLabels["기타"] = [];
         }
 
+        // 중복된 값이 없을 때만 추가
         if (!updatedLabels["기타"].includes(otherText.trim())) {
           updatedLabels["기타"].push(otherText.trim());
         }
 
-        return { ...updatedLabels };
+        return updatedLabels;
       });
 
       setOtherText(""); // 입력 필드 초기화
     }
   };
+
   useEffect(() => {
     if (isOpen) {
       //document.body.style.overflow = "hidden"; // 모달이 열릴 때 스크롤 방지
@@ -408,7 +413,7 @@ const Modal = ({ isOpen, onClose }) => {
                     {selectedLabels[category] &&
                       selectedLabels[category].map((label) => (
                         <SelectedLabel key={label}>
-                          {label}{" "}
+                          {label}
                           <SelectedLabelCloseButton
                             onClick={() => handleRemoveLabel(category, label)}
                           >
