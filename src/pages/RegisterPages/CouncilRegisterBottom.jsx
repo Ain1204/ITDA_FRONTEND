@@ -177,6 +177,25 @@ const RequestWrapper = styled.div`
   margin-bottom: 40px;
 `;
 
+const VerifyButton = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: var(--Colors-Secondary-B100, rgba(235, 242, 255, 1));
+  color: var(--Colors-Primary-B500, rgba(0, 81, 255, 1));
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--Colors-Secondary-B200, rgba(214, 229, 255, 1));
+  }
+`;
+
 const PeriodDivider = styled.span`
   color: var(--Colors-GrayScale-G600, #1a1a23);
   font-family: "SUIT Variable";
@@ -192,8 +211,6 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  position: relative; /* 기본적으로 relative 유지 */
-  z-index: 1; /* 모달위로 튀어나와서 모달보다 낮은 값으로 설정 */
 `;
 
 const RegisterButton = styled.button`
@@ -216,8 +233,7 @@ const RegisterButton = styled.button`
   cursor: pointer;
   transform: translateY(1px);
   margin-bottom: 48px;
-  position: relative; /* 버튼이 고정되지 않도록 변경 */
-  z-index: 1; /* 모달보다 낮게 설정 */
+  
   &:hover {
     background: var(--Colors-Primary-Blue600, #2461d9);
   }
@@ -274,27 +290,11 @@ const InputWrapper = styled.div`
   position: relative;
 `;
 
-const VerifyButton = styled.button`
-  display: flex;
-  align-items: center;
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: var(--Colors-Secondary-B100, rgba(235, 242, 255, 1));
-  color: var(--Colors-Primary-B500, rgba(0, 81, 255, 1));
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.4px;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    background: var(--Colors-Secondary-B200, rgba(214, 229, 255, 1));
-  }
-`;
 
 const RegisterBottom = () => {
   const [activeTab, setActiveTab] = useState("행사 개요");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedInitialCategory, setSelectedInitialCategory] = useState("인스타그램");
   const [errors, setErrors] = useState({
     primaryContact: "",
     secondaryContact: "",
@@ -387,6 +387,19 @@ const RegisterBottom = () => {
     }));
   };
 
+  const handlePromotionButtonClick = (method) => {
+    setSelectedInitialCategory(method);
+    setIsModalOpen(true);
+  };
+
+  const handlePromotionMethodsChange = (selectedLabels) => {
+    const allSelectedMethods = Object.values(selectedLabels).flat();
+    setFormData(prev => ({
+      ...prev,
+      promotionMethods: allSelectedMethods
+    }));
+  };
+
   const handleRegister = () => {
     if (!isFormValid()) {
       alert("필수 항목을 모두 입력해주세요.");
@@ -394,14 +407,6 @@ const RegisterBottom = () => {
     }
     alert("등록이 완료되었습니다.");
     // 필요한 경우 여기에 추가 로직 구현
-  };
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
-  const [selectedMethod, setSelectedMethod] = useState(""); // 선택한 홍보 방법
-
-  // 버튼 클릭 시 모달 열기
-  const handleButtonClick = (method) => {
-    setSelectedMethod(method);
-    setIsModalOpen(true);
   };
 
   return (
@@ -437,6 +442,13 @@ const RegisterBottom = () => {
           </RequestTitle>
         </RequestTitleContainer>
         <RequestDivider />
+
+        <Modal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)}
+          onSelect={handlePromotionMethodsChange}
+          initialCategory={selectedInitialCategory}
+        />
 
         <RequestDetailWrapper $activeTab={activeTab}>
           <RequestDetail $active={(activeTab === "행사 개요").toString()}>
@@ -589,17 +601,11 @@ const RegisterBottom = () => {
                     key={method}
                     text={method}
                     $active={formData.promotionMethods.includes(method)}
-                    onClick={() => handleButtonClick(method)} // 클릭 시 모달 열기
+                    onClick={() => handlePromotionButtonClick(method)}
                   />
                 )
               )}
             </RequestWrapper>
-
-            {/*모달 컴포넌트 */}
-            <Modal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-            ></Modal>
 
             <RequestDetailTitle>
               1차 연락 수단
