@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import ClosedIcon from "../assets/registerIcon/wrong.svg"; // 닫기 아이콘
 import LabelClosedIcon from "../assets/registerIcon/lablewrong.svg"; // 닫기 아이콘
@@ -63,7 +64,7 @@ const ModalFrameCheckbox = styled.div`
   margin-top: 2.5rem;
 `;
 
-const CheckboxLabel = styled.div`
+const CheckboxLabel = styled.label`
   display: flex;
   padding: 0.25rem 1rem 0.25rem 0.75rem;
   align-items: center;
@@ -76,6 +77,11 @@ const CheckboxLabel = styled.div`
   font-weight: 500;
   line-height: 150%;
   letter-spacing: -0.025rem;
+  cursor: pointer;
+  
+  & > span {
+    transform: translateY(1px);
+  }
 `;
 
 const Checkbox = styled.input`
@@ -86,12 +92,19 @@ const Checkbox = styled.input`
   border: 2px solid #949bad;
   border-radius: 4px;
   background-color: white;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
+  position: relative;
 
   &:checked {
     background-color: #3d85ff;
     border-color: #3d85ff;
     appearance: auto;
+    transform: scale(1.05);
+  }
+
+  &:hover {
+    border-color: #3d85ff;
+    transform: scale(1.05);
   }
 `;
 
@@ -151,7 +164,12 @@ const SelectedLabel = styled.div`
   font-weight: 400;
   line-height: 132%; /* 0.99rem */
   letter-spacing: -0.01875rem;
+
+  & > span {
+    transform: translateY(1px);
+  }
 `;
+
 const SelectedLabelCloseButton = styled.button`
   border: none;
   width: 0.5rem;
@@ -216,6 +234,10 @@ const CategoryTitle = styled.strong`
   font-weight: 500;
   line-height: 132%; /* 0.99rem */
   letter-spacing: -0.01875rem;
+
+  & > img {
+    transform: translateY(-1px);
+  }
 `;
 
 const LabelContainer = styled.div`
@@ -272,10 +294,17 @@ const CategoryContainer = styled.div`
   background: ${({ isSelected }) => (isSelected ? "#d6e4ff" : "none")};
 `;
 
-const Modal = ({ isOpen, onClose }) => {
-  const [selectedCategory, setSelectedCategory] = useState("인스타그램");
+const Modal = ({ isOpen, onClose, onSelect, initialCategory }) => {
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory || "인스타그램");
   const [otherText, setOtherText] = useState("");
   const [selectedLabels, setSelectedLabels] = useState({});
+
+  // initialCategory가 변경될 때마다 selectedCategory 업데이트
+  useEffect(() => {
+    if (initialCategory) {
+      setSelectedCategory(initialCategory);
+    }
+  }, [initialCategory]);
 
   const handleCheckboxChange = (category, label) => {
     setSelectedLabels((prev) => {
@@ -291,6 +320,11 @@ const Modal = ({ isOpen, onClose }) => {
         );
       } else {
         updatedLabels[category].push(label);
+      }
+
+      // 부모 컴포넌트에 선택된 라벨 변경 알림
+      if (onSelect) {
+        onSelect(updatedLabels);
       }
 
       return { ...updatedLabels };
@@ -387,13 +421,12 @@ const Modal = ({ isOpen, onClose }) => {
               checkboxes[selectedCategory].map((label) => (
                 <CheckboxLabel key={label}>
                   <Checkbox
+                    id={`checkbox-${label}`}
                     type="checkbox"
                     checked={selectedLabels[selectedCategory]?.includes(label)}
-                    onChange={() =>
-                      handleCheckboxChange(selectedCategory, label)
-                    }
+                    onChange={() => handleCheckboxChange(selectedCategory, label)}
                   />
-                  {label}
+                  <span>{label}</span>
                 </CheckboxLabel>
               ))
             )}
@@ -413,7 +446,7 @@ const Modal = ({ isOpen, onClose }) => {
                     {selectedLabels[category] &&
                       selectedLabels[category].map((label) => (
                         <SelectedLabel key={label}>
-                          {label}
+                          <span>{label}</span>
                           <SelectedLabelCloseButton
                             onClick={() => handleRemoveLabel(category, label)}
                           >
@@ -430,6 +463,13 @@ const Modal = ({ isOpen, onClose }) => {
       </ModalContent>
     </ModalBackground>
   );
+};
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSelect: PropTypes.func,
+  initialCategory: PropTypes.string
 };
 
 export default Modal;

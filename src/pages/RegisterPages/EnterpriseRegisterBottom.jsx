@@ -4,6 +4,7 @@ import dummyProfile from "../../assets/registerIcon/profile_enter.svg";
 import RegisterInput from "../../components/RegisterInput";
 import RegisterDetailButton from "../../components/RegisterButton";
 import necessaryDot from "../../assets/registerIcon/necessaryDot.svg";
+import Modal from "../../components/Modal";
 
 const BottomContainer = styled.div`
   max-width: 1440px;
@@ -242,6 +243,8 @@ const InputWrapper = styled.div`
 `;
 
 const RegisterBottom = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedInitialCategory, setSelectedInitialCategory] = useState("인스타그램");
   const [errors, setErrors] = useState({
     primaryContact: '',
     secondaryContact: ''
@@ -319,6 +322,19 @@ const RegisterBottom = () => {
     }));
   };
 
+  const handlePromotionButtonClick = (method) => {
+    setSelectedInitialCategory(method);
+    setIsModalOpen(true);
+  };
+
+  const handlePromotionMethodsChange = (selectedLabels) => {
+    const allSelectedMethods = Object.values(selectedLabels).flat();
+    setFormData(prev => ({
+      ...prev,
+      promotionMethods: allSelectedMethods
+    }));
+  };
+
   const handleRegister = () => {
     if (!isFormValid()) {
       alert('필수 항목을 모두 입력해주세요.');
@@ -343,6 +359,14 @@ const RegisterBottom = () => {
       <RequestBody>
         <RequestTitle type="button">제안 사항</RequestTitle>
         <RequestDivider type="button" />
+
+        <Modal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)}
+          onSelect={handlePromotionMethodsChange}
+          initialCategory={selectedInitialCategory}
+        />
+
         <RequestDetail>
           <RequestDetailTitle>
             공고 기간
@@ -420,7 +444,7 @@ const RegisterBottom = () => {
                 key={method}
                 text={method}
                 $active={formData.promotionMethods.includes(method)}
-                onClick={() => handleArrayInputChange('promotionMethods', method)}
+                onClick={() => handlePromotionButtonClick(method)}
               />
             ))}
           </RequestWrapper>
