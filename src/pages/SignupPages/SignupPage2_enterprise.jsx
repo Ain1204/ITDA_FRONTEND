@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import NextButton from '../../components/ArrowBlueButton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSignup } from '../../services/SignupContext';
+import { useNavigate } from 'react-router-dom';
+import logger from '../../utils/logger';
 
 const InputLabel = styled.label`
 	align-self: stretch;
@@ -53,14 +56,38 @@ const SelectIndustry = styled.select`
 
 const SignupPage2_enterprise = ({ setStep }) => {
 	const [industry, setIndustry] = useState('');
+	const { signupData, updateSignupData } = useSignup();
+
+	// 컴포넌트 마운트 시 accountType 설정 확인
+	useEffect(() => {
+		// accountType이 business가 아니면 설정
+		if (signupData.accountType !== 'business') {
+			logger.log('SignupPage2_enterprise - accountType 설정: business');
+			updateSignupData({ accountType: 'business' });
+		}
+		
+		// 이미 industry가 설정되어 있으면 로컬 상태에 반영
+		if (signupData.industry) {
+			setIndustry(signupData.industry);
+		}
+	}, []);
 
 	// 산업 분야 변경 함수
 	const handleIndustryChange = (e) => {
-		setIndustry(e.target.value);
+		const newIndustry = e.target.value;
+		setIndustry(newIndustry);
+		// 값이 변경될 때마다 컨텍스트에 즉시 반영
+		updateSignupData({ industry: newIndustry });
 	};
 
 	// 다음 버튼 클릭 핸들러
 	const handleNextClick = () => {
+		// 선택한 산업 분야를 컨텍스트에 다시 저장하여 확실히 반영
+		updateSignupData({ 
+			accountType: 'business',
+			industry: industry 
+		});
+		logger.log('산업 분야 선택:', industry);
 		setStep(2); // 다음 단계인 약관 동의 페이지로 이동
 	};
 
@@ -70,6 +97,7 @@ const SignupPage2_enterprise = ({ setStep }) => {
 				{/* 산업 분야 선택 컨테이너 */}
 				<div>
 					<SelectIndustry 
+						id="industry"
 						value={industry} 
 						onChange={handleIndustryChange}
 						defaultValue=""

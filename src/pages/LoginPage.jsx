@@ -17,6 +17,7 @@ import GoogleIcon from "../assets/loginIcon/google.svg";
 import AppleIcon from "../assets/loginIcon/apple.svg";
 import FacebookIcon from "../assets/loginIcon/facebook.svg";
 import LoginBlueButton from "../components/BlueButton";
+import logger from '../utils/logger';
 
 const PageContainer = styled.div`
   display: flex;
@@ -310,20 +311,19 @@ const LoginPage = () => {
     }
   };
 
-  // 카카오 로그인 핸들러 추가
-  const handleKakaoLogin = async () => {
-    // Firebase 콘솔에서 OIDC 제공자로 등록한 Provider ID와 일치해야 합니다.
-    const kakaoProvider = new OAuthProvider("oidc.kakao");
-    try {
-      const result = await signInWithPopup(auth, kakaoProvider);
-      console.log("카카오 로그인 성공:", result.user);
-      alert("카카오 로그인에 성공했습니다!");
-      navigate("/");
-    } catch (error) {
-      console.error("카카오 로그인 오류:", error.message);
-      alert("카카오 로그인 오류: " + error.message);
-    }
-  };
+	// 카카오 로그인 핸들러 추가
+	const handleKakaoLogin = async () => {
+		// Firebase 콘솔에서 OIDC 제공자로 등록한 Provider ID와 일치해야 합니다.
+		const kakaoProvider = new OAuthProvider("oidc.kakao");
+		try {
+			const result = await signInWithPopup(auth, kakaoProvider);
+			console.log("카카오 로그인 성공:", result.user);
+			alert("카카오 로그인에 성공했습니다!");
+		} catch (error) {
+			console.error("카카오 로그인 오류:", error.message);
+			alert("카카오 로그인 오류: " + error.message);
+		}
+	};
 
   // 네이버 로그인 핸들러 (프로미스 기반)
   const handleNaverLogin = async () => {
@@ -333,69 +333,54 @@ const LoginPage = () => {
     naverLoginInProgressRef.current = true;
     setIsNaverLoggingIn(true);
 
-    // 클라이언트용 정보는 import.meta.env 를 사용 (VITE_ 접두어)
-    const clientId = import.meta.env.VITE_NAVER_CLIENT_ID;
-    const redirectUri = import.meta.env.VITE_NAVER_REDIRECT_URI;
-    const state = Math.random().toString(36).substring(2);
-    const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
-      redirectUri
-    )}&state=${state}`;
-    const expectedOrigin = redirectUri;
-
-    // 프로미스를 사용하여 메시지를 기다립니다.
-    const customTokenPromise = new Promise((resolve, reject) => {
-      // 타이머 ID 저장
-      const timerId = setTimeout(() => {
-        reject(
-          new Error("커스텀 토큰을 기다리는 동안 타임아웃이 발생했습니다.")
-        );
-      }, 30000);
-
-      const messageHandler = (event) => {
-        console.log(
-          "Message received from:",
-          event.origin,
-          "data:",
-          event.data
-        );
-        // 약간의 차이를 허용: expectedOrigin으로 시작하는지 확인
-        if (!event.origin.startsWith(expectedOrigin)) {
-          console.warn("Unexpected message origin:", event.origin);
-          return;
-        }
-        if (event.data && event.data.customToken) {
-          clearTimeout(timerId);
-          resolve(event.data.customToken);
-          window.removeEventListener("message", messageHandler);
-        }
-      };
-      // 이벤트 핸들러를 등록 (once 옵션 없이)
-      window.addEventListener("message", messageHandler);
-    });
-
-    // 팝업 열기
-    const width = 600,
-      height = 600;
-    const left = window.screen.width / 2 - width / 2;
-    const top = window.screen.height / 2 - height / 2;
-    window.open(
-      naverAuthUrl,
-      "NaverLogin",
-      `width=${width},height=${height},top=${top},left=${left}`
-    );
-
-    try {
-      const customToken = await customTokenPromise;
-      await signInWithCustomToken(auth, customToken);
-      alert("네이버 로그인에 성공했습니다!");
-      navigate("/");
-    } catch (error) {
-      alert("네이버 로그인 오류: " + error.message);
-    } finally {
-      naverLoginInProgressRef.current = false;
-      setIsNaverLoggingIn(false);
-    }
-  };
+		// 클라이언트용 정보는 import.meta.env 를 사용 (VITE_ 접두어)
+		const clientId = import.meta.env.VITE_NAVER_CLIENT_ID;
+		const redirectUri = import.meta.env.VITE_NAVER_REDIRECT_URI;
+		const state = Math.random().toString(36).substring(2);
+		const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
+		const expectedOrigin = redirectUri;
+		
+		// 프로미스를 사용하여 메시지를 기다립니다.
+		const customTokenPromise = new Promise((resolve, reject) => {
+			// 타이머 ID 저장
+			const timerId = setTimeout(() => {
+				reject(new Error("커스텀 토큰을 기다리는 동안 타임아웃이 발생했습니다."));
+			}, 30000);
+			
+			const messageHandler = (event) => {
+				console.log("Message received from:", event.origin, "data:", event.data);
+				// 약간의 차이를 허용: expectedOrigin으로 시작하는지 확인
+				if (!event.origin.startsWith(expectedOrigin)) {
+					console.warn("Unexpected message origin:", event.origin);
+					return;
+				}
+				if (event.data && event.data.customToken) {
+					clearTimeout(timerId);
+					resolve(event.data.customToken);
+					window.removeEventListener("message", messageHandler);
+				}
+			};
+			// 이벤트 핸들러를 등록 (once 옵션 없이)
+			window.addEventListener("message", messageHandler);
+		});
+		
+		// 팝업 열기
+		const width = 600, height = 600;
+		const left = window.screen.width / 2 - width / 2;
+		const top = window.screen.height / 2 - height / 2;
+		window.open(naverAuthUrl, "NaverLogin", `width=${width},height=${height},top=${top},left=${left}`);
+		
+		try {
+			const customToken = await customTokenPromise;
+			await signInWithCustomToken(auth, customToken);
+			alert("네이버 로그인에 성공했습니다!");
+		} catch (error) {
+			alert("네이버 로그인 오류: " + error.message);
+		} finally {
+			naverLoginInProgressRef.current = false;
+			setIsNaverLoggingIn(false);
+		}
+	};
 
   return (
     <PageContainer>

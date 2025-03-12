@@ -8,10 +8,6 @@ import {
 	PasswordToggleButton,
 	SignupButton,
 	GuideText,
-	ResendContainer,
-	ResendText,
-	ResendButton,
-	useTimer,
 	useAuthState,
 	usePasswordState,
 	validators,
@@ -20,52 +16,29 @@ import {
 import PasswordEyeIcon from '../../assets/loginIcon/passwordEye.svg';
 import { useSignup } from '../../services/SignupContext';
 import { useState, useEffect } from 'react';
-import { registerWithEmail, checkUserIdExists, checkEmailExists } from '../../services/authService';
+import { registerWithEmail, checkUserIdExists } from '../../services/authService';
 import logger from '../../utils/logger';
 
-// 기업/학교 인증 페이지
-const SignupPage5_enterprise = ({ setStep }) => {
+// 기관 코드 인증 컴포넌트
+const SignupPage5_institution = ({ setStep }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
 	const { signupData, updateSignupData } = useSignup();
-
-	// 계정 유형에 따른 텍스트 변경을 위한 상태
-		const isUniversity = signupData.accountType === 'university';
 	
-	// 계정 유형에 따른 텍스트 설정
-	const emailLabel = isUniversity ? '학교 메일' : '기업 메일';
-	const emailPlaceholder = isUniversity ? '학교 메일을 입력해주세요' : '기업 메일을 입력해주세요';
-	const userIdPlaceholder = isUniversity ? '사용하실 아이디를 입력해주세요' : '사용하실 아이디를 입력해주세요';
-	const userIdGuideText = isUniversity ? "학교/단체 명을 입력해주세요" : "기업 명을 입력해주세요";
-
-	// 타이머 관련 상태 및 함수
-	const { remainingTime, timer, startTimer, formatTime, isTimerRunning } = useTimer();
-
-	// 이메일 인증 관련 상태 및 함수
+	// 기관 코드 관련 상태
+	const [institutionCode, setInstitutionCode] = useState('');
+	const [institutionVerified, setInstitutionVerified] = useState(false);
+	const [institutionError, setInstitutionError] = useState(false);
+	
+	// 인증 관련 상태 및 함수
 	const {
-		emailVerified,
-		setEmailVerified,
-		showEmailVerification,
-		setShowEmailVerification,
-		verificationFailed,
-		setVerificationFailed,
-		verificationCode,
-		setVerificationCode,
 		userId,
 		setUserId,
 		userIdVerified,
 		setUserIdVerified,
 		userIdVerificationFailed,
-		setUserIdVerificationFailed,
-		emailDuplicateChecked,
-		setEmailDuplicateChecked
+		setUserIdVerificationFailed
 	} = useAuthState();
-
-	// 이메일 중복 확인 상태 추가
-	const [emailDuplicateError, setEmailDuplicateError] = useState(false);
-	
-	// 서버로부터 받은 실제 인증 코드 저장 (개발 환경용)
-	const [serverVerificationCode, setServerVerificationCode] = useState("");
 	
 	// 비밀번호 관련 상태 및 함수
 	const {
@@ -85,85 +58,45 @@ const SignupPage5_enterprise = ({ setStep }) => {
 		setShowPasswordInput
 	} = usePasswordState();
 
-	// 타이머 만료 감지를 위한 useEffect 추가
-	useEffect(() => {
-		if (remainingTime === 0 && showEmailVerification && !emailVerified) {
-			// 타이머가 만료되면 안내 메시지 표시
-			setErrorMsg('인증 시간이 만료되었습니다. 이메일 인증을 다시 요청해주세요.');
-		}
-	}, [remainingTime, showEmailVerification, emailVerified]);
-
-	// 이메일 변경 처리
-	const handleEmailChange = (e) => {
-		updateSignupData({ email: e.target.value });
-		// 이메일이 변경되면 이전 인증 결과 초기화
-		setEmailDuplicateError(false);
-		setEmailVerified(false);
-		setEmailDuplicateChecked(false);
-		setShowEmailVerification(false);
-		setErrorMsg(''); // 이메일이 변경되면 이전 오류 메시지 제거
+	// 기관 코드 변경 처리
+	const handleInstitutionCodeChange = (e) => {
+		setInstitutionCode(e.target.value);
+		setInstitutionError(false);
+		setInstitutionVerified(false);
 	};
 
-	// 이메일 중복 확인 (인증 단계 제거)
-	const handleRequestEmailVerification = async () => {
-		const email = signupData.email;
-		
-		// 이메일 유효성 검사
-		if (!email || !email.includes('@') || !email.includes('.')) {
-			setErrorMsg('유효한 이메일 주소를 입력해 주세요.');
+	// 기관 코드 검증 처리
+	const handleVerifyInstitution = async () => {
+		if (!institutionCode.trim()) {
+			setInstitutionError(true);
+			setErrorMsg('기관 코드를 입력해주세요.');
 			return;
 		}
-
+		
 		setIsLoading(true);
 		setErrorMsg('');
-		setEmailDuplicateChecked(true);
-
+		
 		try {
-			// 이메일 중복 확인
-			const isDuplicate = await checkEmailExists(email);
+			// TODO: 실제 기관 코드 검증 API 호출
+			// 임시로 특정 코드는 성공으로 처리
+			const isValid = institutionCode === '12345' || institutionCode === 'UNIV2023';
 			
-			if (isDuplicate) {
-				setEmailDuplicateError(true);
-				setEmailVerified(false);
-				setErrorMsg('이미 사용 중인 이메일입니다. 다른 이메일을 사용해 주세요.');
-				setIsLoading(false);
-				return;
+			if (isValid) {
+				setInstitutionVerified(true);
+				updateSignupData({ 
+					institutionCode: institutionCode,
+					institutionVerified: true
+				});
+			} else {
+				setInstitutionError(true);
+				setErrorMsg('유효하지 않은 기관 코드입니다. 다시 확인해주세요.');
 			}
-			
-			// 중복이 아니면 이메일 확인 완료로 처리
-			setEmailVerified(true);
-			updateSignupData({ 
-				email: email,
-				emailVerified: true // 중복 확인만 통과한 상태
-			});
-			setEmailDuplicateError(false);
-			setShowEmailVerification(false); // 인증 입력창 표시하지 않음
-			setErrorMsg('');
-			logger.log('이메일 중복 확인 완료:', email);
-			
 		} catch (error) {
-			logger.error("이메일 확인 중 오류:", error);
-			setErrorMsg('이메일 확인 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-			setEmailVerified(false);
+			logger.error("기관 코드 검증 중 오류:", error);
+			setInstitutionError(true);
+			setErrorMsg('기관 코드 검증 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
 		} finally {
 			setIsLoading(false);
-		}
-	};
-
-	// 이메일 인증 코드 확인 (현재는 사용하지 않지만 유지)
-	const handleVerifyEmailCode = () => {
-		// 인증 코드 확인 로직 - UI 호환성 위해 기존 코드 유지
-		// 실제 인증은 이메일 링크를 통해 이루어집니다
-		if (verificationCode === serverVerificationCode || verificationCode === "1234") {
-			setEmailVerified(true);
-			updateSignupData({ emailVerified: true });
-			setVerificationFailed(false);
-			setShowEmailVerification(false);
-			setErrorMsg(''); // 인증 성공 시 오류 메시지 제거
-			clearInterval(timer);
-		} else {
-			setVerificationFailed(true);
-			setErrorMsg('올바르지 않은 인증 코드입니다. 다시 확인해 주세요.');
 		}
 	};
 
@@ -176,7 +109,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 		}
 
 		try {
-			setIsLoading(true); // 로딩 상태 설정
+			setIsLoading(true);
 			
 			// 아이디 중복 확인 API
 			const isDuplicate = await checkUserIdExists(userId);
@@ -198,15 +131,15 @@ const SignupPage5_enterprise = ({ setStep }) => {
 			setUserIdVerificationFailed(true);
 			setUserIdVerified(false);
 		} finally {
-			setIsLoading(false); // 로딩 상태 해제
+			setIsLoading(false);
 		}
 	};
 
 	// 회원가입 제출 처리
 	const handleSignup = async () => {
 		// 필수 확인 체크
-		if (!emailVerified || !emailDuplicateChecked) {
-			setErrorMsg('이메일 중복 확인이 완료되지 않았습니다.');
+		if (!institutionVerified) {
+			setErrorMsg('기관 코드 인증이 완료되지 않았습니다.');
 			return;
 		}
 		
@@ -236,42 +169,23 @@ const SignupPage5_enterprise = ({ setStep }) => {
 			// 회원가입 데이터 준비
 			const userData = {
 				...signupData,
-				email: signupData.email,
+				institutionCode,
+				institutionVerified: true,
 				userId,
 				password,
-				emailVerified: false // 아직 이메일 인증을 받지 않음
+				authMethod: 'institution'
 			};
 
-			// Firebase Auth로 회원가입 처리
+			// TODO: 기관 코드 기반 회원가입 API 호출
+			// 현재는 임시로 이메일 회원가입 API 호출
 			const result = await registerWithEmail(userData);
 			
 			if (result.success) {
-				// 이메일 인증 URL의 응답 확인을 위한 로깅 추가
-				logger.log("회원가입 성공, 인증 이메일이 발송되었습니다.");
-				logger.log("인증 이메일 상태:", result.emailSent ? "발송됨" : "발송 실패");
-				
-				if (result.verificationResult) {
-					logger.log("이메일 인증 반환 값:", result.verificationResult);
-				}
-				
-				// 이메일 인증 모니터링 시작 여부 확인
-				if (result.monitoringStarted) {
-					logger.log("이메일 인증 상태 모니터링이 시작되었습니다.");
-				}
-				
-				// 이메일 인증 URL 클릭 시 반환되는 값을 확인하기 위한 안내
-				alert(`회원가입이 완료되었습니다!\n\n이메일 인증 링크가 ${userData.email}로 발송되었습니다.\n\n1. 이메일을 확인하여 인증 링크를 클릭해주세요.\n2. 브라우저를 닫지 말고 기다려주세요.\n3. 인증 상태를 30초마다 확인하고 있습니다.\n4. 이메일 인증이 완료되면 자동으로 알림이 표시됩니다.\n\n이메일 인증을 완료해야 서비스를 이용할 수 있습니다.`);
-				
+				alert('회원가입이 완료되었습니다!');
 				// 마지막 단계로 이동
 				setStep(6);
 			} else if (result.error) {
 				setErrorMsg(result.error);
-				
-				// 이메일 중복 오류가 발생한 경우 이메일 인증 상태 초기화
-				if (result.error.includes('이미 사용 중인 이메일')) {
-					setEmailVerified(false);
-					setEmailDuplicateError(true);
-				}
 			}
 		} catch (error) {
 			logger.error("회원가입 중 오류:", error);
@@ -283,31 +197,31 @@ const SignupPage5_enterprise = ({ setStep }) => {
 
 	return (
 		<InputSection>
-			{/* 메일 입력 */}
-			<Label>{emailLabel}</Label>
+			{/* 기관 코드 입력 */}
+			<Label>기관 코드</Label>
 			<InputContainer>
 				<SignupInput
-					type="email"
-					placeholder={emailPlaceholder}
-					value={signupData.email || ''}
-					onChange={handleEmailChange}
-					disabled={isLoading}
+					type="text"
+					placeholder="소속 기관의 코드를 입력해주세요"
+					value={institutionCode}
+					onChange={handleInstitutionCodeChange}
+					disabled={isLoading || institutionVerified}
 				/>
 				<SignupVerifyButton
-					onClick={handleRequestEmailVerification}
-					$status={emailVerified 
+					onClick={handleVerifyInstitution}
+					$status={institutionVerified 
 						? 'success' 
-						: emailDuplicateError
+						: institutionError 
 							? 'error'
 							: 'default'
 					}
-					disabled={isLoading || emailVerified} // 이미 인증 완료된 경우 버튼 비활성화
+					disabled={isLoading || institutionVerified}
 				>
-					{emailVerified 
-						? '확인 완료' 
-						: emailDuplicateError
-							? '사용 불가'
-							: '중복 확인'
+					{institutionVerified 
+						? '인증 완료' 
+						: institutionError
+							? '인증 실패'
+							: '코드 확인'
 					}
 				</SignupVerifyButton>
 			</InputContainer>
@@ -316,14 +230,19 @@ const SignupPage5_enterprise = ({ setStep }) => {
 					{errorMsg}
 				</GuideText>
 			)}
+			{institutionVerified && (
+				<GuideText $status="success">
+					기관 코드가 성공적으로 인증되었습니다.
+				</GuideText>
+			)}
 
 			{/* 아이디 입력 */}
-			<TransitionWrapper show={emailVerified}>
+			<TransitionWrapper show={institutionVerified}>
 				<Label>아이디</Label>
 				<InputContainer>
 					<SignupInput
 						type="text"
-						placeholder={userIdPlaceholder}
+						placeholder="사용하실 아이디를 입력해주세요"
 						value={userId}
 						onChange={(e) => {
 							setUserId(e.target.value);
@@ -349,7 +268,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 						? "사용할 수 없는 아이디에요" 
 						: userIdVerified
 							? "사용할 수 있는 아이디에요"
-							: userIdGuideText}
+							: "학교/단체 명을 입력해주세요"}
 				</GuideText>
 
 				{/* 비밀번호 입력 */}
@@ -398,7 +317,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 								onChange={(e) => {
 									const newPasswordConfirm = e.target.value;
 									setPasswordConfirm(newPasswordConfirm);
-									// 비밀번호와 비밀번호 확인이 일치하는지만 검증 (비밀번호 유효성은 이미 passwordError로 체크)
+									// 비밀번호와 비밀번호 확인이 일치하는지만 검증
 									setPasswordConfirmError(password !== newPasswordConfirm);
 								}}
 								disabled={isLoading}
@@ -421,7 +340,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 					</GuideText>
 
 					{/* 회원가입 버튼 */}
-					{emailVerified && 
+					{institutionVerified && 
 						userIdVerified && 
 						password && 
 						passwordConfirm && 
@@ -440,4 +359,4 @@ const SignupPage5_enterprise = ({ setStep }) => {
 	);
 };
 
-export default SignupPage5_enterprise;
+export default SignupPage5_institution; 

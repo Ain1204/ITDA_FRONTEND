@@ -10,20 +10,23 @@ import theme from "./styles/theme";
 import TestColorPage from "./pages/TestColorPage";
 import MyPage from "./pages/MyPage";
 import RegisterView from "./pages/RegisterPages/RegisterView";
+import { SignupProvider } from "./services/SignupContext";
 
 function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<GlobalStyles />
-			<Routes>
-				<Route path="/" element={<MainPage />} />
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/signup" element={<SignupPage />} />
-				<Route path="/test-typography" element={<TestTypographyPage />} />
-				<Route path="/test-color" element={<TestColorPage />} />
-				<Route path="/mypage" element={<MyPage />} />
-				<Route path="/registerview/:type" element={<RegisterView />} />
+			<SignupProvider>
+				<Routes>
+					<Route path="/" element={<MainPage />} />
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignupPage />} />
+					<Route path="/test-typography" element={<TestTypographyPage />} />
+					<Route path="/test-color" element={<TestColorPage />} />
+					<Route path="/mypage" element={<MyPage />} />
+					<Route path="/registerview/:type" element={<RegisterView />} />
 			</Routes>
+			</SignupProvider>
 		</ThemeProvider>
 	);
 }

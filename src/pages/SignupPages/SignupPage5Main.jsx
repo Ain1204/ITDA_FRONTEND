@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 import BlueButton from '../../components/BlueButton';
 import SignupPage5_enterprise from './SignupPage5_enterprise';
 import SignupPage5_business from './SignupPage5_business';
+import SignupPage5_institution from './SignupPage5_institution';
+import { useSignup } from '../../services/SignupContext';
 
 // 버튼 컨테이너
 const ButtonContainer = styled.div`
@@ -97,6 +99,8 @@ export const SignupInput = styled.input`
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    opacity: ${props => props.disabled ? '0.7' : '1'};
+    cursor: ${props => props.disabled ? 'not-allowed' : 'text'};
 `;
 
 // 인증 버튼
@@ -116,8 +120,9 @@ export const SignupVerifyButton = styled.button`
     font-weight: 600;
     line-height: 150%;
     letter-spacing: -0.4px;
-    cursor: ${props => props.$status === 'timer' ? 'default' : 'pointer'};
-    pointer-events: ${props => props.$status === 'timer' ? 'none' : 'auto'};
+    cursor: ${props => (props.disabled || props.$status === 'timer') ? 'default' : 'pointer'};
+    pointer-events: ${props => (props.disabled || props.$status === 'timer') ? 'none' : 'auto'};
+    opacity: ${props => props.disabled ? '0.7' : '1'};
     
     ${props => {
         switch (props.$status) {
@@ -176,9 +181,10 @@ export const ResendButton = styled.button`
     line-height: 132%;
     letter-spacing: -0.3px;
     color: var(--Colors-Primary-B500, #0051FF);
-    cursor: pointer;
+    cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
     text-decoration-line: underline;
     padding: 0 4px;
+    opacity: ${props => props.disabled ? '0.5' : '1'};
 `;
 
 // 가이드 텍스트
@@ -197,6 +203,10 @@ export const GuideText = styled.p`
                 return css`
                     color: #FF4444;  // 실패 시 빨간색
                 `;
+            case 'success':
+                return css`
+                    color: #01B777;  // 성공 시 초록색
+                `;
             default:
                 return css`
                     color: #666666;  // 기본 회색
@@ -213,11 +223,12 @@ export const PasswordToggleButton = styled.button`
     transform: translateY(-50%);
     background: none;
     border: none;
-    cursor: pointer;
+    cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
     padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: ${props => props.disabled ? '0.5' : '1'};
     
     img {
         width: 12px;
@@ -235,12 +246,23 @@ export const SignupButton = styled(BlueButton)`
 // 유효성 검사 함수들
 export const validators = {
     validateUserId: (id) => {
-        const regex = /^[A-Za-z0-9]{4,20}$/;
+        // 한글, 영문, 숫자, 공백을 허용하고 길이는 2~50자로 제한
+        const regex = /^[가-힣A-Za-z0-9\s]{2,50}$/;
         return regex.test(id);
     },
     validatePassword: (password) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return passwordRegex.test(password);
+        // 비밀번호 규칙: 최소 8자, 대소문자, 숫자, 특수문자 포함
+        const lengthRegex = /.{8,}/;                   // 최소 8자
+        const upperRegex = /[A-Z]/;                    // 대문자
+        const lowerRegex = /[a-z]/;                    // 소문자
+        const numberRegex = /[0-9]/;                   // 숫자
+        const specialRegex = /[!@#$%^&*(),.?":{}|<>]/; // 특수문자
+        
+        return lengthRegex.test(password) && 
+               upperRegex.test(password) && 
+               lowerRegex.test(password) && 
+               numberRegex.test(password) && 
+               specialRegex.test(password);
     },
     validateBusinessNumber: (number) => {
         return /^\d{10}$/.test(number);
@@ -256,6 +278,7 @@ export const useAuthState = () => {
     const [userId, setUserId] = useState('');
     const [userIdVerified, setUserIdVerified] = useState(false);
     const [userIdVerificationFailed, setUserIdVerificationFailed] = useState(false);
+    const [emailDuplicateChecked, setEmailDuplicateChecked] = useState(false);
 
     return {
         emailVerified,
@@ -271,7 +294,9 @@ export const useAuthState = () => {
         userIdVerified,
         setUserIdVerified,
         userIdVerificationFailed,
-        setUserIdVerificationFailed
+        setUserIdVerificationFailed,
+        emailDuplicateChecked,
+        setEmailDuplicateChecked
     };
 };
 
@@ -351,32 +376,65 @@ export const useTimer = () => {
 const SignupPage5Main = ({ setStep }) => {
     const [showEmailInput, setShowEmailInput] = useState(true);
     const [showBusinessInput, setShowBusinessInput] = useState(false);
+    const [showInstitutionInput, setShowInstitutionInput] = useState(false);
+    const { signupData, updateSignupData } = useSignup();
+    const [authMethod, setAuthMethod] = useState('email');
+    
+    // 계정 유형에 따른 UI 텍스트 변경
+    const isUniversity = signupData.accountType === 'university';
+    const emailButtonText = isUniversity ? '학교 메일' : '기업 메일';
+    const secondOptionText = isUniversity ? '기관 코드' : '사업자등록번호 (준비중)';
+    const secondOptionDisabled = isUniversity ? false : true;
+    const secondOptionMethod = isUniversity ? 'institution' : 'business';
+    
+    // 비즈니스 페이지에서 발생한 이벤트를 감지하는 이벤트 리스너 추가
+    useEffect(() => {
+        const handleSwitchToEmailAuth = () => {
+            setAuthMethod('email');
+        };
+        
+        window.addEventListener('switchToEmailAuth', handleSwitchToEmailAuth);
+        
+        return () => {
+            window.removeEventListener('switchToEmailAuth', handleSwitchToEmailAuth);
+        };
+    }, []);
+    
+    // 인증 방식 변경 핸들러
+    const handleAuthMethodChange = (method) => {
+        if (!isUniversity && method === 'business') {
+            alert('사업자등록번호 인증은 현재 준비 중인 서비스입니다.\n기업 메일을 통한 회원가입만 가능합니다.');
+            return;
+        }
+        
+        setAuthMethod(method);
+        updateSignupData({ authMethod: method });
+        setShowBusinessInput(method === 'business');
+        setShowEmailInput(method === 'email');
+        setShowInstitutionInput(method === 'institution');
+    };
 
     return (
         <div>
             <ButtonContainer>
                 <TypeButton 
                     active={showEmailInput}
-                    onClick={() => {
-                        setShowEmailInput(true);
-                        setShowBusinessInput(false);
-                    }}
+                    onClick={() => handleAuthMethodChange('email')}
                 >
-                    기업 메일
+                    {emailButtonText}
                 </TypeButton>
                 <TypeButton 
-                    active={showBusinessInput}
-                    onClick={() => {
-                        setShowBusinessInput(true);
-                        setShowEmailInput(false);
-                    }}
+                    active={isUniversity ? showInstitutionInput : showBusinessInput}
+                    onClick={() => handleAuthMethodChange(secondOptionMethod)}
+                    style={secondOptionDisabled ? { opacity: 0.6, cursor: 'not-allowed' } : {}} // 비활성화된 스타일 조건부 적용
                 >
-                    사업자등록번호
+                    {secondOptionText}
                 </TypeButton>
             </ButtonContainer>
 
             {showEmailInput && <SignupPage5_enterprise setStep={setStep} />}
             {showBusinessInput && <SignupPage5_business setStep={setStep} />}
+            {showInstitutionInput && <SignupPage5_institution setStep={setStep} />}
         </div>
     );
 };

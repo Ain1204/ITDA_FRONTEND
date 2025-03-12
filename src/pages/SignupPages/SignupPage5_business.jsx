@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Label,
     InputContainer,
@@ -19,9 +19,23 @@ import {
     TransitionWrapper
 } from './SignupPage5Main';
 import PasswordEyeIcon from '../../assets/loginIcon/passwordEye.svg';
+import { useSignup } from '../../services/SignupContext';
 
 // 비즈니스 회원가입 페이지
 const SignupPage5_business = ({ setStep }) => {
+    const { updateSignupData } = useSignup();
+
+    // 이 페이지가 마운트될 때 준비 중인 서비스임을 알림
+    useEffect(() => {
+        alert('사업자등록번호 인증은 현재 준비 중인 서비스입니다. 기업 메일을 통한 회원가입을 이용해주세요.');
+        
+        // 컨텍스트 업데이트 후 기업 메일 화면으로 자동 전환
+        updateSignupData({ authMethod: 'email' });
+        
+        // 메인 페이지의 상태를 변경하기 위해 이벤트 발생
+        const event = new CustomEvent('switchToEmailAuth');
+        window.dispatchEvent(event);
+    }, []);
 
     // 타이머 관련 상태 및 함수
     const { remainingTime, timer, startTimer, formatTime } = useTimer();

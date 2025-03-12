@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import NextButton from '../../components/ArrowBlueButton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSignup } from '../../services/SignupContext';
 
 const InputLabel = styled.label`
 	align-self: stretch;
@@ -57,21 +58,38 @@ const SecondSelectContainer = styled.div`
 `;
 
 const SignupPage2_student = ({ setStep }) => {
-	const [organization, setOrganization] = useState('');
-	const [major, setMajor] = useState('');
+	const { signupData, updateSignupData } = useSignup();
+	const [organization, setOrganization] = useState(signupData.organization || '');
+	const [major, setMajor] = useState(signupData.major || '');
+
+	// 컴포넌트 마운트 시 accountType 설정 확인
+	useEffect(() => {
+		if (signupData.accountType !== 'university') {
+			updateSignupData({ accountType: 'university' });
+		}
+	}, []);
 
 	// 단체 구분 변경 함수
 	const handleOrganizationChange = (e) => {
-		setOrganization(e.target.value);
+		const newOrganization = e.target.value;
+		setOrganization(newOrganization);
+		updateSignupData({ organization: newOrganization });
 	};
 
 	// 전공 계열 변경 함수
 	const handleMajorChange = (e) => {
-		setMajor(e.target.value);
+		const newMajor = e.target.value;
+		setMajor(newMajor);
+		updateSignupData({ major: newMajor });
 	};
 
 	// 다음 버튼 클릭 핸들러
 	const handleNextClick = () => {
+		// 선택한 값을 컨텍스트에 저장하고 다음 단계로 이동
+		updateSignupData({
+			organization: organization,
+			major: major
+		});
 		setStep(2); // 다음 단계인 약관 동의 페이지로 이동
 	};
 

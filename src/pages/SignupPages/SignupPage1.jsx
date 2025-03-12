@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import CategoryButton from '../../components/ArrowWhiteButton';
 import WhiteArrowIcon from '../../assets/loginIcon/signButtonArrow_white.svg';
+import { useSignup } from '../../services/SignupContext';
 
 // 버튼 래퍼 컴포넌트 - 호버 효과만 추가
 const ButtonWrapper = styled.div`
@@ -22,9 +23,13 @@ const ButtonWrapper = styled.div`
 `;
 
 const SignupPage1 = ({ setStep }) => {
+	const { updateSignupData } = useSignup();
 
 	// 계정 유형 선택 함수
 	const handleAccountTypeSelect = (type) => {
+		// 컨텍스트에 선택한 계정 유형 저장
+		updateSignupData({ accountType: type });
+		
 		if (type === 'business') {
 			setStep(1.1); // 기업 산업 분야 선택 페이지로 이동
 		} else if (type === 'university') {
