@@ -70,37 +70,55 @@ const Dot = styled.div`
     height: 0.4rem;
   }
 `;
-/*
+
 const BtnContainer = styled.div`
   z-index: 10;
-
+  display: inline-flex;
+  align-items: center;
+  gap: 1.25rem;
   font-family: "SUIT Variable";
   font-size: 1.25rem;
   font-style: normal;
   font-weight: 600;
   line-height: 140%;
   letter-spacing: -0.03125rem;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Btn01 = styled.button`
   position: absolute;
   top: 85%;
-  left: calc(80% - 7rem);
-  transform: translate(-50%, -50%); 
-  border-radius: var(--Shapes-Border-Soft, 0.25rem);
-  background: var(--Colors-Primary-B400, #3d85ff);
-  color: #fff;
+  left: calc(100% - 18rem);
+  transform: translate(-50%, -50%);
   border: none;
-  border-radius: 0.5rem;
+  white-space: nowrap;
+  cursor: pointer;
+
   display: flex;
   padding: 0.5rem 1.25rem;
   justify-content: center;
   align-items: center;
   gap: 0.625rem;
-  cursor: pointer;
+  border-radius: var(--Shapes-Border-Soft, 0.75rem);
+  background: var(--Colors-Primary-B400, #3d85ff);
+
+  color: var(--Colors-GrayScale-White, #fcfcff);
+  text-align: center;
+
+  /* Header/H4 */
+  font-family: "SUIT Variable";
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%; /* 1.75rem */
+  letter-spacing: -0.03125rem;
 `;
 
 const Btn02 = styled.button`
+  white-space: nowrap;
   display: flex;
   padding: 0.5rem 1.25rem;
   justify-content: center;
@@ -108,14 +126,24 @@ const Btn02 = styled.button`
   gap: 0.625rem;
   position: absolute;
   top: 85%;
-  left: calc(80% + 2rem);
+  left: calc(100% - 8.25rem);
   transform: translate(-50%, -50%);
   border: none;
-  border-radius: var(--Shapes-Border-Soft, 0.25rem);
+  border-radius: var(--Shapes-Border-Soft, 0.75rem);
   background: var(--Colors-GrayScale-G300, #e5eaf2);
   cursor: pointer;
+
+  color: var(--Colors-GrayScale-G600, #1a1a23);
+  text-align: center;
+
+  /* Header/H4 */
+  font-family: "SUIT Variable";
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%; /* 1.75rem */
+  letter-spacing: -0.03125rem;
 `;
-*/
 
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -132,7 +160,7 @@ const Banner = () => {
       <CarouselWrapper translate={-currentSlide * 100}>
         {slides.map((slide, index) => (
           <Slide key={index} bgImage={Banner1} />
-        ))}
+        ))}{" "}
       </CarouselWrapper>
       <DotsContainer>
         {slides.map((_, index) => (
@@ -143,6 +171,10 @@ const Banner = () => {
           />
         ))}
       </DotsContainer>
+      <BtnContainer>
+        <Btn01>무료 체험하기</Btn01>
+        <Btn02>더 알아보기</Btn02>
+      </BtnContainer>
     </CarouselContainer>
   );
 };
