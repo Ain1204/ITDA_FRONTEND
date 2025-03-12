@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import NextButton from '../../components/ArrowBlueButton';
 import { useState, useEffect } from 'react';
 import { useSignup } from '../../services/SignupContext';
+import { useNavigate } from 'react-router-dom';
+import logger from '../../utils/logger';
 
 const InputLabel = styled.label`
 	align-self: stretch;
@@ -60,7 +62,7 @@ const SignupPage2_enterprise = ({ setStep }) => {
 	useEffect(() => {
 		// accountType이 business가 아니면 설정
 		if (signupData.accountType !== 'business') {
-			console.log('SignupPage2_enterprise - accountType 설정: business');
+			logger.log('SignupPage2_enterprise - accountType 설정: business');
 			updateSignupData({ accountType: 'business' });
 		}
 		
@@ -85,7 +87,7 @@ const SignupPage2_enterprise = ({ setStep }) => {
 			accountType: 'business',
 			industry: industry 
 		});
-		console.log('산업 분야 선택:', industry);
+		logger.log('산업 분야 선택:', industry);
 		setStep(2); // 다음 단계인 약관 동의 페이지로 이동
 	};
 

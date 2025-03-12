@@ -20,7 +20,8 @@ import {
 import PasswordEyeIcon from '../../assets/loginIcon/passwordEye.svg';
 import { useSignup } from '../../services/SignupContext';
 import { useState, useEffect } from 'react';
-import { registerWithEmail, checkUserIdExists, checkEmailExists, sendEmailVerificationCode } from '../../services/authService';
+import { registerWithEmail, checkUserIdExists, checkEmailExists } from '../../services/authService';
+import logger from '../../utils/logger';
 
 // 기업/학교 인증 페이지
 const SignupPage5_enterprise = ({ setStep }) => {
@@ -138,10 +139,10 @@ const SignupPage5_enterprise = ({ setStep }) => {
 			setEmailDuplicateError(false);
 			setShowEmailVerification(false); // 인증 입력창 표시하지 않음
 			setErrorMsg('');
-			console.log('이메일 중복 확인 완료:', email);
+			logger.log('이메일 중복 확인 완료:', email);
 			
 		} catch (error) {
-			console.error("이메일 확인 중 오류:", error);
+			logger.error("이메일 확인 중 오류:", error);
 			setErrorMsg('이메일 확인 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
 			setEmailVerified(false);
 		} finally {
@@ -193,7 +194,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 				});
 			}
 		} catch (error) {
-			console.error("아이디 중복 확인 중 오류:", error);
+			logger.error("아이디 중복 확인 중 오류:", error);
 			setUserIdVerificationFailed(true);
 			setUserIdVerified(false);
 		} finally {
@@ -246,16 +247,16 @@ const SignupPage5_enterprise = ({ setStep }) => {
 			
 			if (result.success) {
 				// 이메일 인증 URL의 응답 확인을 위한 로깅 추가
-				console.log("회원가입 성공, 인증 이메일이 발송되었습니다.");
-				console.log("인증 이메일 상태:", result.emailSent ? "발송됨" : "발송 실패");
+				logger.log("회원가입 성공, 인증 이메일이 발송되었습니다.");
+				logger.log("인증 이메일 상태:", result.emailSent ? "발송됨" : "발송 실패");
 				
 				if (result.verificationResult) {
-					console.log("이메일 인증 반환 값:", result.verificationResult);
+					logger.log("이메일 인증 반환 값:", result.verificationResult);
 				}
 				
 				// 이메일 인증 모니터링 시작 여부 확인
 				if (result.monitoringStarted) {
-					console.log("이메일 인증 상태 모니터링이 시작되었습니다.");
+					logger.log("이메일 인증 상태 모니터링이 시작되었습니다.");
 				}
 				
 				// 이메일 인증 URL 클릭 시 반환되는 값을 확인하기 위한 안내
@@ -273,7 +274,7 @@ const SignupPage5_enterprise = ({ setStep }) => {
 				}
 			}
 		} catch (error) {
-			console.error("회원가입 중 오류:", error);
+			logger.error("회원가입 중 오류:", error);
 			setErrorMsg(error.message || '회원가입 중 오류가 발생했습니다.');
 		} finally {
 			setIsLoading(false);

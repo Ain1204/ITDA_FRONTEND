@@ -9,6 +9,8 @@ import {
 	signInWithCredential
 } from 'firebase/auth';
 import { auth } from '../../firebase-config';
+import { useNavigate } from 'react-router-dom';
+import logger from '../../utils/logger';
 
 // 인증번호 입력 필드 라벨 스타일
 const InputLabel = styled.label`
@@ -235,7 +237,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 				// reCAPTCHA 초기화 후 자동으로 인증번호 전송 시작
 				await handleSendVerificationCode(recaptchaVerifierRef.current);
 			} catch (error) {
-				console.error('reCAPTCHA 초기화 실패:', error);
+				logger.error('reCAPTCHA 초기화 실패:', error);
 				setErrorMessage('보안 인증 초기화에 실패했습니다. 페이지를 새로고침해 주세요.');
 			} finally {
 				setIsLoading(false);
@@ -286,7 +288,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 			setTimeLeft(600); // 10분(600초) 타이머 리셋
 			setVerificationSent(true); // 인증번호 전송 완료 표시
 		} catch (error) {
-			console.error('인증번호 전송 실패:', error);
+			logger.error('인증번호 전송 실패:', error);
 			
 			// 에러 코드에 따른 사용자 친화적인 메시지 표시
 			if (error.code === 'auth/invalid-phone-number') {
@@ -330,7 +332,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 				try {
 					recaptchaVerifierRef.current.clear();
 				} catch (error) {
-					console.log('reCAPTCHA 정리 중 무시할 수 있는 오류:', error);
+					logger.debug('reCAPTCHA 정리 중 무시할 수 있는 오류:', error);
 				}
 			}
 			
@@ -389,7 +391,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 			setVerificationSent(true);
 			
 		} catch (error) {
-			console.error('인증번호 재전송 실패:', error);
+			logger.error('인증번호 재전송 실패:', error);
 			
 			if (error.code === 'auth/captcha-check-failed') {
 				setErrorMessage('보안 인증에 실패했습니다. 페이지를 새로고침 후 다시 시도해주세요.');
@@ -443,7 +445,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 					updateSignupData({ phoneVerified: true });
 					return; // 성공했으므로 함수 종료
 				} catch (confirmError) {
-					console.error('window.confirmationResult 사용 중 오류:', confirmError);
+					logger.error('window.confirmationResult 사용 중 오류:', confirmError);
 					// window.confirmationResult 사용 실패 시 기존 방식으로 진행
 				}
 			}
@@ -467,7 +469,7 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 			// 휴대폰 인증 상태를 컨텍스트에 저장
 			updateSignupData({ phoneVerified: true });
 		} catch (error) {
-			console.error('인증 실패:', error);
+			logger.error('인증 실패:', error);
 			setVerificationStatus(false);
 			
 			// 에러 코드에 따른 사용자 친화적인 메시지 표시
@@ -495,6 +497,20 @@ const SignupPage4 = ({ setStep, verificationStatus, setVerificationStatus }) => 
 			setStep(5);
 		}
 	};
+
+	// 컴포넌트 언마운트 시 reCAPTCHA 정리
+	useEffect(() => {
+		return () => {
+			try {
+				// reCAPTCHA 리셋 (필요한 경우)
+				if (window.grecaptcha && recaptchaVerifierRef.current) {
+					window.grecaptcha.reset(recaptchaVerifierRef.current);
+				}
+			} catch (error) {
+				logger.debug('reCAPTCHA 정리 중 무시할 수 있는 오류:', error);
+			}
+		};
+	}, []);
 
 	return (
 		<div>

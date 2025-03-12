@@ -17,6 +17,7 @@ import GoogleIcon from '../assets/loginIcon/google.svg';
 import AppleIcon from '../assets/loginIcon/apple.svg';
 import FacebookIcon from '../assets/loginIcon/facebook.svg';
 import LoginBlueButton from '../components/BlueButton';
+import logger from '../utils/logger';
 
 const PageContainer = styled.div`
 	display: flex;
@@ -313,10 +314,10 @@ const LoginPage = () => {
 		const kakaoProvider = new OAuthProvider("oidc.kakao");
 		try {
 			const result = await signInWithPopup(auth, kakaoProvider);
-			console.log("카카오 로그인 성공:", result.user);
+			logger.log("카카오 로그인 성공:", result.user);
 			alert("카카오 로그인에 성공했습니다!");
 		} catch (error) {
-			console.error("카카오 로그인 오류:", error.message);
+			logger.error("카카오 로그인 오류:", error.message);
 			alert("카카오 로그인 오류: " + error.message);
 		}
 	};
@@ -344,10 +345,10 @@ const LoginPage = () => {
 			}, 30000);
 			
 			const messageHandler = (event) => {
-				console.log("Message received from:", event.origin, "data:", event.data);
+				logger.log("Message received from:", event.origin, "data:", event.data);
 				// 약간의 차이를 허용: expectedOrigin으로 시작하는지 확인
 				if (!event.origin.startsWith(expectedOrigin)) {
-					console.warn("Unexpected message origin:", event.origin);
+					logger.warn("Unexpected message origin:", event.origin);
 					return;
 				}
 				if (event.data && event.data.customToken) {

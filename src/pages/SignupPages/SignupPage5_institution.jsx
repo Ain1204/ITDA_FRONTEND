@@ -17,6 +17,7 @@ import PasswordEyeIcon from '../../assets/loginIcon/passwordEye.svg';
 import { useSignup } from '../../services/SignupContext';
 import { useState, useEffect } from 'react';
 import { registerWithEmail, checkUserIdExists } from '../../services/authService';
+import logger from '../../utils/logger';
 
 // 기관 코드 인증 컴포넌트
 const SignupPage5_institution = ({ setStep }) => {
@@ -91,7 +92,8 @@ const SignupPage5_institution = ({ setStep }) => {
 				setErrorMsg('유효하지 않은 기관 코드입니다. 다시 확인해주세요.');
 			}
 		} catch (error) {
-			console.error("기관 코드 검증 중 오류:", error);
+			logger.error("기관 코드 검증 중 오류:", error);
+			setInstitutionError(true);
 			setErrorMsg('기관 코드 검증 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
 		} finally {
 			setIsLoading(false);
@@ -125,7 +127,7 @@ const SignupPage5_institution = ({ setStep }) => {
 				});
 			}
 		} catch (error) {
-			console.error("아이디 중복 확인 중 오류:", error);
+			logger.error("아이디 중복 확인 중 오류:", error);
 			setUserIdVerificationFailed(true);
 			setUserIdVerified(false);
 		} finally {
@@ -186,7 +188,7 @@ const SignupPage5_institution = ({ setStep }) => {
 				setErrorMsg(result.error);
 			}
 		} catch (error) {
-			console.error("회원가입 중 오류:", error);
+			logger.error("회원가입 중 오류:", error);
 			setErrorMsg(error.message || '회원가입 중 오류가 발생했습니다.');
 		} finally {
 			setIsLoading(false);
