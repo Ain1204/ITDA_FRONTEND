@@ -1,9 +1,9 @@
 ---
 name: Bugfix/Hotfix Template
 about: 버그/핫픽스 템플릿
-title: Bugfix Template
-labels: "\U0001F4C4 Docs"
-assignees: ssxrxbx
+title: "[]: Bugfix/Hotfix Title"
+labels: ''
+assignees: ''
 
 ---
 
