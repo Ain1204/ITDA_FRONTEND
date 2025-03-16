@@ -9,7 +9,7 @@ import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import TestColorPage from "./pages/TestColorPage";
 import MyPage from "./pages/MyPage";
-import RegisterView from "./pages/RegisterPages/RegisterView";
+import CooperationRegister from "./pages/RegisterPages/CooperationRegister";
 import { SignupProvider } from "./services/SignupContext";
 
 function App() {
@@ -24,8 +24,8 @@ function App() {
 					<Route path="/test-typography" element={<TestTypographyPage />} />
 					<Route path="/test-color" element={<TestColorPage />} />
 					<Route path="/mypage" element={<MyPage />} />
-					<Route path="/registerview/:type" element={<RegisterView />} />
-			</Routes>
+					<Route path="/register/:type" element={<CooperationRegister />} />
+				</Routes>
 			</SignupProvider>
 		</ThemeProvider>
 	);

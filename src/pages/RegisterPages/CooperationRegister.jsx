@@ -6,8 +6,10 @@ import Footer from "../../components/Footer";
 import RegisterPlaceholder from "../../components/RegisterPlaceholder";
 import keywordDelete from "../../assets/registerIcon/keywordDelete.svg";
 import registerImage from "../../assets/registerIcon/registerImage.png";
-import EnterpriseRegisterBottom from "./EnterpriseRegisterBottom";
-import CouncilRegisterBottom from "./CouncilRegisterBottom";
+import dummyProfileCouncil from "../../assets/registerIcon/profile_council.svg";
+import dummyProfileEnterprise from "../../assets/registerIcon/profile_enter.svg";
+import EnterpriseRegister from "./EnterpriseRegister";
+import CouncilRegister from "./CouncilRegister";
 
 const Title = styled.h2`
 	font-family: "SUIT Variable";
@@ -15,7 +17,6 @@ const Title = styled.h2`
 	font-size: 28px;
 	line-height: 43.68px;
 	letter-spacing: -2.5%;
-	margin-top: 8px;
 `;
 
 const TitleContainer = styled.div`
@@ -206,7 +207,75 @@ const AddButton = styled.button`
 	}
 `;
 
-const RegisterView = () => {
+const ProfileContainer = styled.div`
+	max-width: 1440px;
+	width: 100%;
+	margin: 36px auto 0;
+	padding: 0 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+`;
+
+const ProfileTitle = styled.h5`
+	color: var(--Colors-GrayScale-G600, #1a1a23);
+	font-family: "SUIT Variable";
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 150%;
+	letter-spacing: -0.4px;
+	margin: 0;
+`;
+
+const ProfileWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 12px;
+`;
+
+const ProfileImage = styled.img`
+	width: 40px;
+	height: 40px;
+`;
+
+const ProfileInformation = styled.div`
+	display: flex;
+	flex-direction: column;
+`;
+
+const ProfileName = styled.span`
+	overflow: hidden;
+	color: var(--Colors-GrayScale-G600, #1a1a23);
+	text-overflow: ellipsis;
+	font-family: "SUIT Variable";
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 168%;
+	letter-spacing: -0.35px;
+	margin-bottom: -4px;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+`;
+
+const ProfileURL = styled.span`
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+	overflow: hidden;
+	color: var(--Colors-Primary-B500, #0051ff);
+	text-overflow: ellipsis;
+	font-family: "SUIT Variable";
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 132%;
+	letter-spacing: -0.3px;
+`;
+
+const CooperationRegister = () => {
 	const { type } = useParams();
 	const [keywords, setKeywords] = useState([]);
 	const [inputValue, setInputValue] = useState("");
@@ -283,14 +352,44 @@ const RegisterView = () => {
 				</RegisterContentWrapper>
 			</RegisterInputContainer>
 			
+			{registerType === "council" && (
+				<ProfileContainer>
+					<ProfileTitle>프로필</ProfileTitle>
+					<ProfileWrapper>
+						<ProfileImage src={dummyProfileCouncil} alt="프로필 이미지" />
+						<ProfileInformation>
+							<ProfileName>
+								한양대학교 ERICA 소프트웨어융합대학 학생회 SW:ING
+							</ProfileName>
+							<ProfileURL>@hyu_computing</ProfileURL>
+						</ProfileInformation>
+					</ProfileWrapper>
+				</ProfileContainer>
+			)}
+
+			{registerType === "enterprise" && (
+				<ProfileContainer>
+					<ProfileTitle>프로필</ProfileTitle>
+					<ProfileWrapper>
+						<ProfileImage src={dummyProfileEnterprise} alt="프로필 이미지" />
+						<ProfileInformation>
+							<ProfileName>
+								쿨티아 Cooltia
+							</ProfileName>
+							<ProfileURL>https://cooltia.com</ProfileURL>
+						</ProfileInformation>
+					</ProfileWrapper>
+				</ProfileContainer>
+			)}
+			
 			{registerType === "enterprise" ? (
-				<EnterpriseRegisterBottom />
+				<EnterpriseRegister />
 			) : (
-				<CouncilRegisterBottom />
+				<CouncilRegister />
 			)}
 			<Footer />
 		</>
 	);
 };
 
-export default RegisterView;
+export default CooperationRegister;
