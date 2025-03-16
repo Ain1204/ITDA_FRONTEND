@@ -8,7 +8,7 @@ import GlobalStyles from "./GlobalStyles";
 import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import TestColorPage from "./pages/TestColorPage";
-import MyPage from "./pages/MyPage";
+import MyPageMain from "./pages/MyPagePages/MyPageMain";
 import RegisterView from "./pages/RegisterPages/RegisterView";
 import { SignupProvider } from "./services/SignupContext";
 
@@ -23,7 +23,7 @@ function App() {
 					<Route path="/signup" element={<SignupPage />} />
 					<Route path="/test-typography" element={<TestTypographyPage />} />
 					<Route path="/test-color" element={<TestColorPage />} />
-					<Route path="/mypage" element={<MyPage />} />
+					<Route path="/mypage/*" element={<MyPageMain />} />
 					<Route path="/registerview/:type" element={<RegisterView />} />
 			</Routes>
 			</SignupProvider>
