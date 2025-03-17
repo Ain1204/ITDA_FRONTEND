@@ -8,9 +8,9 @@ import GlobalStyles from "./GlobalStyles";
 import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import TestColorPage from "./pages/TestColorPage";
-import MyPage from "./pages/MyPage";
 import CooperationRegister from "./pages/RegisterPages/CooperationRegister";
 import CooperationView from "./pages/ViewPages/CooperationView"
+import MyPageMain from "./pages/MyPagePages/MyPageMain";
 import { SignupProvider } from "./services/SignupContext";
 
 function App() {
@@ -24,10 +24,10 @@ function App() {
 					<Route path="/signup" element={<SignupPage />} />
 					<Route path="/test-typography" element={<TestTypographyPage />} />
 					<Route path="/test-color" element={<TestColorPage />} />
-					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/register/:type" element={<CooperationRegister />} />
 					<Route path="/view/:type" element={<CooperationView />} />
-				</Routes>
+					<Route path="/mypage/*" element={<MyPageMain />} />
+			  </Routes>
 			</SignupProvider>
 		</ThemeProvider>
 	);
