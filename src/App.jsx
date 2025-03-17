@@ -10,6 +10,7 @@ import theme from "./styles/theme";
 import TestColorPage from "./pages/TestColorPage";
 import MyPage from "./pages/MyPage";
 import CooperationRegister from "./pages/RegisterPages/CooperationRegister";
+import CooperationView from "./pages/ViewPages/CooperationView"
 import { SignupProvider } from "./services/SignupContext";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
 					<Route path="/test-color" element={<TestColorPage />} />
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/register/:type" element={<CooperationRegister />} />
+					<Route path="/view/:type" element={<CooperationView />} />
 				</Routes>
 			</SignupProvider>
 		</ThemeProvider>

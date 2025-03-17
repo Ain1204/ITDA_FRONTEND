@@ -8,7 +8,7 @@ import Modal from "../../components/Modal";
 const BottomContainer = styled.div`
   max-width: 1440px;
   width: 100%;
-  margin: 36px auto 0;
+  margin: 36px auto 36px;
   padding: 0 32px;
 `;
 
