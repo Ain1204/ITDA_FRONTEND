@@ -5,6 +5,7 @@ import Footer from "../../components/Footer";
 import ClosedIcon from "../../assets/registerIcon/wrong.svg"; // 닫기 아이콘
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 const SuggestMain = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
