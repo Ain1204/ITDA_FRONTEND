@@ -34,9 +34,18 @@ const NavBar = () => {
     setMenuOpen(!menuOpen);
   };
 
+  const handleLogo = () => {
+    navigate("/");
+  };
+  const handleCollaboration = () => {
+    navigate("/suggest");
+  };
+  const handleMypage = () => {
+    navigate("/mypage");
+  };
   return (
     <Nav>
-      <LogoImage src={Logo} alt="Nav Logo" />
+      <LogoImage src={Logo} alt="Nav Logo" onClick={handleLogo} />
       <HamburgerButton onClick={toggleMenu}>
         <span />
         <span />
@@ -44,8 +53,8 @@ const NavBar = () => {
       </HamburgerButton>
       <NavMenu isOpen={menuOpen}>
         <NavMenu_Left_Btns>
-          <NavItem href="#home">협업 시작하기</NavItem>
-          <NavItem href="#about">마이페이지</NavItem>
+          <NavItem onClick={handleCollaboration}>협업 시작하기</NavItem>
+          <NavItem onClick={handleMypage}>마이페이지</NavItem>
           <NavItem href="#services">서비스 소개</NavItem>
         </NavMenu_Left_Btns>
         <NavMenu_Right_Btns>
@@ -149,7 +158,7 @@ const NavItem = styled.a`
   align-items: center;
   gap: 0.5rem;
   color: var(--Colors-GrayScale-G400, #949bad);
-
+  cursor: pointer;
   &:hover {
     border-radius: 0.5rem;
     background: var(--Colors-Secondary-B100, #ebf2ff);
@@ -212,7 +221,7 @@ const LogoImage = styled.img`
   align-items: center;
   width: 9rem;
   margin-right: 1.5rem;
-
+  cursor: pointer;
   @media (max-width: 768px) {
     width: 7rem;
   }
