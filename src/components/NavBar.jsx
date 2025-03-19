@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; // ✅ useNavigate 추가
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import Logo from "../assets/images/Mainimg/Navimg/MainPageLogo.svg";
 import Noti from "../assets/images/Mainimg/Navimg/Noti.svg";
 import Chatting from "../assets/images/Mainimg/Navimg/chat.svg";
-import UserProfile from "../assets/images/Mainimg/Navimg/UserProfile.png"; // 사용자 프로필 이미지
+import UserProfile from "../assets/images/Mainimg/Navimg/UserProfile.png";
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,14 +21,14 @@ const NavBar = () => {
   }, []);
 
   const handleLogin = () => {
-    setIsLoggedIn(true); // 로그인 상태 변경
-    localStorage.setItem("isLoggedIn", "true"); // 로그인 상태 저장
+    setIsLoggedIn(true);
+    localStorage.setItem("isLoggedIn", "true");
     navigate("/login");
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false); // 로그아웃 상태 변경
-    localStorage.removeItem("isLoggedIn"); // 로그인 상태 삭제
+    setIsLoggedIn(false);
+    localStorage.removeItem("isLoggedIn");
   };
 
   const toggleMenu = () => {
