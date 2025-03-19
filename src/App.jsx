@@ -9,30 +9,28 @@ import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import TestColorPage from "./pages/TestColorPage";
 import CooperationRegister from "./pages/RegisterPages/CooperationRegister";
-import CooperationView from "./pages/ViewPages/CooperationView";
+import CooperationView from "./pages/ViewPages/CooperationView"
 import MyPageMain from "./pages/MyPagePages/MyPageMain";
 import { SignupProvider } from "./services/SignupContext";
-import SuggestMain from "./pages/SuggestPages/SuggestMain";
 
 function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <SignupProvider>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/test-typography" element={<TestTypographyPage />} />
-          <Route path="/test-color" element={<TestColorPage />} />
-          <Route path="/register/:type" element={<CooperationRegister />} />
-          <Route path="/view/:type" element={<CooperationView />} />
-          <Route path="/mypage/*" element={<MyPageMain />} />
-          <Route path="/suggest" element={<SuggestMain />} />
-        </Routes>
-      </SignupProvider>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider theme={theme}>
+			<GlobalStyles />
+			<SignupProvider>
+				<Routes>
+					<Route path="/" element={<MainPage />} />
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignupPage />} />
+					<Route path="/test-typography" element={<TestTypographyPage />} />
+					<Route path="/test-color" element={<TestColorPage />} />
+					<Route path="/register/:type" element={<CooperationRegister />} />
+					<Route path="/view/:type" element={<CooperationView />} />
+					<Route path="/mypage/*" element={<MyPageMain />} />
+			  </Routes>
+			</SignupProvider>
+		</ThemeProvider>
+	);
 }
 
 export default App;
