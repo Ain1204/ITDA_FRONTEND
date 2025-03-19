@@ -20,7 +20,7 @@ const SuggestMain = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
-  // 파일 선택 핸들러
+
   const handleFileChange = () => {
     navigate("/register/:type");
   };

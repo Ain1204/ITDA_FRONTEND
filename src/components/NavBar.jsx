@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ useNavigate 추가
+import { useLocation, useNavigate } from "react-router-dom"; // ✅ useNavigate 추가
 import styled from "styled-components";
 
 import Logo from "../assets/images/Mainimg/Navimg/MainPageLogo.svg";
@@ -11,6 +11,7 @@ const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
@@ -34,18 +35,9 @@ const NavBar = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const handleLogo = () => {
-    navigate("/");
-  };
-  const handleCollaboration = () => {
-    navigate("/suggest");
-  };
-  const handleMypage = () => {
-    navigate("/mypage");
-  };
   return (
     <Nav>
-      <LogoImage src={Logo} alt="Nav Logo" onClick={handleLogo} />
+      <LogoImage src={Logo} alt="Nav Logo" />
       <HamburgerButton onClick={toggleMenu}>
         <span />
         <span />
@@ -53,9 +45,30 @@ const NavBar = () => {
       </HamburgerButton>
       <NavMenu isOpen={menuOpen}>
         <NavMenu_Left_Btns>
-          <NavItem onClick={handleCollaboration}>협업 시작하기</NavItem>
-          <NavItem onClick={handleMypage}>마이페이지</NavItem>
+<<<<<<< HEAD
+          <NavItem
+            onClick={handleCollaboration}
+            active={location.pathname === "/suggest"}
+          >
+            협업 시작하기
+          </NavItem>
+          <NavItem
+            onClick={handleMypage}
+            active={location.pathname === "/mypage"}
+          >
+            마이페이지
+          </NavItem>
+          <NavItem
+            onClick={() => navigate("/services")}
+            active={location.pathname === "/services"}
+          >
+            서비스 소개
+          </NavItem>
+=======
+          <NavItem href="#home">협업 시작하기</NavItem>
+          <NavItem href="#about">마이페이지</NavItem>
           <NavItem href="#services">서비스 소개</NavItem>
+>>>>>>> main
         </NavMenu_Left_Btns>
         <NavMenu_Right_Btns>
           <a href="/chat">
@@ -149,7 +162,8 @@ const NavMenu_Right_Btns = styled.div`
 `;
 
 const NavItem = styled.a`
-  text-decoration: none;
+  background: none;
+  border: none;
   font-size: 1rem;
   border-radius: 0.5rem;
   display: flex;
@@ -157,8 +171,16 @@ const NavItem = styled.a`
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  color: var(--Colors-GrayScale-G400, #949bad);
+<<<<<<< HEAD
+  color: ${({ active }) =>
+    active ? "#0051ff" : "var(--Colors-GrayScale-G400, #949bad)"};
+  background: ${({ active }) =>
+    active ? "var(--Colors-Secondary-B100, #ebf2ff)" : "transparent"};
   cursor: pointer;
+=======
+  color: var(--Colors-GrayScale-G400, #949bad);
+>>>>>>> main
+
   &:hover {
     border-radius: 0.5rem;
     background: var(--Colors-Secondary-B100, #ebf2ff);
@@ -221,7 +243,7 @@ const LogoImage = styled.img`
   align-items: center;
   width: 9rem;
   margin-right: 1.5rem;
-  cursor: pointer;
+
   @media (max-width: 768px) {
     width: 7rem;
   }
