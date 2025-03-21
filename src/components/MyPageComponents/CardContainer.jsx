@@ -9,6 +9,7 @@ const CardContainer = () => {
   const [underlineWidth, setUnderlineWidth] = useState(0);
   const [underlinePosition, setUnderlinePosition] = useState(0);
   const tabRefs = useRef([]);
+  const [selectedCards, setSelectedCards] = useState([]);
 
   useEffect(() => {
     const activeIndex = activeTab === "공고 중" ? 0 : 1;
@@ -36,6 +37,11 @@ const CardContainer = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+  const toggleCardSelection = (id) => {
+    setSelectedCards((prev) =>
+      prev.includes(id) ? prev.filter((cardId) => cardId !== id) : [...prev, id]
+    );
   };
 
   return (
@@ -74,7 +80,17 @@ const CardContainer = () => {
         {currentCards.length > 0 ? (
           currentCards.map((card) => (
             <Card key={card.id}>
-              <CardImage src={card.image} alt={`${card.title} 이미지`} />
+              <CardImage
+                src={card.image}
+                className={selectedCards.includes(card.id) ? "selected" : ""}
+              >
+                <Checkbox
+                  className="checkbox"
+                  checked={selectedCards.includes(card.id)}
+                  onChange={() => toggleCardSelection(card.id)}
+                />
+              </CardImage>
+
               <HashtagContainer>
                 {card.hashtags.map((hashtag, index) => (
                   <Hashtag key={index}>{hashtag}</Hashtag>
@@ -233,12 +249,71 @@ const CardContent = styled.p`
   font-weight: 500;
 `;
 
-const CardImage = styled.img`
+const CardImage = styled.div`
   width: 17.5rem;
   height: 17.5rem;
-  object-fit: cover;
   border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+  background-position: center;
   box-shadow: 0px 0px 8px 0px rgba(26, 26, 35, 0.32);
+  transition: all 0.3s ease-in-out;
+
+  &:hover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    background: linear-gradient(
+      180deg,
+      rgba(18, 19, 24, 0.72) 0%,
+      rgba(18, 19, 24, 0) 90%
+    );
+    pointer-events: none;
+  }
+
+  &:hover .checkbox,
+  &.selected .checkbox {
+    opacity: 1;
+  }
+`;
+
+const Checkbox = styled.input.attrs({ type: "checkbox" })`
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  appearance: none;
+  border: 1.5px solid #fcfcff;
+  border-radius: 0.3rem;
+
+  &:checked {
+    background-color: #3d85ff;
+    border-color: #3d85ff;
+    /* ✅ border-radius 유지됨 */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 6L5 8.5L9 4' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 70%;
+  }
+
+  &:hover {
+    border-color: #3d85ff;
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
 `;
 
 const HashtagContainer = styled.div`
