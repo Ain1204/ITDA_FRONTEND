@@ -2,9 +2,11 @@ import styled from "styled-components";
 import { useParams } from 'react-router-dom';
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
-import thumbnailImage from "../../assets/viewIcon/thumbnailImage.jpg";
+import councilThumbnail from "../../assets/viewIcon/councilThumbnail.jpg";
+import enterpriseThumbnail from "../../assets/viewIcon/enterThumbnail.svg";
 import dummyProfileCouncil from "../../assets/registerIcon/profile_council.svg";
 import dummyProfileEnterprise from "../../assets/registerIcon/profile_enter.svg";
+import arrowUp from "../../assets/viewIcon/arrow_up.svg";
 import EnterpriseView from "../ViewPages/EnterpriseView";
 import CouncilView from "../ViewPages/CouncilView";
 import kakaoIcon from "../../assets/viewIcon/kakaoIcon.svg";
@@ -37,6 +39,7 @@ const RightContentWrapper = styled.div`
 	gap: 16px;
 	flex: 1;
 	height: 90%;
+	position: relative;
 `;
 
 const ImageContainer = styled.div`
@@ -120,6 +123,8 @@ const CooperationContent = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+	height: 100%;
+	position: relative;
 `;
 
 const TitleKeywordContainer = styled.div`
@@ -127,6 +132,10 @@ const TitleKeywordContainer = styled.div`
 	flex-direction: row;
 	align-items: center;
 	gap: 20px;
+	position: absolute;
+	top: 45%;
+	transform: translateY(-50%);
+	z-index: 2;
 `;
 
 const CooperationTitle = styled.h4`
@@ -137,7 +146,7 @@ const CooperationTitle = styled.h4`
 	font-weight: 600;
 	line-height: 140%;
 	letter-spacing: -0.5px;
-	white-space: nowrap;
+	margin: 0;
 `;
 
 const KeywordContainer = styled.div`
@@ -162,19 +171,24 @@ const Keyword = styled.div`
 	justify-content: center;
 `;
 
+const ArrowUp = styled.img`
+	margin-right: 4px;
+	transform: translateY(1px);
+`;
+
 const CooperationDivider = styled.div`
     display: flex;
     width: 100%;
     align-items: center;
     border-bottom: 1px solid var(--Colors-GrayScale-G300, #DDE1E6);
     position: relative;
+    margin-top: 120px;
 `;
 
 const CooperationText = styled.div`
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 4;
-	align-self: stretch;
 	overflow: hidden;
 	color: #5F6E81;
 	text-overflow: ellipsis;
@@ -184,6 +198,7 @@ const CooperationText = styled.div`
 	font-weight: 500;
 	line-height: 150%;
 	letter-spacing: -0.4px;
+	white-space: pre-line;
 `;	
 
 const ProfileContainer = styled.div`
@@ -317,7 +332,7 @@ const CooperationView = () => {
 			<RegisterInputContainer>
 				<RegisterContentWrapper>
 					<ImageContainer>
-						<ThumbnailImage src={thumbnailImage} alt="register illustration" />
+						<ThumbnailImage src={viewType === "council" ? councilThumbnail : enterpriseThumbnail} alt="register illustration" />
 					</ImageContainer>
 					<RightContentWrapper>
 						<AboutCooperation>
@@ -340,17 +355,34 @@ const CooperationView = () => {
 							</CooperationInfoContainer>
 							<CooperationContent>
 								<TitleKeywordContainer>
-									<CooperationTitle>2024 청춘소란도란 한가위</CooperationTitle>
+									<CooperationTitle>
+										{viewType === "council" 
+											? "2024 청춘소란도란 한가위"
+											: "UV 프로텍터 액티브 선 밤 SPF 50+ / PA++++ 10g"
+										}
+									</CooperationTitle>
 									<KeywordContainer>
-										<Keyword>청춘소란도란</Keyword>
-										<Keyword>한가위</Keyword>
-										<Keyword>청춘소란도란</Keyword>
+										{viewType === "council" ? (
+											<>
+												<Keyword>청춘소란도란</Keyword>
+												<Keyword>한가위</Keyword>
+												<Keyword>청춘소란도란</Keyword>
+											</>
+										) : (
+											<>
+												<Keyword>단기 프로모션</Keyword>
+												<Keyword><ArrowUp src={arrowUp} alt="위로 화살표" />1500</Keyword>
+												<Keyword>키워드</Keyword>
+											</>
+										)}
 									</KeywordContainer>
 								</TitleKeywordContainer>
 								<CooperationDivider />
 								<CooperationText>
-									2024년 한양대학교 ERICA 공학대학과 소프트웨어융합대학이 연합하여 갓 성인이 된 신입생들을 중심으로 하는 약 1.300명 규모의 대형 행사입니다. 다양한 레크레이션 활동과 다채로운 공연들이 준비되어 있으며, 이를 통한 학생들간의 관계 형성과 신입생의 학교 생활 적응을 목적으로 하고 있습니다.
-									2024년 한양대학교 ERICA 공학대학과 소프트웨어융합대학이 연합하여 갓 성인이 된 신입생들을 중심으로 하는 약 1.300명 규모의 대형 행사입니다. 다양한 레크레이션 활동과 다채로운 공연들이 준비되어 있으며, 이를 통한 학생들간의 관계 형성과 신입생의 학교 생활 적응을 목적으로 하고 있습니다.
+									{viewType === "council" 
+										? "2024년 한양대학교 ERICA 공학대학과 소프트웨어융합대학이 연합하여 갓 성인이 된 신입생들을 중심으로 하는 약 1.300명 규모의 대형 행사입니다. 다양한 레크레이션 활동과 다채로운 공연들이 준비되어 있으며, 이를 통한 학생들간의 관계 형성과 신입생의 학교 생활 적응을 목적으로 하고 있습니다.\n 2024년 한양대학교 ERICA 공학대학과 소프트웨어융합대학이 연합하여 갓 성인이 된 신입생들을 중심으로 하는 약 1.300명 규모의 대형 행사입니다. 다양한 레크레이션 활동과 다채로운 공연들이 준비되어 있으며, 이를 통한 학생들간의 관계 형성과 신입생의 학교 생활 적응을 목적으로 하고 있습니다."
+										: "17년 연속 국내 선케어 1위 HERA \n 자외선 차단 / 주름 개선 / 미백 3중 기능성, 지속 내수성 테스트 완료 \n 365일 우리와 함께하는 자외선, 일상에서의 강력하고 세심한 선케어를 위한 헤라의 NEW럭셔리 #포켓자차 UV프로텍터 액티브 선 밤을 만나보세요."
+									}
 								</CooperationText>
 							</CooperationContent>
 						</AboutCooperation>
@@ -390,9 +422,9 @@ const CooperationView = () => {
 						<ProfileImage src={dummyProfileEnterprise} alt="프로필 이미지" />
 						<ProfileInformation>
 							<ProfileName>
-								쿨티아 Cooltia
+								아모레퍼시픽 Amorepacific
 							</ProfileName>
-							<ProfileURL>https://cooltia.com</ProfileURL>
+							<ProfileURL>https://www.apgroup.com/int/ko/</ProfileURL>
 						</ProfileInformation>
 						<URLContainer>
 							<KakaoURL href="https://open.kakao.com/o/sE9nnIkh" target="_blank" rel="noopener noreferrer">

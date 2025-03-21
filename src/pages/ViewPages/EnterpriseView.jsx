@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { useState } from "react";
 import RegisterDetailButton from "../../components/RegisterButton";
-import LocationIcon from "../../assets/viewIcon/locationIcon.svg";
+import PromotionDropdown from "../../components/PromotionDropdown";
 
 const BottomContainer = styled.div`
     max-width: 1440px;
@@ -61,26 +60,28 @@ const ViewDivider = styled.div`
 `;
 
 const ViewDetail = styled.div`
-display: flex;
-flex-direction: column;
-margin-top: 24px;
-opacity: ${(props) => (props.$active === "true" ? 1 : 0)};
-transform: translateY(
-    ${(props) => (props.$active === "true" ? "0" : "20px")}
-);
-transition: all 0.3s ease;
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-pointer-events: ${(props) => (props.$active === "true" ? "all" : "none")};
-visibility: ${(props) => (props.$active === "true" ? "visible" : "hidden")};
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+    opacity: ${(props) => (props.$active === "true" ? 1 : 0)};
+    transform: translateY(
+        ${(props) => (props.$active === "true" ? "0" : "20px")}
+    );
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: ${(props) => (props.$active === "true" ? "all" : "none")};
+    visibility: ${(props) => (props.$active === "true" ? "visible" : "hidden")};
 `;
 
+
+
 const ViewDetailWrapper = styled.div`
-position: relative;
-height: ${(props) => (props.$activeTab === "행사 개요" ? "460px" : "600px")};
-transition: height 0.3s ease;
+    position: relative;
+    height: ${(props) => (props.$activeTab === "행사 개요" ? "460px" : "600px")};
+    transition: height 0.3s ease;
 `;
 
 const ViewDetailTitle = styled.span`
@@ -108,9 +109,64 @@ const ViewContent = styled.div`
     color: var(--Colors-GrayScale-G600, #1A1A23);
 `;
 
-const LocationPoint = styled.img`
-    margin-right: 8px;
-    transform: translateY(-1px);
+const QuantityUnit = styled.span`
+    color: var(--Colors-GrayScale-G400, #949BAD);
+    font-family: "SUIT Variable";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 168%;
+    letter-spacing: -0.35px;
+    margin-left: 8px;
+`;
+
+const TagContent = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-bottom: 40px;
+    margin-top: 2px;
+`;
+
+const Tag = styled.div`
+    background-color: var(--Colors-Secondary-B100, #EBF2FF);
+    display: flex;
+    padding: 4px 12px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    color: var(--Colors-GrayScale-G600, #1A1A23);
+    font-family: "SUIT Variable";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    letter-spacing: -0.4px;
+`;
+
+const TagButton = styled.button`
+    background-color: ${props => props.$isEmpty ? 'var(--Colors-GrayScale-G200, #F3F5F8)' : 'var(--Colors-Secondary-B100, #EBF2FF)'};
+    display: flex;
+    padding: 4px 12px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    color: ${props => props.$isEmpty ? 'var(--Colors-GrayScale-G400, #949BAD)' : 'var(--Colors-GrayScale-G600, #1A1A23)'};
+    font-family: "SUIT Variable";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    letter-spacing: -0.4px;
+    width: 160px;
+    border: none;
+    cursor: ${props => props.$isEmpty ? 'default' : 'pointer'};
+    pointer-events: ${props => props.$isEmpty ? 'none' : 'all'};
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+        opacity: ${props => props.$isEmpty ? '1' : '0.8'};
+    }
 `;
 
 const ButtonContainer = styled.div`
@@ -139,91 +195,119 @@ const FooterDivider = styled.div`
     }
 `;
 
+const instagramItems = [
+    "스토리 업로드",
+    "팔로우 유도",
+    "카드뉴스 업로드",
+    "릴스 제작"
+];
+
+const blogItems = [
+    "상세 후기 작성",
+    "키워드 노출",
+    "장문 컨텐츠 제작"
+];
+
+const youtubeItems = [
+    "롱폼 제작",
+    "숏폼 제작",
+];
+
+const offlineItems = [
+    "기업 배너 노출",
+    "부스 설치",
+    "기업 로고 노출",
+    "장문 콘텐츠 제작"
+];
+
+const otherItems = [];
+
 const EnterpriseRegister = () => {
-const [activeTab, setActiveTab] = useState("행사 개요");
+    const handlePromotionItemClick = (item) => {
+        console.log('선택된 홍보 방안:', item);
+    };
 
+    return (
+        <BottomContainer>
+            <ViewBody>
+                <ViewTitleContainer>
+                    <ViewTitle
+                        type="button"
+                        $active="true"
+                    >
+                        제안 사항
+                    </ViewTitle>
+                </ViewTitleContainer>
 
-return (
-    <BottomContainer>
-        <ViewBody>
-            <ViewTitleContainer>
-                <ViewTitle
-                    type="button"
-                    onClick={() => setActiveTab("행사 개요")}
-                    $active={(activeTab === "행사 개요").toString()}
-                >
-                    행사 개요
-                </ViewTitle>
-                <ViewTitle
-                    type="button"
-                    onClick={() => setActiveTab("제안 사항")}
-                    $active={(activeTab === "제안 사항").toString()}
-                >
-                    제안 사항
-                </ViewTitle>
-            </ViewTitleContainer>
+                <ViewDivider />
 
-            <ViewDivider />
+                <ViewDetailWrapper>
+                    <ViewDetail $active="true">
+                        <ViewDetailTitle>
+                            제품군
+                        </ViewDetailTitle>
+                        <TagContent>
+                            <Tag>뷰티</Tag>
+                        </TagContent>
 
-            <ViewDetailWrapper $activeTab={activeTab}>
-                <ViewDetail $active={(activeTab === "행사 개요").toString()}>
-                    <ViewDetailTitle>
-                        행사명
-                    </ViewDetailTitle>
-                    <ViewContent>
-                        2025 대학생 창업 경진대회   
-                    </ViewContent>
+                        <ViewDetailTitle>
+                            수량
+                        </ViewDetailTitle>
+                        <ViewContent>
+                            1,500개 이상
+                            <QuantityUnit>(100개 단위)</QuantityUnit>
+                        </ViewContent>
 
-                    <ViewDetailTitle>
-                        행사 장소
-                    </ViewDetailTitle>
-                    <ViewContent>
-                        <LocationPoint src={LocationIcon} alt="location" />
-                        서울시 종로구 종로3가 123-45
-                    </ViewContent>
+                        <ViewDetailTitle>
+                            홍보 조건
+                        </ViewDetailTitle>
+                        <TagContent>
+                            <PromotionDropdown 
+                                items={instagramItems}
+                                onItemClick={handlePromotionItemClick}
+                            >
+                                <TagButton $isEmpty={instagramItems.length === 0}>
+                                    인스타그램
+                                </TagButton>
+                            </PromotionDropdown>
+                            <PromotionDropdown 
+                                items={blogItems}
+                                onItemClick={handlePromotionItemClick}
+                            >
+                                <TagButton $isEmpty={blogItems.length === 0}>블로그</TagButton>
+                            </PromotionDropdown>
+                            <PromotionDropdown 
+                                items={youtubeItems}
+                                onItemClick={handlePromotionItemClick}
+                            >
+                                <TagButton $isEmpty={youtubeItems.length === 0}>유튜브</TagButton>
+                            </PromotionDropdown>
+                            <PromotionDropdown 
+                                items={offlineItems}
+                                onItemClick={handlePromotionItemClick}
+                            >
+                                <TagButton $isEmpty={offlineItems.length === 0}>오프라인</TagButton>
+                            </PromotionDropdown>
+                            <PromotionDropdown 
+                                items={otherItems}
+                                onItemClick={handlePromotionItemClick}
+                            >
+                                <TagButton $isEmpty={otherItems.length === 0}>기타</TagButton>
+                            </PromotionDropdown>
+                        </TagContent>
+                    </ViewDetail>
+                </ViewDetailWrapper>
 
-                    <ViewDetailTitle>
-                        행사 일정
-                    </ViewDetailTitle>
-                    <ViewContent>
-                        2024.03.07 - 2024.03.09
-                    </ViewContent>
-
-                    <ViewDetailTitle>
-                        예상 참여 인원
-                    </ViewDetailTitle>
-                    <ViewContent>
-                        300명
-                    </ViewContent>
-                </ViewDetail>
-
-                <ViewDetail $active={(activeTab === "제안 사항").toString()}>
-                    <ViewDetailTitle>
-                        제품군
-                    </ViewDetailTitle>
-                    <ViewContent>
-                        식품/간식, 음료, 주류, 뷰티, 패션, 의료/제약, 문구/소품, 쿠폰/바우처, 기타
-                    </ViewContent>
-
-                    <ViewDetailTitle>
-                        홍보 방안
-                    </ViewDetailTitle>
-                    <ViewContent>
-                        인스타그램, 블로그, 유튜브, 오프라인, 기타
-                    </ViewContent>
-
-                </ViewDetail>
-            </ViewDetailWrapper>
-
-            <ButtonContainer>
-            <RegisterDetailButton>
-                등록하기
-            </RegisterDetailButton>
-            </ButtonContainer>
-        </ViewBody>
-        <FooterDivider />
-    </BottomContainer>
-);
+                <ButtonContainer>
+                <RegisterDetailButton>
+                    등록하기
+                </RegisterDetailButton>
+                </ButtonContainer>
+            </ViewBody>
+            <FooterDivider />
+        </BottomContainer>
+    );
 };
 
 export default EnterpriseRegister;
+

@@ -374,9 +374,9 @@ const CooperationRegister = () => {
 						<ProfileImage src={dummyProfileEnterprise} alt="프로필 이미지" />
 						<ProfileInformation>
 							<ProfileName>
-								쿨티아 Cooltia
+								아모레퍼시픽 Amorepacific
 							</ProfileName>
-							<ProfileURL>https://cooltia.com</ProfileURL>
+							<ProfileURL>https://www.apgroup.com/int/ko/</ProfileURL>
 						</ProfileInformation>
 					</ProfileWrapper>
 				</ProfileContainer>
