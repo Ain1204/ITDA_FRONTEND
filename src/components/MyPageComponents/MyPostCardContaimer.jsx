@@ -1,33 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 const ITEMS_PER_PAGE = 12;
 
-const CardContainer = () => {
+const MyPostCardContainer = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeTab, setActiveTab] = useState("공고 중");
-  const [underlineWidth, setUnderlineWidth] = useState(0);
-  const [underlinePosition, setUnderlinePosition] = useState(0);
-  const tabRefs = useRef([]);
   const [selectedCards, setSelectedCards] = useState([]);
 
-  useEffect(() => {
-    const activeIndex = activeTab === "공고 중" ? 0 : 1;
-    if (tabRefs.current[activeIndex]) {
-      const rect = tabRefs.current[activeIndex].getBoundingClientRect();
-      setUnderlineWidth(rect.width); // 글자의 실제 너비 가져오기
-      setUnderlinePosition(tabRefs.current[activeIndex].offsetLeft);
-    }
-  }, [activeTab]);
+  // 카드 데이터 필터링: 공고 중만 보여줌 (탭 제거했으니 필터는 원하는 대로 고정)
+  const filteredCards = cardData.filter((card) => card.status === "ongoing");
 
-  // 탭 상태에 따라 카드 데이터 필터링
-  const filteredCards = cardData.filter((card) =>
-    activeTab === "공고 중"
-      ? card.status === "ongoing"
-      : card.status === "completed"
-  );
-
-  // 페이지네이션 관련 데이터 처리
   const totalPages = Math.ceil(filteredCards.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentCards = filteredCards.slice(
@@ -35,9 +17,8 @@ const CardContainer = () => {
     startIndex + ITEMS_PER_PAGE
   );
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+  const handlePageChange = (page) => setCurrentPage(page);
+
   const toggleCardSelection = (id) => {
     setSelectedCards((prev) =>
       prev.includes(id) ? prev.filter((cardId) => cardId !== id) : [...prev, id]
@@ -46,36 +27,6 @@ const CardContainer = () => {
 
   return (
     <Container>
-      {/* 공고 중 / 기간 완료 탭 */}
-      <TabMainContainer>
-        <TabContainer>
-          {["공고 중", "기간 완료"].map((tab, index) => (
-            <Tab
-              key={tab}
-              active={activeTab === tab}
-              onClick={() => setActiveTab(tab)}
-              ref={(el) => (tabRefs.current[index] = el)}
-            >
-              {tab}
-            </Tab>
-          ))}
-          <Underline
-            underlineWidth={underlineWidth}
-            underlinePosition={underlinePosition}
-          />
-        </TabContainer>
-
-        {/* ✅ 버튼도 activeTab 연동 */}
-        <TabBtnContainer
-          onClick={() =>
-            setActiveTab(activeTab === "공고 중" ? "기간 완료" : "공고 중")
-          }
-        >
-          ‘{activeTab === "공고 중" ? "기간 완료" : "공고 중"}’으로 이동
-        </TabBtnContainer>
-      </TabMainContainer>
-
-      {/* 카드 리스트 */}
       <CardList>
         {currentCards.length > 0 ? (
           currentCards.map((card) => (
@@ -90,7 +41,6 @@ const CardContainer = () => {
                   onChange={() => toggleCardSelection(card.id)}
                 />
               </CardImage>
-
               <HashtagContainer>
                 {card.hashtags.map((hashtag, index) => (
                   <Hashtag key={index}>{hashtag}</Hashtag>
@@ -105,7 +55,6 @@ const CardContainer = () => {
         )}
       </CardList>
 
-      {/* 페이지네이션 */}
       {totalPages > 1 && (
         <Pagination>
           {Array.from({ length: totalPages }, (_, index) => (
@@ -134,7 +83,7 @@ const cardData = Array.from({ length: 50 }, (_, i) => ({
     `#${i % 2 === 0 ? "기업" : "학생"}`,
     `#테스트${i % 5}`,
   ],
-  status: i % 2 === 0 ? "ongoing" : "completed", // 짝수면 공고 중, 홀수면 기간 완료
+  status: i % 2 === 0 ? "ongoing" : "completed",
 }));
 
 const Container = styled.div`
@@ -142,74 +91,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 80rem;
-`;
-
-const TabMainContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  align-self: stretch;
-  border-bottom: 1px solid var(--Colors-GrayScale-G300, #e5eaf2);
-  width: 76rem;
-  padding: 0rem 2rem 0rem 2rem;
-  height: 3rem;
-  margin-bottom: 2rem;
-`;
-
-const TabContainer = styled.div`
-  display: flex;
-  position: relative;
-  width: fit-content;
-  justify-content: flex-start;
-  align-self: flex-start;
-  width: 100%;
-`;
-
-const Tab = styled.div`
-  cursor: pointer;
-  font-weight: bold;
-  color: ${(props) => (props.active ? "#0051ff" : "#949BAD")};
-  transition: color 0.3s ease-in-out;
-  position: relative;
-  text-align: center;
-  display: inline-block; /* 글자 크기에 맞게 자동 조정 */
-  padding: 0.75rem 1rem;
-  align-items: center;
-  white-space: nowrap;
-  font-family: "SUIT Variable";
-  font-size: 0.875rem;
-  font-weight: 600;
-  line-height: 168%;
-`;
-
-const Underline = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: ${(props) => props.underlinePosition}px;
-  height: 2px;
-  width: ${(props) => props.underlineWidth}px;
-  background-color: #0051ff;
-  transition: all 0.3s ease-in-out;
-`;
-
-const TabBtnContainer = styled.button`
-  display: flex;
-  padding: 0.5rem 1rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: 0.5rem;
-  white-space: nowrap;
-  color: var(--Colors-Primary-B500, #0051ff);
-  background: var(--Colors-Secondary-B100, #ebf2ff);
-  text-align: center;
-  cursor: pointer;
-  border: none;
-  font-family: "SUIT Variable";
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 132%;
-  letter-spacing: -0.01875rem;
 `;
 
 const CardList = styled.div`
@@ -365,4 +246,4 @@ const NoData = styled.p`
   margin-top: 2rem;
 `;
 
-export default CardContainer;
+export default MyPostCardContainer;
