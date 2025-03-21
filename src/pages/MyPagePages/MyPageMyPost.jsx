@@ -1,25 +1,24 @@
 import styled from "styled-components";
-import CardContainer from "../../components/MyPageComponents/CardContainer";
 import SearchIcon from "../../assets/images/MyPage/search.svg";
+import MyPostCardContainer from "../../components/MyPageComponents/MyPostCardContaimer";
 
-const MyPageSuggest = () => {
+const MyPageMyPost = () => {
   return (
     <PageContainer>
       <SuggestSuccessContainer>
         <SuggestScsTitle>
-          <p>협업 모아보기</p>
+          <p>나의 공고 모아보기</p>
           <SuggestScsSearch>
             <img src={SearchIcon} />
 
-            <Input type="text" placeholder="협업 검색하기" />
+            <Input type="text" placeholder="공고 검색하기" />
           </SuggestScsSearch>
         </SuggestScsTitle>
       </SuggestSuccessContainer>
-      <CardContainer />
+      <MyPostCardContainer />
     </PageContainer>
   );
 };
-
 // Suggest Main Page Container
 const PageContainer = styled.div`
   flex: 1;
@@ -92,4 +91,4 @@ const Input = styled.input`
   outline: none;
 `;
 
-export default MyPageSuggest;
+export default MyPageMyPost;
