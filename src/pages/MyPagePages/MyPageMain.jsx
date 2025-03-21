@@ -6,6 +6,7 @@ import Footer from "../../components/Footer";
 import MySidebar from "../../components/MyPageComponents/MySidebar";
 import MyProfile from "./MyProfile";
 import MyPageSuggest from "./MyPageSuggest";
+import MyPageMyPost from "./MyPageMyPost";
 
 const PageContainer = styled.div`
   display: flex;
@@ -57,10 +58,7 @@ const MyPageMain = () => {
               <Route path="/profile" element={<MyProfile />} />
               <Route path="/collaboration" element={<MyPageSuggest />} />
               <Route path="/proposal" element={<div>제안서 관리 페이지</div>} />
-              <Route
-                path="/mypost"
-                element={<div>나의 공고 모아보기 페이지</div>}
-              />
+              <Route path="/mypost" element={<MyPageMyPost />} />
               <Route
                 path="/sentproposal"
                 element={<div>보낸 제안 현황 페이지</div>}

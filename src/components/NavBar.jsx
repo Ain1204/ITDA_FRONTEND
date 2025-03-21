@@ -101,6 +101,7 @@ const Nav = styled.nav`
   align-items: center;
   position: fixed;
   width: 100%;
+
   height: 4rem;
   top: 0;
   z-index: 1000;
