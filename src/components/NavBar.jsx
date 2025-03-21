@@ -62,7 +62,7 @@ const NavBar = () => {
           </NavItem>
           <NavItem
             onClick={handleMypage}
-            active={location.pathname === "/mypage"}
+            active={location.pathname.startsWith("/mypage")}
           >
             마이페이지
           </NavItem>
