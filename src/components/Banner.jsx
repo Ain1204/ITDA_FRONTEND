@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 const CarouselContainer = styled.div`
   height: 25rem;
-  margin: 1.5rem 2rem 0;
+  margin: 0 2rem 0;
   border-radius: var(--Shapes-Border-Round, 1rem);
   border: 2px solid rgba(18, 19, 24, 0.04);
   overflow: hidden;
@@ -13,7 +13,7 @@ const CarouselContainer = styled.div`
   @media (max-width: 768px) {
     width: calc(100% - 4rem);
     height: 80vw;
-    margin: 1.5rem 2rem 0;
+    margin: 0 2rem 0;
   }
 `;
 

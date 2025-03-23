@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -14,9 +13,9 @@ const SidebarContainer = styled.div`
   box-shadow: 0px 8px 24px 0px rgba(79, 84, 98, 0.24);
   position: fixed;
   left: 2rem;
-  top: 4rem;
   width: 15rem;
   height: 52.75rem;
+  z-index: 100;
 `;
 
 const TitleContainer = styled.div`

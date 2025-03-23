@@ -180,26 +180,6 @@ const RegisterButton = styled.button`
   }
 `;
 
-const FooterDivider = styled.div`
-  display: flex;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  align-items: center;
-  gap: 24px;
-  position: relative;
-
-  &::after {
-    content: "";
-    position: absolute;
-    left: 32px;
-    right: 32px;
-    bottom: 0;
-    height: 2px;
-    background-color: var(--Colors-GrayScale-G300, #e5eaf2);
-  }
-`;
-
 const StyledRegisterInput = styled(RegisterInput)`
   text-align: left;
 
@@ -574,7 +554,6 @@ const CouncilRegister = () => {
           </RegisterButton>
         </ButtonContainer>
       </RequestBody>
-      <FooterDivider />
     </BottomContainer>
   );
 };

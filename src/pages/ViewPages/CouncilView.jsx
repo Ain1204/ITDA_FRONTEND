@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useState } from "react";
 import LocationIcon from "../../assets/viewIcon/locationIcon.svg";
 import PromotionDropdown from "../../components/PromotionDropdown";
@@ -121,7 +121,7 @@ const LocationPoint = styled.img`
     margin-right: 4px;
 `;
 
-const TagBase = css`
+const Tag = styled.div`
     background-color: var(--Colors-Secondary-B100, #EBF2FF);
     display: flex;
     padding: 4px 12px;
@@ -137,42 +137,28 @@ const TagBase = css`
     letter-spacing: -0.4px;
 `;
 
-const Tag = styled.div`
-    ${TagBase}
-`;
-
 const TagButton = styled.button`
-    ${TagBase}
+    background-color: ${props => props.$isEmpty ? 'var(--Colors-GrayScale-G200, #F3F5F8)' : 'var(--Colors-Secondary-B100, #EBF2FF)'};
+    display: flex;
+    padding: 4px 12px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    color: ${props => props.$isEmpty ? 'var(--Colors-GrayScale-G400, #949BAD)' : 'var(--Colors-GrayScale-G600, #1A1A23)'};
+    font-family: "SUIT Variable";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    letter-spacing: -0.4px;
     width: 160px;
     border: none;
     cursor: ${props => props.$isEmpty ? 'default' : 'pointer'};
     pointer-events: ${props => props.$isEmpty ? 'none' : 'all'};
     transition: opacity 0.2s ease;
-    background-color: ${props => props.$isEmpty ? 'var(--Colors-GrayScale-G200, #F3F5F8)' : 'var(--Colors-Secondary-B100, #EBF2FF)'};
-    color: ${props => props.$isEmpty ? 'var(--Colors-GrayScale-G400, #949BAD)' : 'var(--Colors-GrayScale-G600, #1A1A23)'};
     
     &:hover {
         opacity: ${props => props.$isEmpty ? '1' : '0.8'};
-    }
-`;
-
-const FooterDivider = styled.div`
-    display: flex;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-    align-items: center;
-    gap: 24px;
-    position: relative;
-
-    &::after {
-        content: "";
-        position: absolute;
-        left: 32px;
-        right: 32px;
-        bottom: 0;
-        height: 2px;
-        background-color: var(--Colors-GrayScale-G300, #e5eaf2);
     }
 `;
 
@@ -318,7 +304,6 @@ const CouncilRegister = () => {
                     </ViewDetail>
                 </ViewDetailWrapper>
             </ViewBody>
-            <FooterDivider />
         </BottomContainer>
     );
 };

@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useParams } from 'react-router-dom';
-import NavBar from "../../components/NavBar";
-import Footer from "../../components/Footer";
 import RegisterPlaceholder from "../../components/RegisterPlaceholder";
 import keywordDelete from "../../assets/registerIcon/keywordDelete.svg";
 import registerImage from "../../assets/registerIcon/registerImage.png";
@@ -22,7 +20,7 @@ const Title = styled.h2`
 const TitleContainer = styled.div`
 	max-width: 1440px;
 	width: 100%;
-	margin: calc(4rem + 8px) auto 24px;
+	margin: 10px auto 24px;
 	padding: 0 32px;
 `;
 
@@ -306,7 +304,6 @@ const CooperationRegister = () => {
 
 	return (
 		<>
-			<NavBar />
 			<TitleContainer>
 				<Title>공고 등록하기</Title>
 			</TitleContainer>
@@ -374,9 +371,9 @@ const CooperationRegister = () => {
 						<ProfileImage src={dummyProfileEnterprise} alt="프로필 이미지" />
 						<ProfileInformation>
 							<ProfileName>
-								쿨티아 Cooltia
+								아모레퍼시픽 Amorepacific
 							</ProfileName>
-							<ProfileURL>https://cooltia.com</ProfileURL>
+							<ProfileURL>https://www.apgroup.com/int/ko/</ProfileURL>
 						</ProfileInformation>
 					</ProfileWrapper>
 				</ProfileContainer>
@@ -387,7 +384,6 @@ const CooperationRegister = () => {
 			) : (
 				<CouncilRegister />
 			)}
-			<Footer />
 		</>
 	);
 };
