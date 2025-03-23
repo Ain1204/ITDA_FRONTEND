@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import Logo from "../assets/images/Mainimg/Navimg/MainPageLogo.svg";
-import Noti from "../assets/images/Mainimg/Navimg/Noti.svg";
-import Chatting from "../assets/images/Mainimg/Navimg/chat.svg";
-import UserProfile from "../assets/images/Mainimg/Navimg/UserProfile.png";
+import Logo from "../assets/MainIcon/Navimg/MainPageLogo.svg";
+import Noti from "../assets/MainIcon/Navimg/Noti.svg";
+import Chatting from "../assets/MainIcon/Navimg/chat.svg";
+import UserProfile from "../assets/MainIcon/Navimg/UserProfile.png";
 
 // 네비게이션 메뉴 항목
 const NAV_ITEMS = [

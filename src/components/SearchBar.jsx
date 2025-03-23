@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Line from "../assets/images/Mainimg/line.svg";
-import Search from "../assets/images/Mainimg/Icon_Search.svg";
-import Filter from "../assets/images/Mainimg/filter.svg";
-import Reset from "../assets/images/Mainimg/arrow_update.svg";
-import Close from "../assets/images/Mainimg/closed.svg";
-import LineRow from "../assets/images/Mainimg/line-row.svg";
-import Check from "../assets/images/Mainimg/check.svg";
+import Line from "../assets/MainIcon/line.svg";
+import Search from "../assets/MainIcon/Icon_Search.svg";
+import Filter from "../assets/MainIcon/filter.svg";
+import Reset from "../assets/MainIcon/arrow_update.svg";
+import Close from "../assets/MainIcon/closed.svg";
+import LineRow from "../assets/MainIcon/line-row.svg";
+import Check from "../assets/MainIcon/check.svg";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -331,10 +331,10 @@ export default SearchBar;
 
 const cardData = Array.from({ length: 50 }, (_, i) => ({
   id: i + 1,
-  title: `2024 ‘청춘소락’ ${i + 1}`,
+  title: `2024 '청춘소락' ${i + 1}`,
   content: `한양대학교 ERICA 소프트웨어융합대학 ${i + 1}`,
   category: i % 2 === 0 ? "대학생 단체" : "기업", // 짝수는 "기업", 홀수는 "학생"
-  image: `/src/assets/images/Mainimg/image3.png`, // 1~12번 이미지를 순환
+  image: `/src/assets/MainIcon/image3.png`, // 1~12번 이미지를 순환
   hashtags: [
     `단기 프로모션`,
     `#${i % 2 === 0 ? "기업" : "학생"}`,

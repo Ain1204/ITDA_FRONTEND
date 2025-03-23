@@ -3,7 +3,7 @@ import { useState } from "react";
 import RegisterInput from "../../components/RegisterInput";
 import RegisterDetailButton from "../../components/RegisterButton";
 import necessaryDot from "../../assets/registerIcon/necessaryDot.svg";
-import Modal from "../../components/Modal";
+import Modal from "../../components/Modal/Modal";
 
 const BottomContainer = styled.div`
   max-width: 1440px;
@@ -308,7 +308,15 @@ const CouncilRegister = () => {
   };
 
   const handlePromotionMethodsChange = (selectedLabels) => {
-    const allSelectedMethods = Object.values(selectedLabels).flat();
+    const allSelectedMethods = [];
+    
+    // 선택된 라벨이 있는 카테고리만 배열에 추가
+    Object.keys(selectedLabels).forEach(category => {
+      if (selectedLabels[category] && selectedLabels[category].length > 0) {
+        allSelectedMethods.push(category);
+      }
+    });
+    
     setFormData(prev => ({
       ...prev,
       promotionMethods: allSelectedMethods
@@ -350,6 +358,7 @@ const CouncilRegister = () => {
           onClose={() => setIsModalOpen(false)}
           onSelect={handlePromotionMethodsChange}
           initialCategory={selectedInitialCategory}
+          modalTitle="홍보 방안"
         />
 
         <RequestDetailWrapper $activeTab={activeTab}>
