@@ -162,26 +162,6 @@ const TagButton = styled.button`
     }
 `;
 
-const FooterDivider = styled.div`
-    display: flex;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-    align-items: center;
-    gap: 24px;
-    position: relative;
-
-    &::after {
-        content: "";
-        position: absolute;
-        left: 32px;
-        right: 32px;
-        bottom: 0;
-        height: 2px;
-        background-color: var(--Colors-GrayScale-G300, #e5eaf2);
-    }
-`;
-
 const instagramItems = [
     "스토리 업로드",
     "팔로우 유도",
@@ -324,7 +304,6 @@ const CouncilRegister = () => {
                     </ViewDetail>
                 </ViewDetailWrapper>
             </ViewBody>
-            <FooterDivider />
         </BottomContainer>
     );
 };

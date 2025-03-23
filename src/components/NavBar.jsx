@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ useNavigate 추가
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
-
 import Logo from "../assets/images/Mainimg/Navimg/MainPageLogo.svg";
 import Noti from "../assets/images/Mainimg/Navimg/Noti.svg";
 import Chatting from "../assets/images/Mainimg/Navimg/chat.svg";
-import UserProfile from "../assets/images/Mainimg/Navimg/UserProfile.png"; // 사용자 프로필 이미지
+import UserProfile from "../assets/images/Mainimg/Navimg/UserProfile.png";
+
+// 네비게이션 메뉴 항목
+const NAV_ITEMS = [
+  { label: "협업 시작하기", path: "/register/enterprise" },
+  { label: "마이페이지", path: "/mypage" },
+  { label: "서비스 소개", path: "/about" }
+];
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
@@ -20,67 +27,101 @@ const NavBar = () => {
   }, []);
 
   const handleLogin = () => {
-    setIsLoggedIn(true); // 로그인 상태 변경
-    localStorage.setItem("isLoggedIn", "true"); // 로그인 상태 저장
     navigate("/login");
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false); // 로그아웃 상태 변경
-    localStorage.removeItem("isLoggedIn"); // 로그인 상태 삭제
+    setIsLoggedIn(false);
+    localStorage.removeItem("isLoggedIn");
+    navigate("/");
   };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  const closeMenu = () => {
+    if (menuOpen) setMenuOpen(false);
+  };
+
+  const goToHome = () => {
+    navigate("/");
+  };
+
   return (
     <Nav>
-      <LogoImage src={Logo} alt="Nav Logo" />
-      <HamburgerButton onClick={toggleMenu}>
+      <LogoContainer onClick={goToHome}>
+        <LogoImage src={Logo} alt="BIZMO 로고" />
+      </LogoContainer>
+      
+      <HamburgerButton onClick={toggleMenu} aria-label="메뉴">
         <span />
         <span />
         <span />
       </HamburgerButton>
+      
       <NavMenu isOpen={menuOpen}>
-        <NavMenu_Left_Btns>
-          <NavItem href="#home">협업 시작하기</NavItem>
-          <NavItem href="#about">마이페이지</NavItem>
-          <NavItem href="#services">서비스 소개</NavItem>
-        </NavMenu_Left_Btns>
-        <NavMenu_Right_Btns>
-          <a href="/chat">
-            <ChattingImage src={Chatting} alt="chat icon" />
-          </a>
-          <a href="/notifications">
-            <NotiImage src={Noti} alt="noti icon" />
-          </a>
+        <NavMenuLeft>
+          {NAV_ITEMS.map((item, index) => (
+            <NavItem 
+              key={index} 
+              to={item.path} 
+              onClick={closeMenu}
+              $isActive={location.pathname === item.path}
+            >
+              {item.label}
+            </NavItem>
+          ))}
+        </NavMenuLeft>
+        
+        <NavMenuRight>
+          <IconLink to="/chat" onClick={closeMenu}>
+            <IconImage src={Chatting} alt="채팅" />
+          </IconLink>
+          <IconLink to="/notifications" onClick={closeMenu}>
+            <IconImage src={Noti} alt="알림" />
+          </IconLink>
+          
           {isLoggedIn ? (
-            <ProfileImage
-              src={UserProfile}
-              alt="User Profile"
-              onClick={handleLogout}
-            />
+            <ProfileButton onClick={handleLogout}>
+              <ProfileImage src={UserProfile} alt="사용자 프로필" />
+            </ProfileButton>
           ) : (
-            <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
+            <LoginButton onClick={handleLogin}>로그인</LoginButton>
           )}
-        </NavMenu_Right_Btns>
+        </NavMenuRight>
       </NavMenu>
     </Nav>
   );
 };
+
 const Nav = styled.nav`
   display: flex;
-  padding: 0rem 2rem;
+  padding: 0 2rem;
   justify-content: space-between;
   align-items: center;
   position: fixed;
   width: 100%;
-  height: 4rem;
+  height: 5rem;
   top: 0;
   z-index: 1000;
   background: var(--Colors-GrayScale-White, #fcfcff);
-  border: 1px solid rgba(18, 19, 24, 0.04);
+`;
+
+const LogoContainer = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`;
+
+const LogoImage = styled.img`
+  width: 9rem;
+  margin-right: 1.5rem;
+  transform: translateY(-0.1rem);
+
+  @media (max-width: 768px) {
+    width: 7rem;
+  }
 `;
 
 const NavMenu = styled.div`
@@ -88,7 +129,6 @@ const NavMenu = styled.div`
   justify-content: space-between;
   width: 100%;
   align-items: center;
-  white-space: nowrap;
 
   @media (max-width: 768px) {
     display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -97,13 +137,15 @@ const NavMenu = styled.div`
     position: absolute;
     top: 4rem;
     left: 0;
+    width: 100%;
     background: white;
     padding: 1rem 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 999;
   }
 `;
 
-const NavMenu_Left_Btns = styled.div`
+const NavMenuLeft = styled.div`
   display: flex;
   gap: 1.25rem;
   justify-content: flex-start;
@@ -122,24 +164,26 @@ const NavMenu_Left_Btns = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 0.5rem;
+    width: 100%;
   }
 `;
 
-const NavMenu_Right_Btns = styled.div`
+const NavMenuRight = styled.div`
   display: flex;
   align-items: center;
   gap: 1.5rem;
   justify-content: flex-end;
   flex: 1;
-  white-space: nowrap;
 
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
+    padding: 0 1rem;
   }
 `;
 
-const NavItem = styled.a`
+const NavItem = styled(NavLink)`
   text-decoration: none;
   font-size: 1rem;
   border-radius: 0.5rem;
@@ -148,99 +192,101 @@ const NavItem = styled.a`
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  color: var(--Colors-GrayScale-G400, #949bad);
+  color: ${(props) => props.$isActive 
+    ? 'var(--Colors-Primary-B500, #0051ff)' 
+    : 'var(--Colors-GrayScale-G400, #949bad)'};
+  background: ${(props) => props.$isActive 
+    ? 'var(--Colors-Secondary-B100, #ebf2ff)' 
+    : 'transparent'};
 
   &:hover {
-    border-radius: 0.5rem;
     background: var(--Colors-Secondary-B100, #ebf2ff);
     color: var(--Colors-Primary-B500, #0051ff);
   }
 
   @media (max-width: 768px) {
     font-size: 0.875rem;
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
+    width: 100%;
   }
 `;
 
-const LoginBtn = styled.button`
+const IconLink = styled(NavLink)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const IconImage = styled.img`
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+`;
+
+const LoginButton = styled.button`
   display: flex;
   padding: 0.5rem 1rem;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
   border-radius: 0.5rem;
   background: var(--Colors-Primary-B400, #3d85ff);
   border: none;
   cursor: pointer;
-  white-space: nowrap;
   color: var(--Colors-GrayScale-White, #fcfcff);
-  text-align: center;
-
   font-family: "SUIT Variable";
   font-size: 1rem;
-  font-style: normal;
   font-weight: 600;
-  line-height: 150%;
-  letter-spacing: -0.025rem;
+  transition: all 0.2s ease;
+  height: 2.25rem;
 
   &:hover {
-    color: var(--Colors-Primary-B400, #3d85ff);
-    background: var(--Colors-GrayScale-White, #fcfcff);
+    background: var(--Colors-Primary-B500, #0051ff);
   }
 
   @media (max-width: 768px) {
     font-size: 0.875rem;
-    padding: 0.5rem 1rem;
+    width: 100%;
   }
+`;
+
+const ProfileButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ProfileImage = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
-  cursor: pointer;
+  object-fit: cover;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--Colors-Primary-B400, #3d85ff);
+  }
 
   @media (max-width: 768px) {
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 `;
 
-const LogoImage = styled.img`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 9rem;
-  margin-right: 1.5rem;
-
-  @media (max-width: 768px) {
-    width: 7rem;
-  }
-`;
-
-const NotiImage = styled.img`
-  width: 2rem;
-  height: 2rem;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const ChattingImage = styled.img`
-  width: 2rem;
-  height: 2rem;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const HamburgerButton = styled.div`
+const HamburgerButton = styled.button`
   display: none;
+  background: none;
+  border: none;
   cursor: pointer;
+  padding: 0.5rem;
 
   @media (max-width: 768px) {
     display: block;
@@ -250,9 +296,10 @@ const HamburgerButton = styled.div`
     display: block;
     height: 0.25rem;
     width: 2rem;
-    background: black;
+    background: var(--Colors-GrayScale-G600, #1a1a23);
     margin: 0.3rem 0;
     border-radius: 1rem;
+    transition: transform 0.3s ease;
   }
 `;
 

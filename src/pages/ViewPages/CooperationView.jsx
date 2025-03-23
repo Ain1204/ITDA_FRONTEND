@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { useParams } from 'react-router-dom';
-import NavBar from "../../components/NavBar";
-import Footer from "../../components/Footer";
 import councilThumbnail from "../../assets/viewIcon/councilThumbnail.jpg";
 import enterpriseThumbnail from "../../assets/viewIcon/enterThumbnail.svg";
 import dummyProfileCouncil from "../../assets/registerIcon/profile_council.svg";
@@ -17,7 +15,7 @@ import fromToArrow from "../../assets/viewIcon/fromToArrow.svg";
 const RegisterInputContainer = styled.div`
 	max-width: 1440px;
 	width: 100%;
-	margin: calc(4rem + 28px) auto 28px;
+	margin: 10px auto 28px;
 	display: flex;
 	padding: 0 32px;
 	flex-direction: column;
@@ -328,7 +326,6 @@ const CooperationView = () => {
 
 	return (
 		<>
-			<NavBar />
 			<RegisterInputContainer>
 				<RegisterContentWrapper>
 					<ImageContainer>
@@ -445,7 +442,6 @@ const CooperationView = () => {
 			) : (
 				<CouncilView />
 			)}
-			<Footer />
 		</>
 	);
 };

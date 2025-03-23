@@ -76,8 +76,6 @@ const ViewDetail = styled.div`
     visibility: ${(props) => (props.$active === "true" ? "visible" : "hidden")};
 `;
 
-
-
 const ViewDetailWrapper = styled.div`
     position: relative;
     height: ${(props) => (props.$activeTab === "행사 개요" ? "460px" : "600px")};
@@ -173,26 +171,6 @@ const ButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
     width: 100%;
-`;
-
-const FooterDivider = styled.div`
-    display: flex;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-    align-items: center;
-    gap: 24px;
-    position: relative;
-
-    &::after {
-        content: "";
-        position: absolute;
-        left: 32px;
-        right: 32px;
-        bottom: 0;
-        height: 2px;
-        background-color: var(--Colors-GrayScale-G300, #e5eaf2);
-    }
 `;
 
 const instagramItems = [
@@ -304,7 +282,6 @@ const EnterpriseRegister = () => {
                 </RegisterDetailButton>
                 </ButtonContainer>
             </ViewBody>
-            <FooterDivider />
         </BottomContainer>
     );
 };

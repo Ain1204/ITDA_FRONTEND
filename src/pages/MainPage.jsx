@@ -1,14 +1,11 @@
 import styled from "styled-components";
-import NavBar from "../components/NavBar";
 import Banner from "../components/Banner";
 import SearchBar from "../components/SearchBar";
-import Footer from "../components/Footer";
 
 // Main Page Container
 const PageContainer = styled.div`
   height: auto;
   min-height: 146rem;
-  padding-top: 5.5rem;
   background: var(--Colors-GrayScale-White, #fcfcff);
 `;
 
@@ -60,7 +57,6 @@ const SubText = styled.a`
 const MainPage = () => {
   return (
     <PageContainer>
-      <NavBar />
       <Banner />
       <MainTitleContainer>
         <TilteText>대학생 단체와 기업의 성공적인 협업 매칭 플랫폼</TilteText>
@@ -70,7 +66,6 @@ const MainPage = () => {
         </SubText>
       </MainTitleContainer>
       <SearchBar />
-      <Footer />
     </PageContainer>
   );
 };

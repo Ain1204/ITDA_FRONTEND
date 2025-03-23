@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
 import MySidebar from '../../components/MyPageComponents/MySidebar';
 import MyProfile from './MyProfile';
 
@@ -11,12 +9,12 @@ const PageContainer = styled.div`
   flex-direction: column;
   min-height: 100vh;
   background-color: #FCFCFF;
+  padding-top: 10px;
 `;
 
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 4rem; // NavBar 높이와 일치
   flex: 1;
 `;
 
@@ -24,7 +22,7 @@ const MainContent = styled.div`
   flex: 1;
   margin-left: 17rem; // Sidebar 너비(15rem) + 왼쪽 여백(2rem)
   overflow-y: auto;
-  min-height: calc(100vh - 4rem); // NavBar 높이를 제외한 전체 높이
+  min-height: calc(100vh - 4rem - 20px); // NavBar 높이(104px)와 상단 패딩(20px)을 제외한 전체 높이
   display: flex;
   flex-direction: column;
 `;
@@ -46,7 +44,6 @@ const MyPageMain = () => {
 
   return (
     <PageContainer>
-      <NavBar />
       <ContentWrapper>
         <MySidebar />
         <MainContent>
@@ -61,7 +58,6 @@ const MyPageMain = () => {
               <Route path="/receivedproposal" element={<div>받은 제안 현황 페이지</div>} />
             </Routes>
           </ContentArea>
-          <Footer />
         </MainContent>
       </ContentWrapper>
     </PageContainer>
