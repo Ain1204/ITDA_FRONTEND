@@ -9,7 +9,7 @@ import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import TestColorPage from "./pages/TestColorPage";
 import CooperationRegister from "./pages/RegisterPages/CooperationRegister";
-import CooperationView from "./pages/ViewPages/CooperationView"
+import CooperationView from "./pages/ViewPages/CooperationView";
 import MyPageMain from "./pages/MyPagePages/MyPageMain";
 import { SignupProvider } from "./services/SignupContext";
 import NavBar from "./components/NavBar";

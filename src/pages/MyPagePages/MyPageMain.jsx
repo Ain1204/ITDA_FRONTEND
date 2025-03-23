@@ -3,6 +3,8 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import MySidebar from '../../components/MyPageComponents/MySidebar';
 import MyProfile from './MyProfile';
+import MyPageSuggest from "./MyPageSuggest";
+import MyPageMyPost from "./MyPageMyPost";
 
 const PageContainer = styled.div`
   display: flex;
@@ -34,11 +36,11 @@ const ContentArea = styled.div`
 const MyPageMain = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   useEffect(() => {
     // 마이페이지 접속 시 기본 경로 설정
-    if (location.pathname === '/mypage') {
-      navigate('/mypage/profile');
+    if (location.pathname === "/mypage") {
+      navigate("/mypage/profile");
     }
   }, [location.pathname, navigate]);
 
@@ -51,11 +53,17 @@ const MyPageMain = () => {
             <Routes>
               <Route path="/" element={<MyProfile />} />
               <Route path="/profile" element={<MyProfile />} />
-              <Route path="/collaboration" element={<div>협업 모아보기 페이지</div>} />
+              <Route path="/collaboration" element={<MyPageSuggest />} />
               <Route path="/proposal" element={<div>제안서 관리 페이지</div>} />
-              <Route path="/mypost" element={<div>나의 공고 모아보기 페이지</div>} />
-              <Route path="/sentproposal" element={<div>보낸 제안 현황 페이지</div>} />
-              <Route path="/receivedproposal" element={<div>받은 제안 현황 페이지</div>} />
+              <Route path="/mypost" element={<MyPageMyPost />} />
+              <Route
+                path="/sentproposal"
+                element={<div>보낸 제안 현황 페이지</div>}
+              />
+              <Route
+                path="/receivedproposal"
+                element={<div>받은 제안 현황 페이지</div>}
+              />
             </Routes>
           </ContentArea>
         </MainContent>
@@ -64,4 +72,4 @@ const MyPageMain = () => {
   );
 };
 
-export default MyPageMain; 
+export default MyPageMain;

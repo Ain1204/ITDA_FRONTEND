@@ -198,7 +198,6 @@ const NavItem = styled(NavLink)`
   background: ${(props) => props.$isActive 
     ? 'var(--Colors-Secondary-B100, #ebf2ff)' 
     : 'transparent'};
-
   &:hover {
     background: var(--Colors-Secondary-B100, #ebf2ff);
     color: var(--Colors-Primary-B500, #0051ff);
