@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import ClosedIcon from "../assets/registerIcon/wrong.svg"; // 닫기 아이콘
-import LabelClosedIcon from "../assets/registerIcon/lablewrong.svg"; // 닫기 아이콘
-import Divider from "../assets/registerIcon/verticaldivider.svg";
+import ClosedIcon from "../../assets/registerIcon/wrong.svg"; // 닫기 아이콘
+import LabelClosedIcon from "../../assets/registerIcon/lablewrong.svg"; // 닫기 아이콘
+import Divider from "../../assets/registerIcon/verticaldivider.svg";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -294,7 +294,7 @@ const CategoryContainer = styled.div`
   background: ${({ isSelected }) => (isSelected ? "#d6e4ff" : "none")};
 `;
 
-const Modal = ({ isOpen, onClose, onSelect, initialCategory }) => {
+const Modal = ({ isOpen, onClose, onSelect, initialCategory, modalTitle = "홍보 방안" }) => {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || "인스타그램");
   const [otherText, setOtherText] = useState("");
   const [selectedLabels, setSelectedLabels] = useState({});
@@ -388,7 +388,7 @@ const Modal = ({ isOpen, onClose, onSelect, initialCategory }) => {
       <ModalContent onClick={(e) => e.stopPropagation()}>
         {/* Sidebar */}
         <ModalSidebar>
-          <ModalTitle>홍보 방안</ModalTitle>
+          <ModalTitle>{modalTitle}</ModalTitle>
           <ModalSidebarCategory>
             {Object.keys(checkboxes).map((category) => (
               <CategoryContainer
@@ -469,7 +469,8 @@ Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSelect: PropTypes.func,
-  initialCategory: PropTypes.string
+  initialCategory: PropTypes.string,
+  modalTitle: PropTypes.string
 };
 
 export default Modal;

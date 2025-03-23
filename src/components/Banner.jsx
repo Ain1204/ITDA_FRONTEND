@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Banner1 from "../assets/images/Mainimg/Bannerimg/Banner_Image.png";
+import Banner1 from "../assets/MainIcon/Bannerimg/Banner_Image.png";
 import { useState, useEffect } from "react";
 
 const CarouselContainer = styled.div`

@@ -126,9 +126,9 @@ const CardContainer = () => {
 // 샘플 카드 데이터 (공고 중 & 기간 완료 구분 추가)
 const cardData = Array.from({ length: 50 }, (_, i) => ({
   id: i + 1,
-  title: `2024 ‘청춘소락’ ${i + 1}`,
+  title: `2024 '청춘소락' ${i + 1}`,
   content: `한양대학교 ERICA 소프트웨어융합대학 ${i + 1}`,
-  image: `/src/assets/images/Mainimg/image3.png`,
+  image: `/src/assets/MainIcon/image3.png`,
   hashtags: [
     `단기 프로모션`,
     `#${i % 2 === 0 ? "기업" : "학생"}`,

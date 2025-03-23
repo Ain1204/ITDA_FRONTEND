@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Button = styled.button`
@@ -34,16 +33,9 @@ const Text = styled.span`
 `;
 
 const RegisterButton = ({ onClick, text, $active }) => {
-    const [isActive, setIsActive] = useState($active || false);
-
-    const handleClick = () => {
-        setIsActive(!isActive);
-        if (onClick) onClick();
-    };
-
     return (
-        <Button $isActive={isActive} onClick={handleClick}>
-            <Text $isActive={isActive}>{text}</Text>
+        <Button $isActive={$active} onClick={onClick}>
+            <Text $isActive={$active}>{text}</Text>
         </Button>
     );
 };

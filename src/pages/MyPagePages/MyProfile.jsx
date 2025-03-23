@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import ProfileImg from '../../assets/images/MyPage/Mypage_Profile.svg';
-import LinkIcon from '../../assets/images/MyPage/Mypage_Link.svg';
+import ProfileImg from '../../assets/MyPageIcon/Mypage_Profile.svg';
+import LinkIcon from '../../assets/MyPageIcon/Mypage_Link.svg';
 
 const ProfileContainer = styled.div`
   display: flex;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import CardContainer from "../../components/MyPageComponents/CardContainer";
-import SearchIcon from "../../assets/images/MyPage/search.svg";
+import SearchIcon from "../../assets/MyPageIcon/search.svg";
 
 const MyPageSuggest = () => {
   return (

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import SearchIcon from "../../assets/images/MyPage/search.svg";
-import MyPostCardContainer from "../../components/MyPageComponents/MyPostCardContaimer";
+import SearchIcon from "../../assets/MyPageIcon/search.svg";
+import MyPostCardContainer from "../../components/MyPageComponents/MyPostCardContainer";
 
 const MyPageMyPost = () => {
   return (
