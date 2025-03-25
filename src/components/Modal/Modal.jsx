@@ -78,7 +78,7 @@ const CheckboxLabel = styled.label`
   line-height: 150%;
   letter-spacing: -0.025rem;
   cursor: pointer;
-  
+
   & > span {
     transform: translateY(1px);
   }
@@ -98,8 +98,11 @@ const Checkbox = styled.input`
   &:checked {
     background-color: #3d85ff;
     border-color: #3d85ff;
-    appearance: auto;
-    transform: scale(1.05);
+    /* ✅ border-radius 유지됨 */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 6L5 8.5L9 4' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 70%;
   }
 
   &:hover {
@@ -294,8 +297,16 @@ const CategoryContainer = styled.div`
   background: ${({ isSelected }) => (isSelected ? "#d6e4ff" : "none")};
 `;
 
-const Modal = ({ isOpen, onClose, onSelect, initialCategory, modalTitle = "홍보 방안" }) => {
-  const [selectedCategory, setSelectedCategory] = useState(initialCategory || "인스타그램");
+const Modal = ({
+  isOpen,
+  onClose,
+  onSelect,
+  initialCategory,
+  modalTitle = "홍보 방안",
+}) => {
+  const [selectedCategory, setSelectedCategory] = useState(
+    initialCategory || "인스타그램"
+  );
   const [otherText, setOtherText] = useState("");
   const [selectedLabels, setSelectedLabels] = useState({});
 
@@ -424,7 +435,9 @@ const Modal = ({ isOpen, onClose, onSelect, initialCategory, modalTitle = "홍�
                     id={`checkbox-${label}`}
                     type="checkbox"
                     checked={selectedLabels[selectedCategory]?.includes(label)}
-                    onChange={() => handleCheckboxChange(selectedCategory, label)}
+                    onChange={() =>
+                      handleCheckboxChange(selectedCategory, label)
+                    }
                   />
                   <span>{label}</span>
                 </CheckboxLabel>
@@ -470,7 +483,7 @@ Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSelect: PropTypes.func,
   initialCategory: PropTypes.string,
-  modalTitle: PropTypes.string
+  modalTitle: PropTypes.string,
 };
 
 export default Modal;
