@@ -349,7 +349,7 @@ const PageButton = styled.button`
   border: none;
   background: ${(props) => (props.isActive ? "#D6E4FF" : "none")};
   color: ${(props) => (props.isActive ? "#3d85ff" : "#949BAD")};
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   cursor: pointer;
 
   &:hover {

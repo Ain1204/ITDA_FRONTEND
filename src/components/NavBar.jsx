@@ -10,7 +10,7 @@ import UserProfile from "../assets/MainIcon/Navimg/UserProfile.png";
 const NAV_ITEMS = [
   { label: "협업 시작하기", path: "/register/enterprise" },
   { label: "마이페이지", path: "/mypage" },
-  { label: "서비스 소개", path: "/about" }
+  { label: "서비스 소개", path: "/about" },
 ];
 
 const NavBar = () => {
@@ -53,19 +53,19 @@ const NavBar = () => {
       <LogoContainer onClick={goToHome}>
         <LogoImage src={Logo} alt="BIZMO 로고" />
       </LogoContainer>
-      
+
       <HamburgerButton onClick={toggleMenu} aria-label="메뉴">
         <span />
         <span />
         <span />
       </HamburgerButton>
-      
+
       <NavMenu isOpen={menuOpen}>
         <NavMenuLeft>
           {NAV_ITEMS.map((item, index) => (
-            <NavItem 
-              key={index} 
-              to={item.path} 
+            <NavItem
+              key={index}
+              to={item.path}
               onClick={closeMenu}
               $isActive={location.pathname === item.path}
             >
@@ -73,7 +73,7 @@ const NavBar = () => {
             </NavItem>
           ))}
         </NavMenuLeft>
-        
+
         <NavMenuRight>
           <IconLink to="/chat" onClick={closeMenu}>
             <IconImage src={Chatting} alt="채팅" />
@@ -81,7 +81,7 @@ const NavBar = () => {
           <IconLink to="/notifications" onClick={closeMenu}>
             <IconImage src={Noti} alt="알림" />
           </IconLink>
-          
+
           {isLoggedIn ? (
             <ProfileButton onClick={handleLogout}>
               <ProfileImage src={UserProfile} alt="사용자 프로필" />
@@ -192,12 +192,13 @@ const NavItem = styled(NavLink)`
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  color: ${(props) => props.$isActive 
-    ? 'var(--Colors-Primary-B500, #0051ff)' 
-    : 'var(--Colors-GrayScale-G400, #949bad)'};
-  background: ${(props) => props.$isActive 
-    ? 'var(--Colors-Secondary-B100, #ebf2ff)' 
-    : 'transparent'};
+  white-space: nowrap;
+  color: ${(props) =>
+    props.$isActive
+      ? "var(--Colors-Primary-B500, #0051ff)"
+      : "var(--Colors-GrayScale-G400, #949bad)"};
+  background: ${(props) =>
+    props.$isActive ? "var(--Colors-Secondary-B100, #ebf2ff)" : "transparent"};
   &:hover {
     background: var(--Colors-Secondary-B100, #ebf2ff);
     color: var(--Colors-Primary-B500, #0051ff);

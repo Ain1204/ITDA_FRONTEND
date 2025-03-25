@@ -29,6 +29,7 @@ const PageContainer = styled.div`
   padding-top: 1.75rem;
   background: var(--Colors-GrayScale-White, #fcfcff);
   width: 100%;
+  margin-bottom: 3rem;
 `;
 
 const SuggestSuccessContainer = styled.div`
