@@ -356,10 +356,17 @@ const Modal = ({
   };
 
   const handleRemoveLabel = (category, labelToRemove) => {
-    setSelectedLabels((prev) => ({
-      ...prev,
-      [category]: prev[category].filter((label) => label !== labelToRemove),
-    }));
+    setSelectedLabels((prev) => {
+      const updatedLabels = { ...prev };
+      updatedLabels[category] = prev[category].filter((label) => label !== labelToRemove);
+      
+      // 부모 컴포넌트에 선택된 라벨 변경 알림
+      if (onSelect) {
+        onSelect(updatedLabels);
+      }
+      
+      return updatedLabels;
+    });
   };
   const handleInputKeyDown = (e) => {
     if (e.key === "Enter" && otherText.trim() !== "") {
