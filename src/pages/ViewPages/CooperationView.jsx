@@ -1,10 +1,16 @@
 import styled from "styled-components";
 import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 import councilThumbnail from "../../assets/viewIcon/councilThumbnail.jpg";
 import enterpriseThumbnail from "../../assets/viewIcon/enterThumbnail.svg";
 import dummyProfileCouncil from "../../assets/registerIcon/profile_council.svg";
 import dummyProfileEnterprise from "../../assets/registerIcon/profile_enter.svg";
 import arrowUp from "../../assets/viewIcon/arrow_up.svg";
+import exitIcon from "../../assets/IRIcon/exit.svg";
+import downloadIcon from "../../assets/IRIcon/download.svg";
+import leftIcon from "../../assets/IRIcon/IR_Left.svg";
+import rightIcon from "../../assets/IRIcon/IR_Right.svg";
+import dummyIR from "../../assets/IRIcon/dummyIR.png";
 import EnterpriseView from "../ViewPages/EnterpriseView";
 import CouncilView from "../ViewPages/CouncilView";
 import kakaoIcon from "../../assets/viewIcon/kakaoIcon.svg";
@@ -320,9 +326,291 @@ const EmailURL = styled.a`
 	gap: 8px;
 `;
 
+// 모달 오버레이 스타일
+const Overlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--Colors-Overlay-OD400, rgba(18, 19, 24, 0.95));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 90px 0 0;
+    
+    /* 스크롤바 숨기기 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+    
+    /* 애니메이션 효과 */
+    opacity: 0;
+    animation: ${props => props.isClosing ? 'fadeOut 0.3s ease-in-out forwards' : 'fadeIn 0.3s ease-in-out forwards'};
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+`;
+
+// IR 페이지 이미지 스타일
+const IRPageImage = styled.img`
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 80%;
+    max-height: 80vh;
+    object-fit: contain;
+    
+    &:last-child {
+        margin-bottom: 90px;
+    }
+    
+    /* 이미지 애니메이션 */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: ${props => props.isClosing 
+        ? 'slideDown 0.3s ease-out forwards' 
+        : 'slideUp 0.4s ease-out forwards'};
+    animation-delay: ${props => props.isClosing 
+        ? '0s' 
+        : props.index === 0 
+            ? '0.2s' 
+            : props.index === 1 
+                ? '0.3s' 
+                : '0.4s'};
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    }
+`;
+
+// 제목 스타일
+const DocumentTitle = styled.div`
+    color: var(--Colors-GrayScale-White, #FCFCFF);
+    font-family: "SUIT Variable";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    letter-spacing: -0.4px;
+    margin-left: 16px;
+	transform: translateY(1px);
+`;
+
+// 모달 헤더 스타일
+const OverlayHeader = styled.div`
+    position: fixed;
+    top: 40px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 48px;
+    z-index: 1001;
+    
+    /* 헤더 애니메이션 */
+    opacity: 0;
+    animation: ${props => props.isClosing 
+        ? 'fadeUp 0.3s ease-out forwards' 
+        : 'fadeDown 0.3s ease-out forwards'};
+    
+    @keyframes fadeDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeUp {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+    }
+`;
+
+// 모달 닫기 버튼 스타일
+const ExitButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+        opacity: 0.8;
+    }
+`;
+
+// 아이콘 스타일
+const IRIcon = styled.img`
+    width: 16px;
+    height: 16px;
+`;
+
+// 원형 버튼 기본 스타일
+const CircleButton = styled.button`
+    display: flex;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+`;
+
+// 다운로드 버튼 스타일
+const DownloadButton = styled(CircleButton)`
+    background: var(--Colors-Primary-B400, #3D85FF);
+    
+    &:hover {
+        background: var(--Colors-Primary-Blue600, #2461d9);
+    }
+`;
+
+// 네비게이션 버튼 스타일
+const NavButton = styled(CircleButton)`
+    background: var(--Colors-GrayScale-G600, #1A1A23);
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1001;
+    
+    &:hover {
+        background: var(--Colors-GrayScale-G500, #4F5462);
+    }
+    
+    &.left {
+        left: 48px;
+        /* 왼쪽 버튼 애니메이션 */
+        opacity: 0;
+        animation: ${props => props.isClosing 
+            ? 'slideOutLeft 0.3s ease-out forwards' 
+            : 'slideInLeft 0.3s ease-out 0.2s forwards'};
+    }
+    
+    &.right {
+        right: 48px;
+        /* 오른쪽 버튼 애니메이션 */
+        opacity: 0;
+        animation: ${props => props.isClosing 
+            ? 'slideOutRight 0.3s ease-out forwards' 
+            : 'slideInRight 0.3s ease-out 0.2s forwards'};
+    }
+    
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translate(-20px, -50%);
+        }
+        to {
+            opacity: 1;
+            transform: translate(0, -50%);
+        }
+    }
+    
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translate(20px, -50%);
+        }
+        to {
+            opacity: 1;
+            transform: translate(0, -50%);
+        }
+    }
+    
+    @keyframes slideOutLeft {
+        from {
+            opacity: 1;
+            transform: translate(0, -50%);
+        }
+        to {
+            opacity: 0;
+            transform: translate(-20px, -50%);
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            opacity: 1;
+            transform: translate(0, -50%);
+        }
+        to {
+            opacity: 0;
+            transform: translate(20px, -50%);
+        }
+    }
+`;
+
 const CooperationView = () => {
 	const { type } = useParams();
 	const viewType = type || "enterprise";
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isClosing, setIsClosing] = useState(false);
+
+	const handleOpenModal = () => {
+		setIsModalOpen(true);
+		setIsClosing(false);
+	};
+
+	const handleCloseModal = () => {
+		setIsClosing(true);
+		setTimeout(() => {
+			setIsModalOpen(false);
+			setIsClosing(false);
+		}, 400); // 애니메이션 지속 시간보다 약간 길게 설정
+	};
 
 	return (
 		<>
@@ -347,7 +635,7 @@ const CooperationView = () => {
 									16건
 								</PeriodSuggestNumber>
 								<ButtonContainer>
-									<RegisterButton> 제안서 열람하기 </RegisterButton>
+									<RegisterButton onClick={handleOpenModal}>제안서 열람하기</RegisterButton>
 								</ButtonContainer>
 							</CooperationInfoContainer>
 							<CooperationContent>
@@ -386,6 +674,33 @@ const CooperationView = () => {
 					</RightContentWrapper>
 				</RegisterContentWrapper>
 			</RegisterInputContainer>
+			
+			{isModalOpen && (
+				<>
+					<OverlayHeader isClosing={isClosing}>
+						<div style={{ display: 'flex', alignItems: 'center' }}>
+							<ExitButton onClick={handleCloseModal}>
+								<IRIcon src={exitIcon} alt="닫기" />
+							</ExitButton>
+							<DocumentTitle>소란도란 한가위_2024 제휴 제안_IR 자료.pdf</DocumentTitle>
+						</div>
+						<DownloadButton>
+							<IRIcon src={downloadIcon} alt="다운로드" />
+						</DownloadButton>
+					</OverlayHeader>
+					<NavButton className="left" isClosing={isClosing}>
+						<IRIcon src={leftIcon} alt="이전" />
+					</NavButton>
+					<NavButton className="right" isClosing={isClosing}>
+						<IRIcon src={rightIcon} alt="다음" />
+					</NavButton>
+					<Overlay isClosing={isClosing}>
+						<IRPageImage src={dummyIR} alt="제안서 페이지 1" isClosing={isClosing} index={0} />
+						<IRPageImage src={dummyIR} alt="제안서 페이지 2" isClosing={isClosing} index={1} />
+						<IRPageImage src={dummyIR} alt="제안서 페이지 3" isClosing={isClosing} index={2} />
+					</Overlay>
+				</>
+			)}
 			
 			{viewType === "council" && (
 				<ProfileContainer>
