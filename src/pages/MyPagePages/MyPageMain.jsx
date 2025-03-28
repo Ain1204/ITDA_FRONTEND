@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import MySidebar from '../../components/MyPageComponents/MySidebar';
-import MyProfile from './MyProfile';
+import MyProfile from './MyProfile/MyProfileMain';
 import MyPageSuggest from "./MyPageSuggest";
 import MyPageMyPost from "./MyPageMyPost";
 
@@ -39,8 +39,8 @@ const MyPageMain = () => {
 
   useEffect(() => {
     // 마이페이지 접속 시 기본 경로 설정
-    if (location.pathname === "/mypage") {
-      navigate("/mypage/profile");
+    if (location.pathname === "/mypage" || location.pathname === "/mypage/") {
+      navigate("/mypage/profile", { replace: true });
     }
   }, [location.pathname, navigate]);
 
@@ -51,8 +51,12 @@ const MyPageMain = () => {
         <MainContent>
           <ContentArea>
             <Routes>
+              {/* 프로필 관련 라우트 */}
               <Route path="/" element={<MyProfile />} />
               <Route path="/profile" element={<MyProfile />} />
+              <Route path="/profile/:state" element={<MyProfile />} />
+              
+              {/* 다른 라우트들 */}
               <Route path="/collaboration" element={<MyPageSuggest />} />
               <Route path="/proposal" element={<div>제안서 관리 페이지</div>} />
               <Route path="/mypost" element={<MyPageMyPost />} />
