@@ -14,6 +14,7 @@ import MyPageMain from "./pages/MyPagePages/MyPageMain";
 import { SignupProvider } from "./services/SignupContext";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import Profile from "./pages/ProfilePages/Profile";
 import styled from "styled-components";
 
 const AppContainer = styled.div`
@@ -63,6 +64,7 @@ function App() {
 											<Route path="/register/:type" element={<CooperationRegister />} />
 											<Route path="/view/:type" element={<CooperationView />} />
 											<Route path="/mypage/*" element={<MyPageMain />} />
+											<Route path="/profile/:type" element={<Profile />} />
 										</Routes>
 									</MainContent>
 									<Footer />
