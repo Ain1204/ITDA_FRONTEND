@@ -336,18 +336,11 @@ const Overlay = styled.div`
     background: var(--Colors-Overlay-OD400, rgba(18, 19, 24, 0.95));
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     z-index: 1000;
-    overflow-y: auto;
-    padding: 90px 0 0;
-    
-    /* 스크롤바 숨기기 */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    &::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
-    }
+    padding: 50px 0 0;
+
     
     /* 애니메이션 효과 */
     opacity: 0;
@@ -374,50 +367,39 @@ const Overlay = styled.div`
 
 // IR 페이지 이미지 스타일
 const IRPageImage = styled.img`
-    display: block;
+    display: ${props => props.active ? 'block' : 'none'};
     width: auto;
     height: auto;
-    max-width: 80%;
-    max-height: 80vh;
+    max-width: 95%;
+    max-height: 90vh;
     object-fit: contain;
-    
-    &:last-child {
-        margin-bottom: 90px;
-    }
+    transform: scale(1.05);
     
     /* 이미지 애니메이션 */
     opacity: 0;
-    transform: translateY(20px);
     animation: ${props => props.isClosing 
         ? 'slideDown 0.3s ease-out forwards' 
         : 'slideUp 0.4s ease-out forwards'};
-    animation-delay: ${props => props.isClosing 
-        ? '0s' 
-        : props.index === 0 
-            ? '0.2s' 
-            : props.index === 1 
-                ? '0.3s' 
-                : '0.4s'};
     
     @keyframes slideUp {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(20px) scale(1.05);
         }
         to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1.05);
         }
     }
     
     @keyframes slideDown {
         from {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1.05);
         }
         to {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(20px) scale(1.05);
         }
     }
 `;
@@ -475,6 +457,27 @@ const OverlayHeader = styled.div`
     }
 `;
 
+// 모달 헤더 컨테이너 스타일
+const IRTitle = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+// 페이지 정보 스타일
+const IRInformation = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 30px;
+`;
+
+// 페이지 카운터 스타일
+const PageCounter = styled.div`
+    color: white;
+    font-size: 16px;
+    font-family: "SUIT Variable";
+    font-weight: 500;
+`;
+
 // 모달 닫기 버튼 스타일
 const ExitButton = styled.button`
     background: none;
@@ -520,20 +523,26 @@ const DownloadButton = styled(CircleButton)`
 
 // 네비게이션 버튼 스타일
 const NavButton = styled(CircleButton)`
-    background: var(--Colors-GrayScale-G600, #1A1A23);
+    background: ${props => props.disabled 
+        ? 'var(--Colors-GrayScale-G400, #A2A9B0)' 
+        : 'var(--Colors-GrayScale-G600, #1A1A23)'};
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
     z-index: 1001;
+    opacity: ${props => props.disabled ? '0.5' : '1'};
+    cursor: ${props => props.disabled ? 'default' : 'pointer'};
     
     &:hover {
-        background: var(--Colors-GrayScale-G500, #4F5462);
+        background: ${props => props.disabled 
+            ? 'var(--Colors-GrayScale-G400, #A2A9B0)' 
+            : 'var(--Colors-GrayScale-G500, #4F5462)'};
     }
     
     &.left {
         left: 48px;
         /* 왼쪽 버튼 애니메이션 */
-        opacity: 0;
+        opacity: ${props => props.disabled ? '0.5' : '0'};
         animation: ${props => props.isClosing 
             ? 'slideOutLeft 0.3s ease-out forwards' 
             : 'slideInLeft 0.3s ease-out 0.2s forwards'};
@@ -542,7 +551,7 @@ const NavButton = styled(CircleButton)`
     &.right {
         right: 48px;
         /* 오른쪽 버튼 애니메이션 */
-        opacity: 0;
+        opacity: ${props => props.disabled ? '0.5' : '0'};
         animation: ${props => props.isClosing 
             ? 'slideOutRight 0.3s ease-out forwards' 
             : 'slideInRight 0.3s ease-out 0.2s forwards'};
@@ -550,44 +559,44 @@ const NavButton = styled(CircleButton)`
     
     @keyframes slideInLeft {
         from {
-            opacity: 0;
+            opacity: ${props => props.disabled ? '0.5' : '0'};
             transform: translate(-20px, -50%);
         }
         to {
-            opacity: 1;
+            opacity: ${props => props.disabled ? '0.5' : '1'};
             transform: translate(0, -50%);
         }
     }
     
     @keyframes slideInRight {
         from {
-            opacity: 0;
+            opacity: ${props => props.disabled ? '0.5' : '0'};
             transform: translate(20px, -50%);
         }
         to {
-            opacity: 1;
+            opacity: ${props => props.disabled ? '0.5' : '1'};
             transform: translate(0, -50%);
         }
     }
     
     @keyframes slideOutLeft {
         from {
-            opacity: 1;
+            opacity: ${props => props.disabled ? '0.5' : '1'};
             transform: translate(0, -50%);
         }
         to {
-            opacity: 0;
+            opacity: ${props => props.disabled ? '0.5' : '0'};
             transform: translate(-20px, -50%);
         }
     }
     
     @keyframes slideOutRight {
         from {
-            opacity: 1;
+            opacity: ${props => props.disabled ? '0.5' : '1'};
             transform: translate(0, -50%);
         }
         to {
-            opacity: 0;
+            opacity: ${props => props.disabled ? '0.5' : '0'};
             transform: translate(20px, -50%);
         }
     }
@@ -598,10 +607,13 @@ const CooperationView = () => {
 	const viewType = type || "enterprise";
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
+	const [currentPage, setCurrentPage] = useState(0);
+	const totalPages = 3; // 총 페이지 수
 
 	const handleOpenModal = () => {
 		setIsModalOpen(true);
 		setIsClosing(false);
+		setCurrentPage(0); // 모달 열때 첫 페이지로 초기화
 	};
 
 	const handleCloseModal = () => {
@@ -610,6 +622,18 @@ const CooperationView = () => {
 			setIsModalOpen(false);
 			setIsClosing(false);
 		}, 400); // 애니메이션 지속 시간보다 약간 길게 설정
+	};
+
+	const handlePrevPage = () => {
+		if (currentPage > 0) {
+			setCurrentPage(currentPage - 1);
+		}
+	};
+
+	const handleNextPage = () => {
+		if (currentPage < totalPages - 1) {
+			setCurrentPage(currentPage + 1);
+		}
 	};
 
 	return (
@@ -678,26 +702,29 @@ const CooperationView = () => {
 			{isModalOpen && (
 				<>
 					<OverlayHeader isClosing={isClosing}>
-						<div style={{ display: 'flex', alignItems: 'center' }}>
+						<IRTitle>
 							<ExitButton onClick={handleCloseModal}>
 								<IRIcon src={exitIcon} alt="닫기" />
 							</ExitButton>
 							<DocumentTitle>소란도란 한가위_2024 제휴 제안_IR 자료.pdf</DocumentTitle>
-						</div>
-						<DownloadButton>
-							<IRIcon src={downloadIcon} alt="다운로드" />
-						</DownloadButton>
+						</IRTitle>
+						<IRInformation>
+							<PageCounter>{currentPage + 1} / {totalPages}</PageCounter>
+							<DownloadButton>
+								<IRIcon src={downloadIcon} alt="다운로드" />
+							</DownloadButton>
+						</IRInformation>
 					</OverlayHeader>
-					<NavButton className="left" isClosing={isClosing}>
+					<NavButton className="left" isClosing={isClosing} onClick={handlePrevPage} disabled={currentPage === 0}>
 						<IRIcon src={leftIcon} alt="이전" />
 					</NavButton>
-					<NavButton className="right" isClosing={isClosing}>
+					<NavButton className="right" isClosing={isClosing} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
 						<IRIcon src={rightIcon} alt="다음" />
 					</NavButton>
 					<Overlay isClosing={isClosing}>
-						<IRPageImage src={dummyIR} alt="제안서 페이지 1" isClosing={isClosing} index={0} />
-						<IRPageImage src={dummyIR} alt="제안서 페이지 2" isClosing={isClosing} index={1} />
-						<IRPageImage src={dummyIR} alt="제안서 페이지 3" isClosing={isClosing} index={2} />
+						<IRPageImage src={dummyIR} alt="제안서 페이지 1" isClosing={isClosing} active={currentPage === 0} />
+						<IRPageImage src={dummyIR} alt="제안서 페이지 2" isClosing={isClosing} active={currentPage === 1} />
+						<IRPageImage src={dummyIR} alt="제안서 페이지 3" isClosing={isClosing} active={currentPage === 2} />
 					</Overlay>
 				</>
 			)}
