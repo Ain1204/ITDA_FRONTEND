@@ -29,11 +29,12 @@ const PageContainer = styled.div`
   background: var(--Colors-GrayScale-White, #fcfcff);
   width: 100%;
   margin-bottom: 3rem;
+  overflow-x: hidden;
 `;
 
 const SuggestSuccessContainer = styled.div`
   display: flex;
-  width: 76rem;
+  width: 73rem;
   height: 6.75rem;
   padding: 1.75rem 2rem 1.25rem 2rem;
   flex-direction: column;

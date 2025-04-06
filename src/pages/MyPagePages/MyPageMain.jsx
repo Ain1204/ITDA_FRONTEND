@@ -1,16 +1,17 @@
-import { useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import MySidebar from '../../components/MyPageComponents/MySidebar';
-import MyProfile from './MyProfile/MyProfileMain';
+import { useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import styled from "styled-components";
+import MySidebar from "../../components/MyPageComponents/MySidebar";
+import MyProfile from "./MyProfile/MyProfileMain";
 import MyPageSuggest from "./MyPageSuggest";
 import MyPageMyPost from "./MyPageMyPost";
+import SuggestSent from "../SuggestSentPage/SuggestSent";
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #FCFCFF;
+  background-color: #fcfcff;
   padding-top: 10px;
 `;
 
@@ -24,7 +25,9 @@ const MainContent = styled.div`
   flex: 1;
   margin-left: 17rem; // Sidebar 너비(15rem) + 왼쪽 여백(2rem)
   overflow-y: auto;
-  min-height: calc(100vh - 4rem - 20px); // NavBar 높이(104px)와 상단 패딩(20px)을 제외한 전체 높이
+  min-height: calc(
+    100vh - 4rem - 20px
+  ); // NavBar 높이(104px)와 상단 패딩(20px)을 제외한 전체 높이
   display: flex;
   flex-direction: column;
 `;
@@ -55,15 +58,12 @@ const MyPageMain = () => {
               <Route path="/" element={<MyProfile />} />
               <Route path="/profile" element={<MyProfile />} />
               <Route path="/profile/:state" element={<MyProfile />} />
-              
+
               {/* 다른 라우트들 */}
               <Route path="/collaboration" element={<MyPageSuggest />} />
               <Route path="/proposal" element={<div>제안서 관리 페이지</div>} />
               <Route path="/mypost" element={<MyPageMyPost />} />
-              <Route
-                path="/sentproposal"
-                element={<div>보낸 제안 현황 페이지</div>}
-              />
+              <Route path="/sentproposal" element={<SuggestSent />} />
               <Route
                 path="/receivedproposal"
                 element={<div>받은 제안 현황 페이지</div>}
