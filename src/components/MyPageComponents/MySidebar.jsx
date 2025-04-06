@@ -11,10 +11,12 @@ const SidebarContainer = styled.div`
   border-radius: var(--Shapes-Border-Round, 1rem);
   background: var(--Colors-GrayScale-White, #FCFCFF);
   box-shadow: 0px 8px 24px 0px rgba(79, 84, 98, 0.24);
-  position: fixed;
-  left: 2rem;
+  position: static;
   width: 15rem;
-  height: 52.75rem;
+  height: auto;
+  min-height: 52.75rem;
+  margin-left: 2rem;
+  margin-bottom: 3rem;
   z-index: 100;
 `;
 
@@ -75,8 +77,10 @@ const MenuItem = styled(Link)`
   line-height: 150%;
   letter-spacing: -0.025rem;
   cursor: pointer;
+  transition: padding 0.2s ease-in-out, background 0.2s ease-in-out, color 0.2s ease-in-out;
   
   &:hover {
+    padding: 0.5rem 1rem;
     background: var(--Colors-Secondary-B100, #EBF2FF);
     color: var(--Colors-Primary-B500, #0051FF);
   }

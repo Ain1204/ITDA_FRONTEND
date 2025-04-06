@@ -1,12 +1,10 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import ProfileImg from '../../../assets/MyPageIcon/Mypage_Profile.svg';
-import LinkIcon from '../../../assets/MyPageIcon/Mypage_Link.svg';
-import InstagramIcon from '../../../assets/MyPageIcon/Instagram_Icon.svg';
 import RedCircle from '../../../assets/MyPageIcon/Red_Circle.svg';
-import GrayX from '../../../assets/MyPageIcon/Gray_X.svg';
-import BlueX from '../../../assets/MyPageIcon/Blue_X.svg';
 import logger from '../../../utils/logger';
+import UploadPortfolio from '../../../components/MyPageComponents/UploadPortfolio';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -180,17 +178,6 @@ const NameInputGroup = styled.div`
   align-items: center;
   gap: 0.75rem;
   width: 100%;
-`;
-
-const NameLabel = styled.label`
-  color: var(--Colors-GrayScale-G500, #4F5462);
-  font-family: "SUIT Variable";
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%;
-  letter-spacing: -0.025rem;
-  margin-bottom: 0.25rem;
 `;
 
 const NameInput = styled.input`
@@ -381,115 +368,6 @@ const CharCount = styled.div`
   letter-spacing: -0.01875rem;
 `;
 
-const PortfolioContainer = styled.div`
-  margin-bottom: 3.75rem;
-`;
-
-const DropZone = styled.div`
-  display: flex;
-  height: 36.1875rem;
-  padding: 2rem 0rem;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  align-self: stretch;
-  border-radius: var(--Shapes-Border-Hard, 0.5rem);
-  border: 2px solid var(--Colors-GrayScale-G200, #F3F5F8);
-  background: var(--Colors-GrayScale-G100, #F8F9FC);
-  box-shadow: 0px 0px 8px 0px rgba(26, 26, 35, 0.12) inset;
-  position: relative;
-  cursor: pointer;
-`;
-
-const DropZoneText = styled.p`
-  color: var(--Colors-GrayScale-G600, #1A1A23);
-  text-align: center;
-  font-family: "SUIT Variable";
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
-  letter-spacing: -0.03125rem;
-`;
-
-const OrText = styled.p`
-  color: var(--Colors-GrayScale-G500, #4F5462);
-  text-align: center;
-  font-family: "SUIT Variable";
-  font-size: 0.875rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 168%;
-  letter-spacing: -0.02188rem;
-`;
-
-const FileInput = styled.input`
-  display: none;
-`;
-
-const FileSelectButton = styled.button`
-  display: inline-flex;
-  padding: 0.5rem 1rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: 0.5rem;
-  background: var(--Colors-Primary-B400, #3D85FF);
-  color: var(--Colors-GrayScale-White, #FCFCFF);
-  text-align: center;
-  font-family: "SUIT Variable";
-  font-size: 0.75rem;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 132%;
-  letter-spacing: -0.01875rem;
-  border: none;
-  cursor: pointer;
-  
-  &:active {
-    background: var(--Colors-Primary-B500, #0051FF);
-  }
-`;
-
-const UploadedFilesContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  width: 100%;
-  padding: 0 1rem;
-`;
-
-const FileTag = styled.div`
-  display: inline-flex;
-  padding: 0.5rem 0.75rem 0.5rem 1rem;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  border-radius: 0.5rem;
-  background: ${props => props.isHovered || props.isActive ? 'var(--Colors-Secondary-B100, #EBF2FF)' : 'transparent'};
-  color: ${props => props.isHovered || props.isActive ? 'var(--Colors-Primary-B500, #0051FF)' : 'var(--Colors-GrayScale-G400, #949BAD)'};
-  text-align: center;
-  font-family: "SUIT Variable";
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
-  letter-spacing: -0.025rem;
-  cursor: pointer;
-  
-  &:active {
-    background: var(--Colors-Secondary-B200, #D6E4FF);
-  }
-`;
-
-const FileRemoveIcon = styled.img`
-  width: 0.75rem;
-  height: 0.75rem;
-`;
-
 const SaveButton = styled.button`
   display: flex;
   width: 4.375rem;
@@ -518,6 +396,11 @@ const SaveButton = styled.button`
   }
 `;
 
+const PortfolioWrapper = styled.div`
+  margin-bottom: 3.75rem;
+  width: 100%;
+`;
+
 const MyProfileEdit = ({ userType, onStateChange }) => {
   const [formData, setFormData] = useState({
     name: '쿨티아 Cooltia',
@@ -532,16 +415,12 @@ const MyProfileEdit = ({ userType, onStateChange }) => {
   const [isBackgroundHovered, setIsBackgroundHovered] = useState(false);
   const [isNameDuplicateCheckActive, setIsNameDuplicateCheckActive] = useState(true);
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [hoveredFileIndex, setHoveredFileIndex] = useState(null);
-  const [activeFileIndex, setActiveFileIndex] = useState(null);
   const [charCount, setCharCount] = useState(0);
   
   // 프로필 및 배경 이미지 미리보기 URL 상태 추가
   const [profileImagePreview, setProfileImagePreview] = useState(ProfileImg);
   const [backgroundImagePreview, setBackgroundImagePreview] = useState(null);
   
-  const fileInputRef = useRef(null);
-  const dropZoneRef = useRef(null);
   const profileImageInputRef = useRef(null);
   const backgroundImageInputRef = useRef(null);
   
@@ -618,11 +497,6 @@ const MyProfileEdit = ({ userType, onStateChange }) => {
     }
   };
   
-  const handleCancel = () => {
-    // 취소 시 빈 프로필 상태로 되돌림
-    onStateChange('empty');
-  };
-  
   const handleSave = () => {
     logger.log('저장된 프로필 데이터:', formData);
     logger.log('업로드된 파일:', uploadedFiles);
@@ -630,38 +504,9 @@ const MyProfileEdit = ({ userType, onStateChange }) => {
     onStateChange('filled');
   };
   
-  const handleFileSelect = () => {
-    fileInputRef.current.click();
-  };
-  
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 0) {
-      setUploadedFiles(prev => [...prev, ...files]);
-    }
-    // 파일 선택 후 input 초기화
-    e.target.value = '';
-  };
-  
-  const handleFileRemove = (index) => {
-    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
-    setHoveredFileIndex(null);
-    setActiveFileIndex(null);
-  };
-  
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-  
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const files = Array.from(e.dataTransfer.files);
-    if (files.length > 0) {
-      setUploadedFiles(prev => [...prev, ...files]);
-    }
+  // 파일 변경 핸들러 추가
+  const handleFilesChange = (files) => {
+    setUploadedFiles(files);
   };
 
   return (
@@ -780,65 +625,24 @@ const MyProfileEdit = ({ userType, onStateChange }) => {
           <CharCount>( {charCount} / {MAX_CHAR_COUNT} )</CharCount>
         </IntroTextAreaContainer>
         
-        <PortfolioContainer>
+        <PortfolioWrapper>
           <LabelContainer>
             <SectionLabel>협업 포트폴리오</SectionLabel>
           </LabelContainer>
-          
-          <DropZone 
-            ref={dropZoneRef}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            onClick={handleFileSelect}
-          >
-            <DropZoneText>업로드할 파일 놓기</DropZoneText>
-            <OrText>또는</OrText>
-            <FileSelectButton onClick={(e) => {
-              e.stopPropagation();
-              handleFileSelect();
-            }}>
-              파일선택
-            </FileSelectButton>
-            
-            {uploadedFiles.length > 0 && (
-              <UploadedFilesContainer onClick={(e) => e.stopPropagation()}>
-                {uploadedFiles.map((file, index) => (
-                  <FileTag 
-                    key={`${file.name}-${index}`}
-                    isHovered={hoveredFileIndex === index}
-                    isActive={activeFileIndex === index}
-                    onMouseEnter={() => setHoveredFileIndex(index)}
-                    onMouseLeave={() => setHoveredFileIndex(null)}
-                    onMouseDown={() => setActiveFileIndex(index)}
-                    onMouseUp={() => setActiveFileIndex(null)}
-                  >
-                    {file.name}
-                    <FileRemoveIcon 
-                      src={hoveredFileIndex === index || activeFileIndex === index ? BlueX : GrayX} 
-                      alt="삭제" 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleFileRemove(index);
-                      }}
-                    />
-                  </FileTag>
-                ))}
-              </UploadedFilesContainer>
-            )}
-            
-            <FileInput 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange} 
-              multiple
-            />
-          </DropZone>
-        </PortfolioContainer>
+          <UploadPortfolio 
+            onFilesChange={handleFilesChange}
+          />
+        </PortfolioWrapper>
       </ContentWrapper>
       
       <SaveButton onClick={handleSave}>저장하기</SaveButton>
     </ProfileContainer>
   );
+};
+
+MyProfileEdit.propTypes = {
+  userType: PropTypes.string,
+  onStateChange: PropTypes.func.isRequired
 };
 
 export default MyProfileEdit; 
