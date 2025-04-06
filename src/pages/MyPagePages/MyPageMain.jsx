@@ -8,7 +8,7 @@ import MyPageMyPost from "./MyPageMyPost";
 
 import SuggestSent from "../SuggestSentPage/SuggestSent";
 import MyPageIRManage from "./MyPageIRManage";
-
+import Suggestreceived from "../SuggestreceivedPages/Suggestreceived";
 
 const PageContainer = styled.div`
   display: flex;
@@ -66,10 +66,7 @@ const MyPageMain = () => {
               <Route path="/proposal" element={<MyPageIRManage />} />
               <Route path="/mypost" element={<MyPageMyPost />} />
               <Route path="/sentproposal" element={<SuggestSent />} />
-              <Route
-                path="/receivedproposal"
-                element={<div>받은 제안 현황 페이지</div>}
-              />
+              <Route path="/receivedproposal" element={<Suggestreceived />} />
             </Routes>
           </ContentArea>
         </MainContent>
