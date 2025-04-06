@@ -98,7 +98,7 @@ const CardList = styled.div`
   flex-wrap: wrap;
   justify-content: flex-start;
   width: 100%;
-  gap: 3rem;
+  gap: 2rem;
   padding: 0rem 0rem 6.25rem 2rem;
 `;
 

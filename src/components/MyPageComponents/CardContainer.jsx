@@ -142,6 +142,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 80rem;
+  background-color: #fcfcff;
 `;
 
 const TabMainContainer = styled.div`
@@ -150,7 +151,7 @@ const TabMainContainer = styled.div`
   gap: 1.5rem;
   align-self: stretch;
   border-bottom: 1px solid var(--Colors-GrayScale-G300, #e5eaf2);
-  width: 76rem;
+  width: 73rem;
   padding: 0rem 2rem 0rem 2rem;
   height: 3rem;
   margin-bottom: 2rem;
@@ -217,7 +218,7 @@ const CardList = styled.div`
   flex-wrap: wrap;
   justify-content: flex-start;
   width: 100%;
-  gap: 3rem;
+  gap: 2rem;
   padding: 0rem 0rem 6.25rem 2rem;
 `;
 
@@ -295,7 +296,6 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })`
   &:checked {
     background-color: #3d85ff;
     border-color: #3d85ff;
-    /* ✅ border-radius 유지됨 */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 6L5 8.5L9 4' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center;
