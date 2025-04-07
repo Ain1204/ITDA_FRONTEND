@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Line from "../assets/MainIcon/line.svg";
 import Search from "../assets/MainIcon/Icon_Search.svg";
@@ -12,6 +13,7 @@ const ITEMS_PER_PAGE = 12;
 
 // Main component
 const SearchBar = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -298,7 +300,11 @@ const SearchBar = () => {
       <CardContainer>
         <CardListContainer isCentered={currentCards.length >= 4}>
           {currentCards.map((card) => (
-            <Card key={card.id}>
+            <Card 
+              key={card.id}
+              onClick={() => navigate(card.id % 2 === 1 ? '/view/council' : '/view/enterprise')}
+              style={{ cursor: 'pointer' }}
+            >
               <CardImage src={card.image} alt={`${card.title} 이미지`} />
               <HashtagContainer>
                 {card.hashtags.map((hashtag, index) => (

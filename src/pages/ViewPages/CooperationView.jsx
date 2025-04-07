@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import councilThumbnail from "../../assets/viewIcon/councilThumbnail.jpg";
 import enterpriseThumbnail from "../../assets/viewIcon/enterThumbnail.svg";
@@ -604,6 +604,7 @@ const NavButton = styled(CircleButton)`
 
 const CooperationView = () => {
 	const { type } = useParams();
+	const navigate = useNavigate();
 	const viewType = type || "enterprise";
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
@@ -732,7 +733,7 @@ const CooperationView = () => {
 			{viewType === "council" && (
 				<ProfileContainer>
 					<ProfileTitle>프로필</ProfileTitle>
-					<ProfileWrapper>
+					<ProfileWrapper onClick={() => navigate('/profile/council')} style={{ cursor: 'pointer' }}>
 						<ProfileImage src={dummyProfileCouncil} alt="프로필 이미지" />
 						<ProfileInformation>
 							<ProfileName>
@@ -757,7 +758,7 @@ const CooperationView = () => {
 			{viewType === "enterprise" && (
 				<ProfileContainer>
 					<ProfileTitle>프로필</ProfileTitle>
-					<ProfileWrapper>
+					<ProfileWrapper onClick={() => navigate('/profile/enterprise')} style={{ cursor: 'pointer' }}>
 						<ProfileImage src={dummyProfileEnterprise} alt="프로필 이미지" />
 						<ProfileInformation>
 							<ProfileName>

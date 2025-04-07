@@ -8,7 +8,7 @@ import UserProfile from "../assets/MainIcon/Navimg/UserProfile.png";
 
 // 네비게이션 메뉴 항목
 const NAV_ITEMS = [
-  { label: "협업 시작하기", path: "/register/enterprise" },
+  { label: "협업 시작하기", path: "/suggest" },
   { label: "마이페이지", path: "/mypage" },
   { label: "서비스 소개", path: "/about" },
 ];
