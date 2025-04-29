@@ -39,7 +39,7 @@ const Suggestreceived = () => {
       id: 6,
       brand: "미샤 MISSHA",
       product: "타임 레볼루션 나이트 리페어 앰플 50ml",
-      date: "2024.07.05",
+      date: "2024.07.0",
     },
     {
       id: 7,
